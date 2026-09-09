@@ -444,7 +444,7 @@
     
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a>
-</div><div class="right"><span class="cap reading">15622 字 · 预计阅读 53 分钟</span></div></div><div class="meta-row">
+</div><div class="right"><span class="cap reading">15701 字 · 预计阅读 53 分钟</span></div></div><div class="meta-row">
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-08T12:42:45.000Z">2026-09-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-08T12:42:45.000Z">2026-09-08</time></span></div>
 </div></div>
     
@@ -2223,9 +2223,14 @@
 </tbody></table></div>
 <hr>
 <p><em>本手册基于本站 v2.0.0-alpha.1 编写，覆盖官方文档全部配置项与功能点，按场景重新组织。如有冲突，以 <code>npm run doctor</code> 的本地校验为准。</em></p>
-<h2 id="额外遇到的问题"><a href="#额外遇到的问题" class="headerlink" title="额外遇到的问题"></a>额外遇到的问题</h2><h3 id="Hexo-Typora-的融合方法"><a href="#Hexo-Typora-的融合方法" class="headerlink" title="Hexo + Typora 的融合方法"></a><strong>Hexo + Typora 的融合方法</strong></h3><p>1.在 Hexo 根目录打开配置文件 <code>_config.yml</code></p>
+<h2 id="额外遇到的问题"><a href="#额外遇到的问题" class="headerlink" title="额外遇到的问题"></a>额外遇到的问题</h2><h3 id="Hexo-Typora-的融合方法"><a href="#Hexo-Typora-的融合方法" class="headerlink" title="Hexo + Typora 的融合方法"></a><strong>Hexo + Typora 的融合方法</strong></h3><p><strong>这是_post类文章解决方式</strong></p>
+<p>1.在 Hexo 根目录打开配置文件 <code>_config.yml</code></p>
 <p>搜索 <code>post_asset_folder</code>，<code>false</code> 改为 <code>true</code></p>
 <p>2.Typora图片偏好设置中 复制到指定路径，然后默认就行</p>
+<p><strong>但是又发现笔记本等其他位置用不了相对路径，因为插件的问题</strong></p>
+<p>参考这篇文章</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1970544?policyId=1003">https://cloud.tencent.com/developer/article/1970544?policyId=1003</a></p>
+<p>把这篇文章交给dsh，自动帮我们装了个js插件解决问题，太强了ai</p>
 <h3 id="上传完404"><a href="#上传完404" class="headerlink" title="上传完404"></a><strong>上传完404</strong></h3><p>去仓库-setting-pages-branch选master即可</p>
 <h3 id="GitHub更新不显示（暨网站更新流程）"><a href="#GitHub更新不显示（暨网站更新流程）" class="headerlink" title="GitHub更新不显示（暨网站更新流程）"></a>GitHub更新不显示（暨网站更新流程）</h3><p>没删除缓存，以后的逻辑是</p>
 <p><code>npm run clean</code></p>
