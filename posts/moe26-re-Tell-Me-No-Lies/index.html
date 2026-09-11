@@ -533,7 +533,7 @@
     
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/posts/moe26-re-Tell-Me-No-Lies/">从moectf2026入门ctf</a>
-</div><div class="right"><span class="cap reading">599 字 · 预计阅读 2 分钟</span></div></div><div class="meta-row">
+</div><div class="right"><span class="cap reading">871 字 · 预计阅读 3 分钟</span></div></div><div class="meta-row">
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-10T13:24:20.000Z">2026-09-10</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-10T13:24:20.000Z">2026-09-10</time></span></div>
 </div></div>
     
@@ -567,36 +567,59 @@
 <p><strong>从上往下</strong>：首先是v7，通过下面ifelse可以猜得v7必须是<strong>false</strong>，进入函数<code>IsDebuggerPresent()</code>查看</p>
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/posts/moe26-re-Tell-Me-No-Lies/image-20260910225510485.png" class="lazy" title="IsDebuggerPresent()" onerror="this.src&#x3D;&quot;data:image&#x2F;svg+xml,%3Csvg xmlns&#x3D;&#39;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&#39; width&#x3D;&#39;2rem&#39; height&#x3D;&#39;2rem&#39; viewBox&#x3D;&#39;0 0 24 24&#39;%3E%3C!-- Icon from Solar by 480 Design - https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by&#x2F;4.0&#x2F; --%3E%3Cg fill&#x3D;&#39;%23F44336&#39;%3E%3Cpath d&#x3D;&#39;M21.9998 12.6978C21.9983 14.1674 21.9871 15.4165 21.9036 16.4414C21.8067 17.6308 21.6081 18.6246 21.1636 19.45C20.9676 19.814 20.7267 20.1401 20.4334 20.4334C19.601 21.2657 18.5405 21.6428 17.1966 21.8235C15.8835 22 14.2007 22 12.0534 22H11.9466C9.79929 22 8.11646 22 6.80345 21.8235C5.45951 21.6428 4.39902 21.2657 3.56664 20.4334C2.82871 19.6954 2.44763 18.777 2.24498 17.6376C2.04591 16.5184 2.00949 15.1259 2.00192 13.3967C2 12.9569 2 12.4917 2 12.0009V11.9466C1.99999 9.79929 1.99998 8.11646 2.17651 6.80345C2.3572 5.45951 2.73426 4.39902 3.56664 3.56664C4.39902 2.73426 5.45951 2.3572 6.80345 2.17651C7.97111 2.01952 9.47346 2.00215 11.302 2.00024C11.6873 1.99983 12 2.31236 12 2.69767C12 3.08299 11.6872 3.3952 11.3019 3.39561C9.44749 3.39757 8.06751 3.41446 6.98937 3.55941C5.80016 3.7193 5.08321 4.02339 4.5533 4.5533C4.02339 5.08321 3.7193 5.80016 3.55941 6.98937C3.39683 8.19866 3.39535 9.7877 3.39535 12C3.39535 12.2702 3.39535 12.5314 3.39567 12.7844L4.32696 11.9696C5.17465 11.2278 6.45225 11.2704 7.24872 12.0668L11.2392 16.0573C11.8785 16.6966 12.8848 16.7837 13.6245 16.2639L13.9019 16.0689C14.9663 15.3209 16.4064 15.4076 17.3734 16.2779L20.0064 18.6476C20.2714 18.091 20.4288 17.3597 20.5128 16.3281C20.592 15.3561 20.6029 14.1755 20.6044 12.6979C20.6048 12.3126 20.917 12 21.3023 12C21.6876 12 22.0002 12.3125 21.9998 12.6978Z&#39; opacity&#x3D;&#39;.5&#39;&#x2F;%3E%3Cpath fill-rule&#x3D;&#39;evenodd&#39; d&#x3D;&#39;M17.5 11C15.3787 11 14.318 11 13.659 10.341C13 9.68198 13 8.62132 13 6.5C13 4.37868 13 3.31802 13.659 2.65901C14.318 2 15.3787 2 17.5 2C19.6213 2 20.682 2 21.341 2.65901C22 3.31802 22 4.37868 22 6.5C22 8.62132 22 9.68198 21.341 10.341C20.682 11 19.6213 11 17.5 11ZM16.0303 3.96967C15.7374 3.67678 15.2626 3.67678 14.9697 3.96967C14.6768 4.26256 14.6768 4.73744 14.9697 5.03033L16.4393 6.5L14.9697 7.96967C14.6768 8.26256 14.6768 8.73744 14.9697 9.03033C15.2626 9.32322 15.7374 9.32322 16.0303 9.03033L17.5 7.56066L18.9697 9.03033C19.2626 9.32322 19.7374 9.32322 20.0303 9.03033C20.3232 8.73744 20.3232 8.26256 20.0303 7.96967L18.5607 6.5L20.0303 5.03033C20.3232 4.73744 20.3232 4.26256 20.0303 3.96967C19.7374 3.67678 19.2626 3.67678 18.9697 3.96967L17.5 5.43934L16.0303 3.96967Z&#39; clip-rule&#x3D;&#39;evenodd&#39;&#x2F;%3E%3C&#x2F;g%3E%3C&#x2F;svg%3E&quot;">
 
-<p>**问题1：**这个/status是什么，文件？</p>
-<p>**答：**Linux 里记录当前进程状态的文件</p>
+<p><strong>问题1</strong>：这个/status是什么，文件？</p>
+<p><strong>答</strong>：Linux 里记录当前进程状态的文件</p>
 <p>读取进程状态，碰到Tracerpid开始内部语句</p>
-<p><strong>问题2：</strong><code>strtoul()</code>函数含义是什么，有何作用？</p>
-<p>**答：**string to unsigned long（字符串转无符号长整型），把字符串里开头的数字抠出来，变成整数。一碰到其他字符就退出，如果没有值的话返回0</p>
-<p><strong>作用：<strong>判断有无数值，这里用来判断是否有调试进程，有就返回真值，用来</strong>反调试</strong></p>
+<p><strong>问题2</strong>：<code>strtoul()</code>函数含义是什么，有何作用？</p>
+<p><strong>答</strong>：string to unsigned long（字符串转无符号长整型），把字符串里开头的数字抠出来，变成整数。一碰到其他字符就退出，如果没有值的话返回0</p>
+<p><strong>作用</strong>：判断有无数值，这里用来判断是否有调试进程，有就返回真值，用来<strong>反调试</strong></p>
 <p>往后走，三个函数<code>build_required_token(s)，acquire_operator_token()，compare_operator_token(v8, s)</code></p>
 <p>第一个<code>acquire_operator_token()</code></p>
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__int64 result; // rax</span><br><span class="line">  unsigned __int64 i; // [rsp+10h] [rbp-8h]</span><br><span class="line"></span><br><span class="line">  for ( i = 0LL; i &lt;= 0x13; ++i )</span><br><span class="line">    *(_BYTE *)(a1 + i) = *(_BYTE *)(i + 4203008) ^ 0x5A;</span><br><span class="line">  result = a1 + 20;</span><br><span class="line">  *(_BYTE *)(a1 + 20) = 0;</span><br><span class="line">  return result;</span><br></pre></td></tr></tbody></table></figure>
 
-<p>**问题1：**看到类型提示想改参数类型，改成int *a1报错了</p>
-<p>**答：**要改成char *a1</p>
+<p><strong>问题1</strong>：看到类型提示想改参数类型，改成int *a1报错了</p>
+<p><strong>答</strong>：要改成char *a1</p>
 <blockquote>
 <p>具体不知道为啥</p>
 <p>因为反编译里 <code>*(_BYTE *)(a1 + i) = ...</code> 的意思是：<code>a1</code> 是一个<strong>地址</strong>，往 <code>a1 + i</code> 这个字节位置写数据。如果你把它改成 <code>__int64 *a1</code>，那 <code>a1 + i</code> 就变成“跳过 i 个 int64”了，语义完全变了。<strong>这里的 <code>a1</code> 应该理解为 <code>char \*a1</code>（字符串首地址）</strong>，反编译工具偷懒没给你标清楚类型而已。</p>
 </blockquote>
-<p>**问题2：**4203008是啥</p>
-<p>**答：**一个地址，到时候动调在里面拿数据</p>
+<p><strong>问题2</strong>：4203008是啥</p>
+<p><strong>答</strong>：一个地址，到时候动调在里面拿数据</p>
 <p>第二个<code>acquire_operator_token()</code></p>
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if ( (getpid() &amp; 1) != 0 )</span><br><span class="line">    return "MOE-LEVEL-1-GUEST";</span><br><span class="line">  else</span><br><span class="line">    return "MOE-LEVEL-3-TECH";</span><br></pre></td></tr></tbody></table></figure>
 
-<p><strong>问题：</strong>&amp;按位与作用</p>
-<p><strong>答：</strong></p>
+<p><strong>问题</strong>：&amp;按位与作用</p>
+<p><strong>答</strong>：</p>
 <ul>
 <li>奇数的最低位是 1 → <code>getpid() &amp; 1 == 1</code></li>
 <li>偶数的最低位是 0 → <code>getpid() &amp; 1 == 0</code></li>
 </ul>
-<p>**作用：**判断奇偶</p>
+<p><strong>作用</strong>：判断奇偶</p>
 <p>第三个就是简单比较数据，使v8和s相等</p>
 <p>然后进行自揭密程序<code>self_driven_decrypt(v7, v6, v4)</code> </p>
+<p>然后程序结束</p>
+<h3 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h3><p>没有输入口，哪里的结果会是flag呢？</p>
+<p>自解密程序要不要进去看呢？，里面有复合了很多模块</p>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><h3 id="过v7反调试"><a href="#过v7反调试" class="headerlink" title="过v7反调试"></a>过v7反调试</h3><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/posts/moe26-re-Tell-Me-No-Lies/image-20260911132202683.png" class="lazy" title="反调试" onerror="this.src&#x3D;&quot;data:image&#x2F;svg+xml,%3Csvg xmlns&#x3D;&#39;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&#39; width&#x3D;&#39;2rem&#39; height&#x3D;&#39;2rem&#39; viewBox&#x3D;&#39;0 0 24 24&#39;%3E%3C!-- Icon from Solar by 480 Design - https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by&#x2F;4.0&#x2F; --%3E%3Cg fill&#x3D;&#39;%23F44336&#39;%3E%3Cpath d&#x3D;&#39;M21.9998 12.6978C21.9983 14.1674 21.9871 15.4165 21.9036 16.4414C21.8067 17.6308 21.6081 18.6246 21.1636 19.45C20.9676 19.814 20.7267 20.1401 20.4334 20.4334C19.601 21.2657 18.5405 21.6428 17.1966 21.8235C15.8835 22 14.2007 22 12.0534 22H11.9466C9.79929 22 8.11646 22 6.80345 21.8235C5.45951 21.6428 4.39902 21.2657 3.56664 20.4334C2.82871 19.6954 2.44763 18.777 2.24498 17.6376C2.04591 16.5184 2.00949 15.1259 2.00192 13.3967C2 12.9569 2 12.4917 2 12.0009V11.9466C1.99999 9.79929 1.99998 8.11646 2.17651 6.80345C2.3572 5.45951 2.73426 4.39902 3.56664 3.56664C4.39902 2.73426 5.45951 2.3572 6.80345 2.17651C7.97111 2.01952 9.47346 2.00215 11.302 2.00024C11.6873 1.99983 12 2.31236 12 2.69767C12 3.08299 11.6872 3.3952 11.3019 3.39561C9.44749 3.39757 8.06751 3.41446 6.98937 3.55941C5.80016 3.7193 5.08321 4.02339 4.5533 4.5533C4.02339 5.08321 3.7193 5.80016 3.55941 6.98937C3.39683 8.19866 3.39535 9.7877 3.39535 12C3.39535 12.2702 3.39535 12.5314 3.39567 12.7844L4.32696 11.9696C5.17465 11.2278 6.45225 11.2704 7.24872 12.0668L11.2392 16.0573C11.8785 16.6966 12.8848 16.7837 13.6245 16.2639L13.9019 16.0689C14.9663 15.3209 16.4064 15.4076 17.3734 16.2779L20.0064 18.6476C20.2714 18.091 20.4288 17.3597 20.5128 16.3281C20.592 15.3561 20.6029 14.1755 20.6044 12.6979C20.6048 12.3126 20.917 12 21.3023 12C21.6876 12 22.0002 12.3125 21.9998 12.6978Z&#39; opacity&#x3D;&#39;.5&#39;&#x2F;%3E%3Cpath fill-rule&#x3D;&#39;evenodd&#39; d&#x3D;&#39;M17.5 11C15.3787 11 14.318 11 13.659 10.341C13 9.68198 13 8.62132 13 6.5C13 4.37868 13 3.31802 13.659 2.65901C14.318 2 15.3787 2 17.5 2C19.6213 2 20.682 2 21.341 2.65901C22 3.31802 22 4.37868 22 6.5C22 8.62132 22 9.68198 21.341 10.341C20.682 11 19.6213 11 17.5 11ZM16.0303 3.96967C15.7374 3.67678 15.2626 3.67678 14.9697 3.96967C14.6768 4.26256 14.6768 4.73744 14.9697 5.03033L16.4393 6.5L14.9697 7.96967C14.6768 8.26256 14.6768 8.73744 14.9697 9.03033C15.2626 9.32322 15.7374 9.32322 16.0303 9.03033L17.5 7.56066L18.9697 9.03033C19.2626 9.32322 19.7374 9.32322 20.0303 9.03033C20.3232 8.73744 20.3232 8.26256 20.0303 7.96967L18.5607 6.5L20.0303 5.03033C20.3232 4.73744 20.3232 4.26256 20.0303 3.96967C19.7374 3.67678 19.2626 3.67678 18.9697 3.96967L17.5 5.43934L16.0303 3.96967Z&#39; clip-rule&#x3D;&#39;evenodd&#39;&#x2F;%3E%3C&#x2F;g%3E%3C&#x2F;svg%3E&quot;">
+
+<p>改寄存器rax的值为0跳到else分支</p>
+<p><strong>tmd每次都在后面卡壳，然后每次开始动态调试都得调这个，有没有办法直接令他为0，不用手动操控呢？</strong></p>
+<p><strong>答</strong>：patch（又学到一个）</p>
+<blockquote>
+<p>ai：</p>
+<p><strong>在 <code>main</code> 里 Patch（最简单，不碰函数内部）</strong><br>不要改 <code>IsDebuggerPresent</code> 内部，而是直接改 <code>main</code> 里的跳转。<br>在你的截图里找到这两行：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test    eax, eax</span><br><span class="line">jz      short loc_401DFB</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>jz</code> 的意思是“如果 eax 等于 0（没检测到调试器），就跳去成功分支”。<br>因为你现在被调试，<code>eax</code> 是 1，所以不跳，进入了 <code>mov eax, 1; jmp</code>（死路）。</p>
+<p><strong>做法：</strong></p>
+<ol>
+<li>patch <code>jz short loc_401DFB</code> 这一行。</li>
+<li>在弹窗的 <code>Assembly</code> 框里输入 <code>jmp loc_401DFB</code>，按回车。</li>
+<li>这样它就会<strong>无条件</strong>跳到成功分支。</li>
+</ol>
+</blockquote>
+<p>但是我按他的做了还是不行。。。</p>
+<p><strong>遇到的问题</strong>：patch</p>
 <p>后续暂未整理，还未解出</p>
 <p><a target="_blank" rel="noopener" href="https://chat.deepseek.com/share/xyt1rlb5sigzcx06pu">https://chat.deepseek.com/share/xyt1rlb5sigzcx06pu</a></p>
 </article>
@@ -638,7 +661,7 @@
       <button type="button" class="cap-action ui-interactive card-hover card-hover--spotlight" data-shell-action="toggle-toc" aria-label="Toggle table of contents" aria-pressed="false"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></span></button>
     </div>
   
-  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0%E5%92%8C%E9%99%84%E4%BB%B6"><span class="toc-text">题目描述和附件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E9%80%9A%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%90%86%E8%A7%A3%E9%80%BB%E8%BE%91"><span class="toc-text">通读代码理解逻辑</span></a></li></ol></li></ol></div>
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0%E5%92%8C%E9%99%84%E4%BB%B6"><span class="toc-text">题目描述和附件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E9%80%9A%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%90%86%E8%A7%A3%E9%80%BB%E8%BE%91"><span class="toc-text">通读代码理解逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%96%91%E6%83%91"><span class="toc-text">疑惑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="toc-text">动态调试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E8%BF%87v7%E5%8F%8D%E8%B0%83%E8%AF%95"><span class="toc-text">过v7反调试</span></a></li></ol></li></ol></div>
   <div class="widget-footer"><a class="top ui-interactive" onclick="util.scrollTop()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M20.536 3.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464" opacity=".5"/><path fill="currentColor" d="M9.53 12.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 9.56z"/><path fill="currentColor" d="M9.53 16.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 13.56z"/></svg></span><span>回到顶部</span></a></div>
 </widget>
 
