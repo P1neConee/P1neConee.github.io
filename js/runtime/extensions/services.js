@@ -1,15 +1,100 @@
+/* global setMdLinkIcon */
 export async function mount(root, context) {
-  if (root.nodeType !== 9) {
-    throw new TypeError('[stellar runtime] legacy data-service adapter requires a document root');
-  }
   const assets = context.assets;
   const config = context.extension.config;
-  const services = Object.assign({}, config.services, {
-    siteinfo: Object.assign({}, config.services.siteinfo, { api: config.siteInfoEndpoint })
-  });
+  const services = context.legacy.ctx.services;
   const deps = { marked: config.marked };
   const loads = [];
+  const onSitesReady = event => {
+    const element = event.detail?.target;
+    if (element && root.contains(element) && !context.signal.aborted) {
+      void assets.script(services.siteinfo.js).then(() => {
+        if (!context.signal.aborted) window.setSiteCardIcon?.(element.querySelectorAll('.card-link[data-siteinfo-api]'), context.signal);
+      }).catch(error => { if (!context.signal.aborted) context.reportError(error); });
+    }
+  };
+  window.addEventListener('stellar:sites-ready', onSitesReady, { signal: context.signal });
+
+  const enhanceLinks = links => {
+    if (context.signal.aborted) return;
+    const mdlinks = [];
+    for (const link of links) {
+      if (!root.contains(link)) continue;
+      const href = link.getAttribute('href')?.trim();
+      if (!href || href.startsWith('#') || link.getAttribute('class') || link.getAttribute('role') ||
+          link.matches('[cardlink], [data-md-link], [data-siteinfo-api]') ||
+          link.closest('pre, code, .highlight, .footnotes') ||
+          link.querySelector('img, svg') || !link.textContent.trim()) continue;
+      let url;
+      try { url = new URL(href, link.baseURI); } catch { continue; }
+      if (!['http:', 'https:'].includes(url.protocol)) continue;
+      link.setAttribute('data-md-link', '');
+      const icon = document.createElement('span');
+      icon.className = 'md-link-icon ui-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = context.legacy.ctx.icons['default:link'];
+      link.prepend(icon);
+      if (services.siteinfo.api) {
+        link.setAttribute('data-siteinfo-api', services.siteinfo.api.replace('{href}', encodeURIComponent(url.href)));
+        mdlinks.push(link);
+      }
+    }
+    if (mdlinks.length) {
+      void assets.script(services.siteinfo.js).then(() => {
+        if (!context.signal.aborted) setMdLinkIcon(mdlinks, context.signal);
+      }).catch(error => { if (!context.signal.aborted) context.reportError(error); });
+    }
+  };
+  const onMarkdownRendered = event => enhanceLinks(event.detail?.links || []);
+  document.addEventListener('stellar:mdrender', onMarkdownRendered, { signal: context.signal });
+
+  // Inline comment providers render asynchronously and replace content on edits/pagination.
+  const commentRoots = root.querySelectorAll('#artalk_container, #twikoo_container, #waline_container');
+  const commentLinkSelector = '.atk-content a[href], .tk-content a[href], .wl-content a[href]';
+  let commentObserver = null;
+  if (commentRoots.length) {
+    commentObserver = new MutationObserver(records => {
+      const links = new Set();
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (node.nodeType !== 1) continue;
+          if (node.matches(commentLinkSelector)) links.add(node);
+          node.querySelectorAll(commentLinkSelector).forEach(link => links.add(link));
+        }
+      }
+      enhanceLinks(links);
+    });
+    commentRoots.forEach(element => commentObserver.observe(element, { childList: true, subtree: true }));
+    context.signal.addEventListener('abort', () => commentObserver.disconnect(), { once: true });
+  }
+
   const voiceCleanups = [];
+  const baseUtils = window.utils;
+  const serviceUtils = Object.create(baseUtils);
+  serviceUtils.request = (element, url, callback, failure, options = {}) => baseUtils.request(element, url, async response => {
+    context.signal.throwIfAborted();
+    const guarded = new Proxy(response, { get(target, key) {
+      if (key === 'json' || key === 'text') return async () => {
+        const data = await target[key]();
+        context.signal.throwIfAborted();
+        return data;
+      };
+      const value = Reflect.get(target, key, target);
+      return typeof value === 'function' ? value.bind(target) : value;
+    } });
+    await callback(guarded);
+  }, failure, { ...options, signal: context.signal }).catch(error => {
+    if (!context.signal.aborted) context.reportError(error);
+  });
+  serviceUtils.requestWithoutLoading = (url, options = {}) => baseUtils.requestWithoutLoading(url, { ...options, signal: context.signal });
+  function loadService(js) {
+    return assets.script(js).then(script => {
+      context.signal.throwIfAborted();
+      if (typeof script.stellarMount !== 'function') throw new TypeError(`data-service asset has no regional mount: ${js}`);
+      return script.stellarMount(root, { ...context, serviceUtils });
+    });
+  }
+
   // 用于存储需要清理的资源
   let intervals = [];
   let timeouts = [];
@@ -18,23 +103,28 @@ export async function mount(root, context) {
     const js = services[id].js;
     if (id == 'siteinfo') {
       const cardlinks = root.querySelectorAll('a.link-card[cardlink]');
+      const mdlinks = root.querySelectorAll('a[data-md-link][data-siteinfo-api]');
       const siteCards = root.querySelectorAll('.ds-sites, .site-card .card-link[data-siteinfo-api]');
-      if (cardlinks?.length > 0 || siteCards?.length > 0) {
+      if (cardlinks?.length > 0 || siteCards?.length > 0 || mdlinks.length > 0) {
         loads.push(assets.script(js).then(function () {
+          context.signal?.throwIfAborted();
+          setMdLinkIcon(mdlinks, context.signal);
+          window.setSiteCardIcon?.(root.querySelectorAll('.site-card .card-link[data-siteinfo-api]'), context.signal);
           if (cardlinks?.length > 0) {
-            setCardLink(cardlinks);
+            setCardLink(cardlinks, context.signal);
           }
         }));
       }
     } else if (id == 'ghinfo') {
       const els = root.querySelectorAll('.ds-ghinfo');
       if (els.length > 0) {
-        loads.push(assets.script(js));
+        loads.push(loadService(js));
       }
     } else if (id == 'voice') {
       const voiceAudios = root.querySelectorAll('.voice>audio');
       if (voiceAudios?.length > 0) {
         loads.push(assets.script(js).then(function () {
+          context.signal?.throwIfAborted();
           const voiceCleanup = createVoiceDom(voiceAudios);
           if (typeof voiceCleanup === 'function') voiceCleanups.push(voiceCleanup);
         }));
@@ -43,14 +133,16 @@ export async function mount(root, context) {
       const videos = root.querySelectorAll('.video>video');
       if (videos?.length > 0) {
         loads.push(assets.script(js).then(function () {
-          videoEvents(videos);
+          context.signal?.throwIfAborted();
+          voiceCleanups.push(videoEvents(videos));
         }));
       }
     } else if (id == 'download-file') {
       const files = root.querySelectorAll('.chat-file');
       if (files?.length > 0) {
         loads.push(assets.script(js).then(function () {
-          downloadFileEvent(files);
+          context.signal?.throwIfAborted();
+          voiceCleanups.push(downloadFileEvent(files));
         }));
       }
     } else {
@@ -58,14 +150,17 @@ export async function mount(root, context) {
       if (els?.length > 0) {
         if (id == 'timeline' || id == 'memos' || id == 'marked' || id == 'mdrender') {
           loads.push(assets.script(deps.marked).then(function () {
-            return assets.script(js);
+          context.signal?.throwIfAborted();
+            return loadService(js);
           }));
         } else {
-          loads.push(assets.script(js));
+          loads.push(loadService(js));
         }
       }
     }
   }
+
+  commentRoots.forEach(element => enhanceLinks(element.querySelectorAll(commentLinkSelector)));
 
   // chat iphone time
   let phoneTimes = root.querySelectorAll('.chat .status-bar .time');
@@ -126,8 +221,8 @@ export async function mount(root, context) {
   var chatQuotes = root.querySelectorAll(".chat .talk .quote");
   chatQuotes.forEach((quote) => {
     const handler = function () {
-      var candidate = root.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
-      var chatCellDom = candidate && root.documentElement.contains(candidate) ? candidate : null;
+      var candidate = (root.ownerDocument || root).getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+      var chatCellDom = candidate && (root.documentElement || root).contains(candidate) ? candidate : null;
       if (chatCellDom) {
         var chatDiv = chatCellDom.parentElement;
         var mid = chatDiv.clientHeight / 2;
@@ -152,6 +247,7 @@ export async function mount(root, context) {
 
   // 返回清理函数，用于清理定时器和观察器
   const cleanup = () => {
+    commentObserver?.disconnect();
     // 清理所有定时器（包括可能未完成的 firstAdjustInterval）
     intervals.forEach(timer => {
       if (timer) clearInterval(timer);
@@ -185,8 +281,9 @@ export async function mount(root, context) {
     }
     voiceCleanups.length = 0;
   };
+  context.onCleanup?.(cleanup);
   try {
-    await Promise.all(loads);
+    await Promise.allSettled(loads.map(promise => promise.catch(error => { context.reportError(error); })));
   } catch (error) {
     cleanup();
     throw error;

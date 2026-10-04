@@ -22,7 +22,7 @@
 }
 @media screen and (max-width: 667px) {
   :root {
-    --fs-root: calc(16px + 2px);
+    --fs-root: calc(16px + 1px);
     --side-content-width: 224px;
   }
 }
@@ -89,7 +89,7 @@ body[data-page-layout='index_wiki'] {
 }
 :root[data-theme="dark"] .cmt-body.waline .wl-count {
   padding: 0.375em;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.25em;
   color: #fff;
 }
@@ -110,7 +110,7 @@ body[data-page-layout='index_wiki'] {
   }
   :root:not([data-theme]) .cmt-body.waline .wl-count {
     padding: 0.375em;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 1.25em;
     color: #fff;
   }

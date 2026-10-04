@@ -1,6 +1,5 @@
-import { REQUEST_CACHE_PREFIX } from '../request-cache.js';
-
-export const SEARCH_CACHE_KEY = 'search_cache_v5';
+const { isImageColorKey, clearImageColorCache } = await import(`../image-color.js${new URL(import.meta.url).search}`);
+const { REQUEST_CACHE_PREFIX, isSearchCacheKey, clearSearchStorage } = await import(`../request-cache.js${new URL(import.meta.url).search}`);
 
 function utf8Bytes(value) {
   const text = String(value || '');
@@ -25,20 +24,25 @@ export function measureCacheSizes(storage) {
   if (!target) return Object.freeze({ search: 0, dynamic: 0, all: 0, failed: true });
   let search = 0;
   let dynamic = 0;
+  let imageColor = 0;
   try {
-    const searchValue = target.getItem(SEARCH_CACHE_KEY);
-    if (searchValue !== null) search = entryBytes(SEARCH_CACHE_KEY, searchValue);
     for (let index = 0; index < target.length; index++) {
       const key = target.key(index);
-      if (!key?.startsWith(REQUEST_CACHE_PREFIX)) continue;
+      const isSearch = isSearchCacheKey(key);
+      const isImageColor = isImageColorKey(key);
+      if (!isSearch && !isImageColor && !key?.startsWith(REQUEST_CACHE_PREFIX)) continue;
       const value = target.getItem(key);
-      if (value !== null) dynamic += entryBytes(key, value);
+      if (value !== null) {
+        if (isSearch) search += entryBytes(key, value);
+        else if (isImageColor) imageColor += entryBytes(key, value);
+        else dynamic += entryBytes(key, value);
+      }
     }
   } catch (error) {
     void error;
     return Object.freeze({ search: 0, dynamic: 0, all: 0, failed: true });
   }
-  return Object.freeze({ search, dynamic, all: search + dynamic, failed: false });
+  return Object.freeze({ search, dynamic, all: search + dynamic + imageColor, failed: false });
 }
 
 export function formatCacheSize(bytes) {
@@ -68,8 +72,7 @@ function setStatus(element, message, state) {
 
 function fallbackSearchClear() {
   try {
-    globalThis.localStorage?.removeItem(SEARCH_CACHE_KEY);
-    return { ok: true, partial: false, removed: 1, failed: 0 };
+    return clearSearchStorage(globalThis.localStorage);
   } catch (error) {
     return { ok: false, partial: false, removed: 0, failed: 1 };
   }
@@ -87,7 +90,6 @@ export function mount(root, context) {
   const provider = String(page.dataset.provider || '').toLowerCase();
   const api = globalThis.window?.stellarProfile;
   const form = page.querySelector('[data-profile-form]');
-  const note = page.querySelector('[data-provider-note]');
   const status = page.querySelector('[data-profile-status]');
   const avatar = page.querySelector('[data-profile-avatar]');
   const avatarFallback = page.querySelector('[data-profile-avatar-fallback]');
@@ -171,8 +173,8 @@ export function mount(root, context) {
     if (urlInput) urlInput.value = identity.url || '';
     if (form) form.hidden = !supported;
     if (logoutButton) logoutButton.hidden = !supported;
-    if (note) note.hidden = supported;
-    renderAvatar(identity);
+    if (supported) renderAvatar(identity);
+    else if (avatar) avatar.hidden = true;
   }
 
   function onSubmit(event) {
@@ -204,6 +206,7 @@ export function mount(root, context) {
     const results = [];
     if (action === 'search' || action === 'all') results.push(clearSearch());
     if (action === 'dynamic' || action === 'all') results.push(context.request.clearCache());
+    if (action === 'all') results.push(clearImageColorCache());
     const result = combine(results);
     const cacheStatus = page.querySelector('[data-cache-status]');
     if (result.ok) setStatus(cacheStatus, '', '');

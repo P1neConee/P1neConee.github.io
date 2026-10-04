@@ -45,26 +45,6 @@ const util = {
     }
   },
 
-  share: async (button) => {
-    if (!button) return;
-    const data = {
-      title: button.dataset.shareTitle || '',
-      text: button.dataset.shareText || button.dataset.shareTitle || '',
-      url: button.dataset.shareUrl || ''
-    };
-    try {
-      const supported = typeof navigator.share === 'function'
-        && (typeof navigator.canShare !== 'function' || navigator.canShare(data));
-      if (supported) {
-        await navigator.share(data);
-        return;
-      }
-    } catch (error) {
-      if (error?.name === 'AbortError') return;
-    }
-    util.copy(button.dataset.copyTarget, button.dataset.copyMessage);
-  },
-
   toggle: (id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -123,6 +103,10 @@ const rightbarDrawerQuery = '(max-width: 1180px)';
 let shellDrawerTrigger = null;
 let searchDialogTrigger = null;
 let searchDialogRestoreFocus = true;
+// 退场动画的安全兜底时长，需大于 search.styl 中 search-dialog-out 的 0.18s
+const searchCloseFallbackDelay = 260;
+let searchCloseTimer = null;
+let searchCloseListener = null;
 let shellInputModality = 'pointer';
 
 function regionElement(region) {
@@ -153,6 +137,7 @@ function setRegionInteractive(region, interactive) {
 }
 
 function syncLeftbarControls() {
+  syncRightbarFocus();
   const drawer = regionUsesDrawer('leftbar');
   const expanded = drawer
     ? siteShell?.dataset.drawer === 'leftbar'
@@ -165,7 +150,17 @@ function syncLeftbarControls() {
   });
 }
 
+function syncRightbarFocus() {
+  const rightbar = regionElement('rightbar');
+  if (!rightbar) return;
+  const compact = !regionUsesDrawer('rightbar') && regionElement('leftbar')
+    && document.documentElement.dataset.leftbarState === 'collapsed';
+  if (compact) rightbar.setAttribute('tabindex', '0');
+  else rightbar.removeAttribute('tabindex');
+}
+
 function syncDrawerControls() {
+  syncRightbarFocus();
   const openRegion = siteShell?.dataset.drawer || '';
   ['leftbar', 'rightbar'].forEach(function (region) {
     const open = openRegion === region && regionUsesDrawer(region);
@@ -253,6 +248,11 @@ function applySearchScope(dialog, value, refresh = true) {
   }
 }
 
+function searchMotionEnabled() {
+  if (typeof window.matchMedia !== 'function') return true;
+  return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function configureSearchScope(dialog, trigger) {
   const group = dialog?.querySelector('.search-dialog__scope');
   if (!group) return false;
@@ -274,15 +274,51 @@ function configureSearchScope(dialog, trigger) {
   return true;
 }
 
-function closeSearch() {
-  const dialog = searchDialogElement();
-  if (!dialog?.open) return;
-  dialog.close();
+function clearSearchClosePending(dialog) {
+  if (searchCloseTimer !== null) {
+    clearTimeout(searchCloseTimer);
+    searchCloseTimer = null;
+  }
+  if (searchCloseListener) {
+    dialog.removeEventListener('animationend', searchCloseListener);
+    searchCloseListener = null;
+  }
+  dialog.classList.remove('is-closing');
+}
+
+// 锁定页面滚动会移除常驻滚动条，先把槽位宽度写进 CSS 变量供补位使用
+function syncSearchScrollbarGutter() {
+  const root = document.documentElement;
+  if (root.hasAttribute('data-search-open')) return;
+  const gutter = Math.max(0, window.innerWidth - root.clientWidth);
+  root.style.setProperty('--stellar-scrollbar-gutter', gutter + 'px');
+}
+
+// 关闭动画播放期间浮层仍处于打开状态，退出动画结束或兜底超时后才真正 close 并恢复焦点
+function finishSearchClose(dialog) {
+  clearSearchClosePending(dialog);
+  if (dialog.open) dialog.close();
   document.documentElement.removeAttribute('data-search-open');
   if (searchDialogRestoreFocus && searchDialogTrigger?.focus) searchDialogTrigger.focus();
   else if (searchDialogTrigger?.blur) searchDialogTrigger.blur();
   searchDialogTrigger = null;
   searchDialogRestoreFocus = true;
+}
+
+function closeSearch() {
+  const dialog = searchDialogElement();
+  if (!dialog?.open || searchCloseTimer !== null) return;
+  if (!searchMotionEnabled()) {
+    finishSearchClose(dialog);
+    return;
+  }
+  searchCloseListener = function (event) {
+    if (event.animationName !== 'search-dialog-out') return;
+    finishSearchClose(dialog);
+  };
+  dialog.classList.add('is-closing');
+  dialog.addEventListener('animationend', searchCloseListener);
+  searchCloseTimer = setTimeout(function () { finishSearchClose(dialog); }, searchCloseFallbackDelay);
 }
 
 function openSearch(trigger, restoreFocus = true) {
@@ -291,6 +327,7 @@ function openSearch(trigger, restoreFocus = true) {
   const wrapper = dialog?.querySelector('.search-wrapper');
   const result = dialog?.querySelector('.search-result');
   if (!dialog || !input) return;
+  clearSearchClosePending(dialog);
   searchDialogTrigger = trigger || document.activeElement;
   searchDialogRestoreFocus = restoreFocus;
   input.value = '';
@@ -303,6 +340,7 @@ function openSearch(trigger, restoreFocus = true) {
   }
   result?.replaceChildren();
   if (!dialog.open) dialog.showModal();
+  syncSearchScrollbarGutter();
   document.documentElement.setAttribute('data-search-open', '');
   input.focus();
 }
@@ -407,7 +445,7 @@ window.addEventListener('wheel', cancelSmoothScroll, { passive: true });
 window.addEventListener('touchstart', cancelSmoothScroll, { passive: true });
 
 // 远程 md（mdrender 服务）渲染完成后重建右栏 TOC：结构与服务端 toc() 输出一致
-let tocClickBound = false;
+const tocClickBound = new WeakMap();
 function rebuildToc(scope) {
   const widget = document.querySelector('#data-toc');
   if (!widget) {
@@ -466,12 +504,50 @@ function rebuildToc(scope) {
   bindTocClick(widget);
 }
 
+// 指示条跟随目录自身坐标，目录滚动无需重复测量。
+function bindTocIndicator(widget) {
+  let frame = null;
+  const update = () => {
+    frame = null;
+    const toc = widget.querySelector('.toc');
+    if (!toc) return;
+    const active = toc.querySelector('a.toc-link.active');
+    if (!active || !active.getClientRects().length) {
+      toc.style.removeProperty('--toc-active-height');
+      toc.style.setProperty('--toc-active-opacity', '0');
+      return;
+    }
+    const bounds = active.getBoundingClientRect();
+    toc.style.setProperty('--toc-active-y', (bounds.top - toc.getBoundingClientRect().top) + 'px');
+    toc.style.setProperty('--toc-active-height', bounds.height + 'px');
+    toc.style.setProperty('--toc-active-opacity', '1');
+  };
+  const schedule = () => {
+    if (frame === null) frame = requestAnimationFrame(update);
+  };
+  const mutations = new MutationObserver(schedule);
+  mutations.observe(widget, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'collapse'] });
+  mutations.observe(document.documentElement, { attributes: true, attributeFilter: ['data-leftbar-state'] });
+  const resize = new ResizeObserver(schedule);
+  resize.observe(widget);
+  const events = ['mouseenter', 'mouseleave', 'focusin', 'focusout', 'transitionend'];
+  events.forEach(type => widget.addEventListener(type, schedule));
+  window.addEventListener('resize', schedule);
+  schedule();
+  return () => {
+    mutations.disconnect();
+    resize.disconnect();
+    events.forEach(type => widget.removeEventListener(type, schedule));
+    window.removeEventListener('resize', schedule);
+    if (frame !== null) cancelAnimationFrame(frame);
+  };
+}
+
 function bindTocClick(widget) {
-  if (tocClickBound) {
-    return;
+  if (tocClickBound.has(widget)) {
+    return tocClickBound.get(widget);
   }
-  tocClickBound = true;
-  widget.addEventListener('click', function (e) {
+  const handler = function (e) {
     const link = e.target.closest('a.toc-link');
     if (!link) {
       return;
@@ -484,11 +560,21 @@ function bindTocClick(widget) {
       const offset = 32;
       const targetY = target.getBoundingClientRect().top + window.scrollY - offset;
       smoothScrollTo(targetY);
+      dismissDrawer();
       if (window.history && window.history.pushState) {
-        window.history.pushState(null, '', href);
+        window.history.pushState(window.history.state, '', href);
       }
     }
-  });
+  };
+  widget.addEventListener('click', handler);
+  const cleanupIndicator = bindTocIndicator(widget);
+  const cleanup = () => {
+    cleanupIndicator();
+    widget.removeEventListener('click', handler);
+    tocClickBound.delete(widget);
+  };
+  tocClickBound.set(widget, cleanup);
+  return cleanup;
 }
 
 // 通用页内锚点平滑滚动（标题左侧 headerlink、{% navbar %} 页内导航、脚注回链等）
@@ -519,7 +605,7 @@ function bindAnchorClick() {
     const targetY = target.getBoundingClientRect().top + window.scrollY - offset;
     smoothScrollTo(targetY);
     if (window.history && window.history.pushState) {
-      window.history.pushState(null, '', href);
+      window.history.pushState(window.history.state, '', href);
     }
   });
 }
@@ -566,17 +652,26 @@ const init = {
       }
     }
     function scrollTOC() {
-      const e0 = document.querySelector('#data-toc .toc');
-      const e1 = document.querySelector('#data-toc .toc a.toc-link.active');
-      if (e0 == null || e1 == null) {
+      const active = document.querySelector('#data-toc .toc a.toc-link.active');
+      if (!active || !active.getClientRects().length) return;
+      // 桌面 TOC 与抽屉的滚动容器不同，只滚动实际承载目录的容器。
+      for (let container = active.parentElement; container && container !== document.body; container = container.parentElement) {
+        if (!/^(auto|scroll)$/.test(getComputedStyle(container).overflowY)
+          || container.scrollHeight <= container.clientHeight) continue;
+        const bounds = container.getBoundingClientRect();
+        const top = Math.max(0, bounds.top + container.clientTop);
+        const bottom = Math.min(window.innerHeight, bounds.top + container.clientTop + container.clientHeight);
+        if (bottom <= top || bounds.right <= 0 || bounds.left >= window.innerWidth) return;
+        const item = active.getBoundingClientRect();
+        // 小视口按可用空间收窄缓冲，避免上下边界互相触发滚动。
+        const margin = Math.min(100, Math.max(0, (bottom - top - item.height) / 2));
+        const safeTop = top + margin;
+        const safeBottom = bottom - margin;
+        let offset = 0;
+        if (item.top < safeTop) offset = item.top - safeTop;
+        else if (item.bottom > safeBottom) offset = Math.min(item.bottom - safeBottom, item.top - safeTop);
+        if (offset) container.scrollBy({ top: offset, behavior: 'smooth' });
         return;
-      }
-      const offsetBottom = e1.getBoundingClientRect().bottom - e0.getBoundingClientRect().bottom + 100;
-      const offsetTop = e1.getBoundingClientRect().top - e0.getBoundingClientRect().top - 64;
-      if (offsetTop < 0) {
-        e0.scrollBy({ top: offsetTop, behavior: "smooth" });
-      } else if (offsetBottom > 0) {
-        e0.scrollBy({ top: offsetBottom, behavior: "smooth" });
       }
     }
 
@@ -589,22 +684,9 @@ const init = {
       }, 50);
     });
   },
-  tocLinks: () => {
-    utils.dom("#data-toc a.toc-link").click(function (e) {
-      const href = this.getAttribute("href");
-      const id = href && href.indexOf("#") === 0 ? decodeURIComponent(href.slice(1)) : null;
-      const target = id && document.getElementById(id);
-      if (target) {
-        e.preventDefault();
-        const offset = 32; // 与 activeTOC 的 scrollOffset 保持一致
-        const targetY = target.getBoundingClientRect().top + window.scrollY - offset;
-        smoothScrollTo(targetY);
-        if (window.history && window.history.pushState) {
-          window.history.pushState(null, "", href);
-        }
-      }
-      dismissDrawer();
-    });
+  tocLinks: (root) => {
+    const widget = root.id === 'data-toc' ? root : root.querySelector('#data-toc');
+    if (widget) return bindTocClick(widget);
   },
   wikiStart: () => {
     utils.dom('#site-cover .cover-content.wiki .start-wrap a.button.start').click(function (e) {
@@ -617,7 +699,7 @@ const init = {
         const offset = 0;
         smoothScrollTo(target.getBoundingClientRect().top + window.scrollY - offset);
         if (window.history && window.history.pushState) {
-          window.history.pushState(null, "", href);
+          window.history.pushState(window.history.state, "", href);
         }
       }
     });
@@ -663,14 +745,6 @@ const init = {
       }
     });
 
-    const galaxyCanvases = document.querySelectorAll('.wiki-cover-background.galaxy canvas');
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion || galaxyCanvases.length === 0) return;
-    utils.js('/js/plugins/galaxy.js').then(function () {
-      if (stellar.galaxy && typeof stellar.galaxy.mountAll === 'function') {
-        stellar.galaxy.mountAll(galaxyCanvases);
-      }
-    }).catch(function () {});
   },
   leftbarScroll: () => {
     const container = document.querySelector('.site-region--leftbar .site-region__body');
@@ -725,7 +799,7 @@ const init = {
       }
     } catch (e) {}
   },
-  listingNavPin: () => {
+  listingNavPin: (root, signal) => {
     // Listing Nav 在吸顶边界切换 .is-pinned 类，视觉由 CSS 控制。
     // 页面有 Topbar 时，pinned Listing Nav 进入 Topbar 内并复用其表面；无 Topbar 时保持独立容器外观。
     // 吸顶判定直接测 Listing Nav 的实际视口位置，而非用 scrollY 推算：
@@ -733,7 +807,7 @@ const init = {
     // 即使 Listing Nav 仍吸顶也可能跌破阈值，导致玻璃效果误消失。
     // 无轮播区页面（如 wiki）的 Listing Nav 在页面顶部即已吸顶，需额外要求页面实际滚动达到阈值，
     // 否则默认保持卡片样式；回到顶部（滚动小于阈值）恢复卡片。
-    const listingNavs = document.querySelectorAll('.listing-nav');
+    const listingNavs = root.querySelectorAll('.listing-nav');
     if (listingNavs.length === 0) {
       return;
     }
@@ -773,16 +847,16 @@ const init = {
       }
       ticking = true;
       utils.requestAnimationFrame(() => {
-        update();
+        if (!signal.aborted) update();
         ticking = false;
       });
-    }, { passive: true });
+    }, { passive: true, signal });
     // 顶栏伸缩不一定触发 scroll，兜底监听 visualViewport 尺寸变化
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', update);
+      window.visualViewport.addEventListener('resize', update, { signal });
     }
-    window.addEventListener('resize', measure);
-    window.addEventListener('pageshow', measure);
+    window.addEventListener('resize', measure, { signal });
+    window.addEventListener('pageshow', measure, { signal });
     measure();
   },
   relativeDate: (selector) => {
@@ -798,9 +872,11 @@ const init = {
   /**
    * Tabs tag listener (without twitter bootstrap).
    */
-  registerTabsTag: function () {
+  registerTabsTag: function (root, signal) {
     // Binding `nav-tabs` & `tab-content` by real time permalink changing.
-    document.querySelectorAll('.tabs .nav-tabs .tab').forEach(element => {
+    const tabs = root.querySelectorAll('.tabs .nav-tabs .tab');
+    if (!tabs.length) return;
+    tabs.forEach(element => {
       element.addEventListener('click', event => {
         event.preventDefault();
         // Prevent selected tab to select again.
@@ -818,7 +894,7 @@ const init = {
         tActive.dispatchEvent(new Event('tabs:click', {
           bubbles: true
         }));
-      });
+      }, { signal });
     });
 
     window.dispatchEvent(new Event('tabs:register'));
@@ -923,17 +999,22 @@ stellar.toast = hud.toast;
 /**
  * Initialize page components
  */
-stellar.initPage = function () {
-  init.toc();
-  init.tocLinks();
-  init.wikiStart();
-  init.wikiCover();
-  init.leftbarScroll();
-  init.listingNavPin();
-  init.relativeDate(document.querySelectorAll('#post-meta time'));
-  init.registerTabsTag();
+stellar.initPage = function (root = document) {
+  const controller = new AbortController();
+  const cleanupToc = init.tocLinks(root);
+  init.listingNavPin(root, controller.signal);
+  init.relativeDate(root.querySelectorAll('#post-meta time'));
+  init.registerTabsTag(root, controller.signal);
+  return () => { controller.abort(); cleanupToc?.(); };
+};
+stellar.syncPageShell = function () {
+  dismissDrawer();
+  syncDrawerControls();
 };
 
-// Initial page load
-stellar.initPage();
+// Document-owned controls survive regional navigation.
+init.toc();
+init.wikiStart();
+init.wikiCover();
+init.leftbarScroll();
 init.canonicalCheck();

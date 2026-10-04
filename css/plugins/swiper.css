@@ -22,7 +22,7 @@
 }
 @media screen and (max-width: 667px) {
   :root {
-    --fs-root: calc(16px + 2px);
+    --fs-root: calc(16px + 1px);
     --side-content-width: 224px;
   }
 }
@@ -58,6 +58,7 @@ div.swiper-slide {
   width: 50%;
 }
 div.swiper-slide img {
+  height: auto;
   border-radius: 4px;
 }
 .swiper[width='max'] .swiper-slide {

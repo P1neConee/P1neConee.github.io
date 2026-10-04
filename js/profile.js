@@ -2,7 +2,7 @@
   var SUPPORTED_PROVIDERS = ['artalk', 'waline', 'twikoo'];
   var SETTINGS_ICON = 'default:settings';
   var PROFILE_ICON = 'default:profile';
-  var GRAVATAR_BASE_URL = 'https://gravatar.com/avatar/';
+  var GRAVATAR_BASE_URL = window.stellarClientData.ctx.services.gravatar.baseUrl.replace(/\/+$/, '') + '/';
   var localStore = null;
   var sessionStore = null;
   var gravatarHashes = new Map();
@@ -284,6 +284,7 @@
     window.addEventListener?.('storage', refresh);
     window.addEventListener?.('focus', refresh);
     window.addEventListener?.('stellar:profile-change', refresh);
+    document.addEventListener('stellar:navigation-complete', refresh);
     root.addEventListener?.('input', onInteraction);
     root.addEventListener?.('change', onInteraction);
     root.addEventListener?.('submit', onInteraction);
@@ -293,6 +294,7 @@
       window.removeEventListener?.('storage', refresh);
       window.removeEventListener?.('focus', refresh);
       window.removeEventListener?.('stellar:profile-change', refresh);
+      document.removeEventListener('stellar:navigation-complete', refresh);
       root.removeEventListener?.('input', onInteraction);
       root.removeEventListener?.('change', onInteraction);
       root.removeEventListener?.('submit', onInteraction);
