@@ -1,0 +1,60 @@
+/* ============================================================
+   没有图片时，自动隐藏为图片预留的空白区域
+   适用：笔记本卡片 / 知识库卡片 / Wiki 顶部大图（hero）
+   ------------------------------------------------------------
+   背景（主题原版行为）：
+     - .wiki-card-cover 固定 min-height:240px + aspect-ratio:3/4，
+       卡片没有封面图时这块区域只剩一层底色，卡片上方就出现一大片空白；
+     - .cover-content.wiki-hero 固定 min-height:640px，
+       Wiki 没配背景图时整块 hero 也只剩页面底色。
+   本文件只做「收缩」，不动任何文字内容：没有图 → 不再预留图的位置。
+
+   命中时机（两条路径都会命中，无需额外判断）：
+     1. 没写封面：模板直接输出 class="wiki-card-cover no-cover"；
+     2. 图片加载失败（404 / 路径写错）：
+        主题运行时 js/runtime/extensions/adaptive-text.js 会自动补上
+        no-cover + cover-error，所以坏图同样会被收起，不会留白。
+
+   怎么还原：删掉本文件，并去掉 _config.stellar.yml 里 inject 的那一行。
+
+   说明：颜色、间距一律沿用主题变量（--card / --block-border / --text），
+        深浅色模式与主题换肤都会自动跟随，不需要额外适配。
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. 卡片：没有封面图时不再预留 3:4 的大图区
+   ------------------------------------------------------------ */
+
+/* 主题：.wiki-card-cover { min-height: 240px; aspect-ratio: 3/4 }
+   这里把高度交还给内容，卡片自然变矮。 */
+.wiki-card-cover.no-cover {
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+/* 文字区原本是 absolute 贴底（bottom:0），父级不塌缩就没法变矮，
+   改成随文档流后，卡片高度 = 标题 + 底部项目栏。 */
+.wiki-card-cover.no-cover .wiki-card-info {
+  position: relative;
+  bottom: auto;
+}
+
+/* 卡片外层 .post-card-wrap 会被网格行高（默认 align-items:stretch）拉到整行高度。
+   本站开了 features.card_hover.tilt，投影已经移到卡片本体、外层是透明的，
+   所以现在看不出来；但一旦关掉 tilt，投影会回到外层并围出一圈空白，
+   这里顺手让外层跟随内容高度（:has() 的用法与主题自身保持一致）。 */
+.post-list.wiki .post-card-wrap:has(.wiki-card.no-cover) {
+  align-self: start;
+}
+
+/* ------------------------------------------------------------
+   2. Wiki 顶部大图：没有背景图 / 视频 / 特效时不再撑满 640px
+   （本站当前没启用 hero，这条只在以后给 Wiki 配了 hero 又想留白时生效；
+     一旦配上 background.image / video / effect，本规则自动不匹配。）
+   ------------------------------------------------------------ */
+
+.cover-content.wiki-hero:not(:has(.wiki-cover-background.image)):not(:has(.wiki-cover-background.has-video)):not(:has(.wiki-cover-background.has-effect)) {
+  min-height: 0;
+  /* 顶部留出 .wiki-navbar（absolute top:2rem）的位置，避免压住标题 */
+  padding: 6rem 0 3rem;
+}
