@@ -1,0 +1,90 @@
+/* ============================================================
+   /tags/ 标签总览：按来源分区的排版
+   ------------------------------------------------------------
+   背景：
+     scripts/tags-all.js 把全站标签（文章 + 各笔记本 + 知识库）汇总到 /tags/，
+     并按来源分成若干区。每个区 = 一个全宽的标题条 + 一串标签胶囊。
+
+   本文件只补「主题原版没有的两件事」：
+     1. 让分区标题在胶囊的 flex 流里独占一行（主题原本整页只有一整排胶囊）；
+     2. 分区标题的字号 / 强调色，以及数量角标。
+     标签胶囊本身完全沿用主题的 .post-list #tags a.tag（tag-chip() 混入），
+     所以皮肤、深浅色模式、主题换肤都会自动跟随，这里不重复定义。
+
+   怎么还原：删掉本文件，并去掉 _config.stellar.yml 里 inject 中引用它的那一行。
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. 分区标题：独占一行 + 底部虚线分隔
+   ------------------------------------------------------------ */
+.post-list #tags .tags-group {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed var(--block-border);
+}
+
+/* 第一区紧贴页面顶部，不额外留白 */
+.post-list #tags .tags-group.tags-group-divider {
+  margin-top: 2rem;
+}
+
+/* ------------------------------------------------------------
+   2. 分区名：可点击时（笔记本 / 知识库）跟随主题色
+   ------------------------------------------------------------ */
+.post-list #tags .tags-group .group-name {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  color: var(--text-p1);
+  transition: color 0.2s;
+}
+
+/* 名字前面的主题色小竖条 */
+.post-list #tags .tags-group .group-name::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 0.9em;
+  margin-right: 0.5rem;
+  border-radius: 3px;
+  background: var(--theme);
+  vertical-align: -0.06em;
+}
+
+a.group-name:hover,
+a.group-name:focus-visible {
+  color: var(--theme);
+}
+
+/* ------------------------------------------------------------
+   3. 数量角标：分区标题后的「N 篇 · M 个标签」，胶囊右侧的引用篇数
+   ------------------------------------------------------------ */
+.post-list #tags .tags-group .badge,
+.post-list #tags a.tag > .badge {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-p4);
+}
+
+.post-list #tags a.tag > .badge {
+  margin-left: 0.4em;
+  font-size: 0.85em;
+}
+
+/* ------------------------------------------------------------
+   4. 标签云：show_count 开启时，篇数做成上标小字
+   （主题自带的 tagcloud 样式没有为 .count 定义任何规则，
+     不开这条的话数字会直接粘在标签名后面，像「日记31」）
+   ------------------------------------------------------------ */
+.widget-wrapper.tagcloud .count {
+  margin-left: 0.15em;
+  font-size: 0.75em;
+  vertical-align: super;
+  opacity: 0.65;
+}
