@@ -1,0 +1,60 @@
+/* ============================================================
+   站点统计卡 —— 右栏「文章 / 笔记 / 知识库 / 标签」的数字卡片
+   ------------------------------------------------------------
+   结构由 scripts/site-stats.js 生成，塞进主题自带的 markdown 组件里：
+
+     <div class="site-stats">
+       <div class="site-stats__item">
+         <span class="site-stats__num">6</span>
+         <span class="site-stats__label">文章</span>
+       </div>
+       …
+     </div>
+
+   这里只负责排版：2 列网格、数字大而醒目、标签小字。
+   颜色一律沿用主题变量（--theme / --block / --text-p4），
+   所以深浅色模式和以后换配色都会自动跟随，不需要额外适配。
+
+   想改列数：调 grid-template-columns（3 列就换成 repeat(3, 1fr)）。
+   想改数字颜色：把 --theme 换成别的主题变量，或直接写颜色。
+   怎么还原：删掉本文件，并去掉 _config.stellar.yml 里 inject 中引用它的那一行。
+   ============================================================ */
+
+/* 限定在 markdown 组件里，避免影响正文中可能出现的同名 class */
+.widget-wrapper.markdown .site-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.widget-wrapper.markdown .site-stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.6rem 0.25rem;
+  border-radius: 10px;
+  background: var(--block);
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.widget-wrapper.markdown .site-stats__item:hover {
+  background: var(--block-border);
+}
+
+.widget-wrapper.markdown .site-stats__num {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--theme);
+  /* 数字等宽，多位数不会左右跳 */
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-wrapper.markdown .site-stats__label {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--text-p4);
+}
