@@ -13,7 +13,7 @@
      1. 没写封面：模板直接输出 class="wiki-card-cover no-cover"；
      2. 图片加载失败（404 / 路径写错）：
         主题运行时 js/runtime/extensions/adaptive-text.js 会自动补上
-        no-cover + cover-error，所以坏图同样会被收起，不会留白。
+        no-cover + cover-error，所以卡片里的坏图同样会被收起，不会留白。
 
    怎么还原：删掉本文件，并去掉 _config.stellar.yml 里 inject 的那一行。
 
