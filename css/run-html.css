@@ -1,0 +1,130 @@
+/* source/css/run-html.css
+ * 文章内 HTML 运行框样式 —— 对齐 Stellar card 预设，自动跟随浅/深色与主题色。
+ * 仅使用主题暴露的 CSS 变量（--card / --theme / --block / --block-border / --text-p2 / --block-radius），
+ * 不写死颜色，因此深浅色切换与主题配色变更都会自动生效。
+ */
+.html-demo {
+  margin: 1.25rem 0;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: var(--block-radius, 12px);
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.html-demo__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-p2, #888);
+  background: var(--block, rgba(127, 127, 127, 0.06));
+  border-bottom: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.html-demo__header:hover {
+  background: var(--block-hover, rgba(127, 127, 127, 0.12));
+}
+
+/* 折叠态：标题条下方无内容，去掉分隔线 */
+.html-demo[data-collapsed="true"] .html-demo__header {
+  border-bottom: 0;
+}
+
+/* 内容区：折叠时隐藏（hidden 属性 + 兜底 display:none） */
+.html-demo__body[hidden] {
+  display: none;
+}
+
+.html-demo__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--theme, #1BCDFC);
+  flex: 0 0 auto;
+}
+
+.html-demo__title {
+  font-weight: 600;
+  color: var(--text, #333);
+}
+
+/* 右上角：展开 / 折叠（胶囊按钮，主题色描边 + 箭头指示） */
+.html-demo__collapse {
+  margin-left: auto;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.3));
+  background: transparent;
+  color: var(--text-p1, #555);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.html-demo__collapse::before {
+  content: "▸ ";
+  color: var(--theme, #1BCDFC);
+}
+.html-demo[data-collapsed="false"] .html-demo__collapse::before {
+  content: "▾ ";
+}
+.html-demo__collapse:hover {
+  color: var(--theme, #1BCDFC);
+  border-color: var(--theme, #1BCDFC);
+}
+
+/* 右上角：源码 / 运行 切换按钮 */
+.html-demo__toggle {
+  margin-left: auto;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.3));
+  background: transparent;
+  color: var(--text-p2, #888);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.html-demo__toggle:hover {
+  color: var(--theme, #1BCDFC);
+  border-color: var(--theme, #1BCDFC);
+}
+
+/* 运行窗口：内缩留白 + 自身圆角，贴合博客 card 圆角风格 */
+.html-demo__frame {
+  display: block;
+  width: calc(100% - 1rem);
+  margin: 0.5rem;
+  border: 0;
+  background: #fff;
+  border-radius: var(--block-radius, 12px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+:root[data-theme="dark"] .html-demo__frame {
+  background: var(--card, #2a2a2a);
+}
+
+/* 源码视图：同样圆角，可滚动 */
+.html-demo__code {
+  margin: 0.5rem;
+  padding: 0.8rem 1rem;
+  background: var(--block, rgba(127, 127, 127, 0.06));
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: var(--block-radius, 12px);
+  max-height: 360px;
+  overflow: auto;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.html-demo__code code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  white-space: pre;
+  color: var(--text, #333);
+  background: none;
+}

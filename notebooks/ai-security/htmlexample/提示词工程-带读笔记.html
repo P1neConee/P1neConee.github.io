@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词工程 · 带读笔记</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --brand2:#f97316; --ok:#16a34a; --warn:#d97706;
+    --soft:#eef2ff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.75;font-size:16px;}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;border-radius:18px;padding:30px 30px 26px;box-shadow:0 10px 30px rgba(37,99,235,.18);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:21px;margin:40px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:17px;margin:26px 0 10px;color:var(--brand);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:#fff7ed;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;line-height:1.6;}
+  pre code{background:none;color:inherit;padding:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600;}
+  .b-base{background:#e0e7ff;color:#3730a3;}
+  .b-adv{background:#fef3c7;color:#92400e;}
+  .b-eng{background:#dcfce7;color:#166534;}
+  .map{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin:16px 0;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+  .pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:13px;background:#eef2ff;color:#3730a3;margin:3px 4px 3px 0;}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:50px;}
+  .toc{columns:2;column-gap:26px;font-size:14.5px;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .toc li{margin:4px 0;break-inside:avoid;}
+  .q{font-weight:600;color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>提示词工程（Prompt Engineering）· 带读笔记</h1>
+  <p>来源：菜鸟教程 runoob.com/ai-agent/prompt-engineering.html</p>
+  <p>
+    <span class="tag">带读 = 讲解 + 重点 + 点评</span>
+    <span class="tag">适合：所有人 & 开发者</span>
+    <span class="tag">阅读时长 ≈ 15 分钟</span>
+  </p>
+</header>
+
+<div class="card">
+  <p class="lead"><b>一句话记住这篇文章：</b>提示词工程 = <b>降低模糊性，提升你与 AI 之间的对齐度</b>。它本质上是把"你会说话"升级成"你会结构化地说话"。</p>
+  <p class="lead">文章把提示词工程从"玄学调参"讲成了一套可复用的<b>方法论体系</b>：先是底层认知（Token、角色、上下文），再是十大技巧，最后落到工程化（五段式、提示词链、元提示、迭代）。下面逐层带读。</p>
+  <h3 style="margin-top:18px">目录</h3>
+  <ul class="toc">
+    <li><a href="#map">① 一图看懂方法论地图</a></li>
+    <li><a href="#core">② 核心认知三件事</a></li>
+    <li><a href="#four">③ 四要素框架</a></li>
+    <li><a href="#base">④ 基础技巧串讲</a></li>
+    <li><a href="#adv">⑤ 进阶技巧串讲</a></li>
+    <li><a href="#eng">⑥ 工程化落地</a></li>
+    <li><a href="#review">⑦ 我的点评与使用建议</a></li>
+    <li><a href="#cheat">⑧ 速查表 & 检查清单</a></li>
+  </ul>
+</div>
+
+<!-- ① 地图 -->
+<h2 id="map">① 一图看懂：提示词工程方法论地图</h2>
+<div class="map">
+<svg viewBox="0 0 900 460" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,Microsoft YaHei,sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <!-- 根 -->
+  <rect x="330" y="14" width="240" height="46" rx="12" fill="#2563eb"/>
+  <text x="450" y="43" fill="#fff" font-size="17" font-weight="700" text-anchor="middle">提示词工程 = 降低模糊性</text>
+
+  <!-- 三层 -->
+  <rect x="40" y="120" width="240" height="44" rx="10" fill="#e0e7ff"/>
+  <text x="160" y="147" fill="#3730a3" font-size="15" font-weight="700" text-anchor="middle">底层认知</text>
+
+  <rect x="330" y="120" width="240" height="44" rx="10" fill="#fef3c7"/>
+  <text x="450" y="147" fill="#92400e" font-size="15" font-weight="700" text-anchor="middle">十大技巧</text>
+
+  <rect x="620" y="120" width="240" height="44" rx="10" fill="#dcfce7"/>
+  <text x="740" y="147" fill="#166534" font-size="15" font-weight="700" text-anchor="middle">工程化落地</text>
+
+  <line x1="450" y1="60" x2="160" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="450" y1="60" x2="450" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="450" y1="60" x2="740" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- 底层认知子项 -->
+  <g font-size="13" fill="#334155">
+    <rect x="40" y="190" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="160" y="211" text-anchor="middle">· 三消息角色 (System/User/Assistant)</text>
+    <rect x="40" y="234" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="160" y="255" text-anchor="middle">· Token 与上下文窗口</text>
+    <rect x="40" y="278" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="160" y="299" text-anchor="middle">· “关键指令放头尾”原则</text>
+  </g>
+
+  <!-- 十大技巧子项 -->
+  <g font-size="13" fill="#334155">
+    <rect x="330" y="190" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="450" y="211" text-anchor="middle">· 清晰表达（性价比最高）</text>
+    <rect x="330" y="234" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="450" y="255" text-anchor="middle">· 角色设定 / XML 标签隔离</text>
+    <rect x="330" y="278" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="450" y="299" text-anchor="middle">· 格式控制（模板/预填充）</text>
+    <rect x="330" y="322" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="450" y="343" text-anchor="middle">· 思维链 / 少样本 / 防幻觉</text>
+  </g>
+
+  <!-- 工程化子项 -->
+  <g font-size="13" fill="#334155">
+    <rect x="620" y="190" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="740" y="211" text-anchor="middle">· 五段式架构</text>
+    <rect x="620" y="234" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="740" y="255" text-anchor="middle">· 提示词链 (Prompt Chaining)</text>
+    <rect x="620" y="278" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="740" y="299" text-anchor="middle">· 元提示 (Meta-Prompting)</text>
+    <rect x="620" y="322" width="240" height="34" rx="8" fill="#fff" stroke="#e7eaf0"/>
+    <text x="740" y="343" text-anchor="middle">· 迭代优化工作流</text>
+  </g>
+
+  <!-- 收口 -->
+  <rect x="330" y="400" width="240" height="44" rx="10" fill="#7c3aed"/>
+  <text x="450" y="427" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">新型结构化沟通能力</text>
+  <line x1="160" y1="324" x2="450" y2="400" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="450" y1="356" x2="450" y2="400" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="740" y1="356" x2="450" y2="400" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+</svg>
+</div>
+<div class="tip">带读提示：文章的逻辑不是平铺的，而是<b>“先打地基 → 再给工具 → 最后工程化”</b>。记这张图，你就抓住了全篇骨架。</div>
+
+<!-- ② 核心认知 -->
+<h2 id="core">② 核心认知三件事（地基）</h2>
+
+<div class="card">
+  <h3>1. 提示词 = 与 AI 对齐的接口</h3>
+  <p>文章开宗明义：AI 能力极强但<b>完全依赖指令</b>。模糊输入 → 泛泛输出；清晰输入 → 精准输出。这和产品经理写需求文档是一回事——需求的歧义，最终都会变成返工。</p>
+  <div class="warn"><b>对比一眼懂：</b><br>
+  模糊 ❌：“帮我写篇关于猫的文章。”<br>
+  清晰 ✅：“以轻松幽默口吻，为养猫新手写 800 字，重点讲如何选第一只猫 + 接猫前三天准备，含三个小标题，结尾附 checklist。”</p>
+</div>
+
+<h3>2. 三消息角色（API 的硬格式）</h3>
+<table>
+  <tr><th>角色</th><th>比喻</th><th>作用</th></tr>
+  <tr><td><code>System</code></td><td>幕后导演</td><td>设定身份、规则、知识范围，对话前生效，只设一次全程遵守</td></tr>
+  <tr><td><code>User</code></td><td>演员搭档</td><td>你发出的任务/问题</td></tr>
+  <tr><td><code>Assistant</code></td><td>AI 演员</td><td>AI 回复；也可<b>预填</b>来引导格式</td></tr>
+</table>
+<div class="tip"><b>最被低估的工具是 System Prompt</b>：相当于给 AI 一份“工作手册”。普通用户在第一条消息里说“请扮演……”也能达到类似效果。</div>
+
+<h3>3. Token 与上下文窗口</h3>
+<ul>
+  <li><b>Token</b>：AI 处理文本的单位。经验公式：<code>1000 Token ≈ 750 英文词 ≈ 500 中文字</code>。</li>
+  <li><b>上下文窗口</b>：一次对话能处理的最大 Token 量，超出会遗忘最早内容。</li>
+  <li><b>关键原则</b>：最重要指令放<b>开头或结尾</b>，避免“迷失在中间（Lost in the Middle）”。</li>
+</ul>
+</div>
+
+<!-- ③ 四要素 -->
+<h2 id="four">③ 四要素框架（万能模板）</h2>
+<div class="card">
+  <p>文章收尾处提炼的<b>速查表框架</b>，建议背下来——它是后面所有技巧的浓缩版：</p>
+  <table>
+    <tr><th>要素</th><th>问自己</th><th>示例</th></tr>
+    <tr><td><span class="badge b-base">角色</span></td><td>AI 是什么身份？</td><td>你是一位专业的……</td></tr>
+    <tr><td><span class="badge b-base">指令</span></td><td>具体做什么？</td><td>请分析 / 总结 / 生成……</td></tr>
+    <tr><td><span class="badge b-base">背景</span></td><td>前提信息是什么？</td><td>读者是……用途是……</td></tr>
+    <tr><td><span class="badge b-base">限制</span></td><td>格式/长度/边界？</td><td>不超…字，JSON，不要……</td></tr>
+  </table>
+  <div class="ok"><b>我的点评：</b>这四要素其实是“WHO + WHAT + WHY/CONTEXT + HOW”。写任何提示词前，先在脑子里过一遍这四个问题，覆盖率就已经超过 80% 的随手提问。</div>
+</div>
+
+<!-- ③b 技巧分布 -->
+<h2 id="dist">③+ 技巧分布：System 端 vs User 端</h2>
+<div class="card">
+  <p>文章把技巧混着讲，但落到实际，它们分别“住”在不同的消息角色里。<b>System 端</b>管“它是谁、守什么规矩”，<b>User 端</b>管“这次要它做什么、怎么交”。把技巧按载体分布，才知道什么写进系统提示词、什么写在每次提问里。</p>
+
+  <div class="grid2">
+    <div class="card" style="border-color:#bcd4f4;background:#f5f9ff">
+      <h3 style="color:#185FA5">System 端 · 系统提示词</h3>
+      <p style="font-size:13px;color:#5b6472;margin:4px 0 10px">对话前生效 · 只设一次 · 全程遵守<br>= 给 AI 的“工作手册 / 技能设定”</p>
+      <ul style="font-size:14.5px;margin:0;padding-left:20px">
+        <li><b>角色设定</b>：专业领域 + 行为方式 + 核心立场</li>
+        <li><b>规则与行为准则</b>：五段式第③段“行为规则”</li>
+        <li><b>防幻觉（规则型）</b>：允许说不知道、严谨研究助手模板、限制只用提供资料</li>
+        <li><b>全局输出格式约束</b>：固定字段写进 System 全程生效</li>
+        <li><b>System 精炼</b>：核心规则控 500 Token，防“迷失在中间”</li>
+        <li><b>知识范围边界</b>：声明“只答某某领域”</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#f3d9a8;background:#fffaf0">
+      <h3 style="color:#92400e">User 端 · 用户消息</h3>
+      <p style="font-size:13px;color:#5b6472;margin:4px 0 10px">每次任务 · 技巧最密<br>= 你临时发出的“任务指令”</p>
+      <ul style="font-size:14.5px;margin:0;padding-left:20px">
+        <li><b>清晰直接地表达</b>：受众/篇幅/要不要/用途/拆步骤</li>
+        <li><b>XML 标签分离数据</b>：包裹 article/resume，防注入</li>
+        <li><b>精准控制输出格式</b>：描述 JSON、只输出 JSON、模板填空</li>
+        <li><b>思维链触发</b>：一步一步思考、&lt;thinking&gt; 标签</li>
+        <li><b>少样本学习</b>：消息里给 2–3 个输入→输出示例</li>
+        <li><b>元提示</b>：请 AI 生成/改进/诊断提示词</li>
+        <li><b>迭代优化</b>：多输入测试、改提示词再测</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>两者协作的技巧（边界模糊）</h3>
+  <table>
+    <tr><th>技巧</th><th>System 端负责</th><th>User 端负责</th></tr>
+    <tr><td><b>角色设定</b></td><td>System 设定身份与准则</td><td>或第一条消息“请扮演……”</td></tr>
+    <tr><td><b>防幻觉</b></td><td>立规则（允许说不知道、严谨模板）</td><td>提供 &lt;reference&gt; 并写“只根据资料回答”</td></tr>
+    <tr><td><b>Token 意识</b></td><td>System 精炼、关键指令放头尾</td><td>长文档先摘要 / 用 RAG 只传相关片段</td></tr>
+  </table>
+  <div class="ok"><b>一句话速记：</b>System 端管“它是谁、守什么规矩”（持久）；User 端管“这次做什么、怎么交”（临时）。你刚才说“System 算 skill”很贴切——系统提示词本质就是给 AI 装一个特定技能与人设，装好即生效。</div>
+</div>
+
+<!-- ④ 基础技巧 -->
+<h2 id="base">④ 基础技巧串讲（高频使用）</h2>
+
+<div class="card">
+  <h3><span class="badge b-base">基础</span> 1. 清晰直接地表达（性价比最高）</h3>
+  <p>这是文章最推荐先掌握的技巧。五种让指令清晰的方法：明确受众与语气、规定输出篇幅、同时给出“要”和“不要”、说明最终用途、把复杂任务拆成步骤。</p>
+  <div class="tip">记住：<b>清晰 ≠ 啰嗦</b>。关键在每个词有意义、无歧义。</div>
+
+  <h3><span class="badge b-base">基础</span> 2. 为 AI 分配角色</h3>
+  <p>为什么有效？角色能激活 AI 在该领域积累的知识模式（告诉它“从哪个知识库调取、什么风格表达”）。</p>
+  <p><b>有效角色三要素：</b>专业领域（什么专家）+ 行为方式（怎么沟通）+ 核心立场（原则偏好）。</p>
+  <pre><code>你是一位资深的云架构师，在 AWS 上有超过 8 年经验。
+风格简洁务实，以数据说话，提建议时总会权衡成本与性能，
+并指出潜在风险。</code></pre>
+
+  <h3><span class="badge b-base">基础</span> 3. 用 XML 标签分离数据与指令</h3>
+  <p>为什么要分离？防止指令与数据混淆导致逻辑混乱，更重要的是<b>防提示词注入攻击</b>。把用户内容、参考资料用语义化标签（如 <code>&lt;article&gt;</code>、<code>&lt;resume_A&gt;</code>）包裹，恶意指令就被隔离在标签内。</p>
+  <div class="warn"><b>最佳实践：</b>标签名要有实际含义（<code>&lt;resume_A&gt;</code> 优于 <code>&lt;text1&gt;</code>）。</div>
+
+  <h3><span class="badge b-base">基础</span> 4. 精准控制输出格式</h3>
+  <p>三种方法：</p>
+  <ul>
+    <li><b>直接描述格式</b>：说明字段结构 + “只输出 JSON”。</li>
+    <li><b>提供模板填空</b>：给带占位符的 Markdown 模板，让 AI 填。</li>
+    <li><b>预填充（进阶）</b>：在 Assistant 消息里先写 <code>```json\n{</code>，强制后续输出 JSON；或写“以下是分析结果：”跳过客套话。</li>
+  </ul>
+</div>
+
+<!-- ⑤ 进阶技巧 -->
+<h2 id="adv">⑤ 进阶技巧串讲（推理 & 质量）</h2>
+
+<div class="card">
+  <h3><span class="badge b-adv">进阶</span> 5. 让 AI 逐步思考（思维链 CoT）</h3>
+  <p>原理：模型逐词预测，先写推理过程，内容成为结论依据，准确率提升。三种触发方式：用 <code>&lt;thinking&gt;</code> 标签隔离、直接要求“一步一步思考”、先列论据再下结论。</p>
+  <div class="warn"><b>重要陷阱：</b>一定要“先分析再下结论”，否则 AI 会为结论找理由、而非真正推理。</div>
+
+  <h3><span class="badge b-adv">进阶</span> 6. 用示例教会 AI（少样本学习 Few-Shot）</h3>
+  <p>给 2–3 个“输入→输出”例子，AI 就能学会模式。好示例三标准：覆盖典型变体、格式完全统一、质量高于数量（2–3 个精心设计 &gt; 10 个随便凑的）。常与角色+指令+格式组合使用。</p>
+
+  <h3><span class="badge b-adv">进阶</span> 7. 避免 AI 胡说八道（防幻觉）</h3>
+  <p>五种策略：</p>
+  <ol>
+    <li>允许说“不知道”（System 里写明不确定就直说）；</li>
+    <li>限制只使用提供的信息（<code>只根据 &lt;reference&gt; 回答</code>）；</li>
+    <li>先找证据再给结论（<code>&lt;evidence&gt;</code> → <code><answer></code>）；</li>
+    <li>要求标注置信度（高/中/低）；</li>
+    <li>API 层把 <code>temperature</code> 设为 0。</li>
+  </ol>
+  <div class="tip">医疗 / 法律 / 财务等高风险领域：<b>必须提供权威文档，并提示用户自行核实</b>。</div>
+</div>
+
+<!-- ⑥ 工程化 -->
+<h2 id="eng">⑥ 工程化落地（从“写好一句”到“搭好系统”）</h2>
+
+<div class="card">
+  <h3><span class="badge b-eng">工程</span> 8. 五段式架构（复杂提示词）</h3>
+  <p>把长提示词拆成五段：① 角色与目标 ② 背景知识与数据（XML 包裹）③ 行为规则 ④ 输出格式 ⑤ 示例。文章给了“法律合同审查助手”的完整案例，是这套方法论的集大成示范。</p>
+
+  <h3><span class="badge b-eng">工程</span> 9. 提示词链（Prompt Chaining）</h3>
+  <p>超长提示词容易遗漏、逻辑干扰、难定位错、成本高。把任务拆成子步骤串联：长文档分析（提取→分析→报告）、代码生成（需求→接口→实现→测试）、内容创作（大纲→撰写→润色）。每步间加输出验证逻辑，异常时重试或切换备用提示词。</p>
+
+  <h3><span class="badge b-eng">工程</span> 10. 元提示（Meta-Prompting）& 迭代优化</h3>
+  <p>元提示 = 用提示词生成/改进提示词（从零生成、诊断改进、反向推导）。推荐工作流：<b>元提示生成初稿 → 人工按技巧强化</b>（效率提升 3–5 倍）。</p>
+  <p>迭代工作流：起草 → 多输入测试 → 分析问题（跑题/格式/推理/虚假）→ 修改 → 再测试。记得做<b>版本管理</b>（v1.0 / v1.1 / v2.0 + 日志）。</p>
+</div>
+
+<!-- ⑦ 点评 -->
+<h2 id="review">⑦ 我的点评与使用建议</h2>
+<div class="card">
+  <p>这篇文章的价值在于它<b>把零散的“调参经验”讲成了体系</b>，而且同时照顾了普通用户和开发者两条线。我的几点补充建议：</p>
+  <ul>
+    <li><b>普通用户：</b>先吃透“四要素 + 清晰表达 + 角色设定”三件套，日常 90% 场景够用。少样本和思维链等用到时再取。</li>
+    <li><b>开发者：</b>重点看五段式、提示词链、防幻觉的 System Prompt 模板——这些直接决定 AI 应用的稳定性与成本。</li>
+    <li><b>别神化元提示：</b>文章也提醒了，AI 缺业务背景，生成的提示词必须人工按技巧强化并实测，不能盲目信任。</li>
+    <li><b>建立自己的“提示词工具箱”：</b>把邮件润色、周报、调试等高频有效提示词存起来，这是最实在的生产力资产。</li>
+  </ul>
+  <div class="ok"><b>一个行动建议：</b>拿你最近写得最烂的一条提示词，按四要素（角色/指令/背景/限制）改写一遍，对比输出——这是最快的建立“手感”的办法。</div>
+</div>
+
+<!-- ⑧ 速查 -->
+<h2 id="cheat">⑧ 速查表 & 检查清单</h2>
+<div class="card">
+  <h3>技巧 → 适用场景 速查</h3>
+  <table>
+    <tr><th>技巧</th><th>什么时候用</th></tr>
+    <tr><td>角色设定</td><td>需要专业深度 → “你是有 X 年经验的……”</td></tr>
+    <tr><td>清晰指令</td><td>每次都需要</td></tr>
+    <tr><td>Token 意识</td><td>长文档 / API / 多轮 → 关键信息放头尾</td></tr>
+    <tr><td>XML 标签</td><td>混合数据与指令 → 语义化标签包裹</td></tr>
+    <tr><td>格式模板</td><td>固定结构输出 → 带占位符模板</td></tr>
+    <tr><td>思维链</td><td>推理判断 → “先 &lt;thinking&gt; 再 &lt;answer&gt;”</td></tr>
+    <tr><td>少样本</td><td>难描述风格 → 2–3 示例</td></tr>
+    <tr><td>防幻觉</td><td>事实 / 高风险 → “只使用文档，不确定说明”</td></tr>
+    <tr><td>提示词链</td><td>复杂多步 → 拆子任务</td></tr>
+    <tr><td>元提示</td><td>不知怎么写 → “帮我生成/改进”</td></tr>
+    <tr><td>五段式</td><td>完整 AI 应用 → 角色+数据+规则+格式+示例</td></tr>
+  </table>
+
+  <h3>发布前检查清单</h3>
+  <ul>
+    <li>☐ 指令清晰无歧义？</li>
+    <li>☐ 数据和指令用 XML 分离？</li>
+    <li>☐ 明确输出格式和长度？</li>
+    <li>☐ 推理任务要求先思考再答？</li>
+    <li>☐ 提供 2–3 高质量示例？</li>
+    <li>☐ 允许 AI 说“我不知道”？</li>
+    <li>☐ 多种输入测试过？</li>
+    <li>☐ 边界情况（空/超长/错误）处理？</li>
+    <li>☐ 复杂任务拆链？</li>
+    <li>☐ 关键指令放开头/结尾？</li>
+    <li>☐ 记录版本号和日志？</li>
+  </ul>
+</div>
+
+<div class="foot">
+  带读笔记由 WorkBuddy 生成 · 内容结构化自菜鸟教程《提示词工程》· 仅供学习复习使用
+</div>
+
+</div>
+</body>
+</html>
