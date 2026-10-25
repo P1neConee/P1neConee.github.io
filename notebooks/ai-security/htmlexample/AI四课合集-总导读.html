@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 四课合集 · 总导读（修仙路线版）</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --brand2:#f97316; --ok:#16a34a; --warn:#d97706; --risk:#dc2626;
+    --soft:#eef2ff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.78;font-size:16px;}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;border-radius:18px;padding:30px 30px 26px;box-shadow:0 10px 30px rgba(37,99,235,.18);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:21px;margin:42px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:17px;margin:26px 0 10px;color:var(--brand);}
+  h4{font-size:15px;margin:18px 0 6px;color:#334155;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:#fff7ed;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .risk{background:#fef2f2;border-left:4px solid var(--risk);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  blockquote{margin:14px 0;padding:12px 16px;background:#f8fafc;border-left:3px solid #cbd5e1;
+    border-radius:0 8px 8px 0;color:#334155;font-size:15px;}
+  blockquote .src{display:block;margin-top:6px;color:#94a3b8;font-size:12.5px;border:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  td.c{text-align:center;}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600;}
+  .b-read{background:#dbeafe;color:#1e40af;}
+  .b-skim{background:#fef3c7;color:#92400e;}
+  .b-skip{background:#fee2e2;color:#991b1b;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:13px;background:#eef2ff;color:#3730a3;margin:3px 4px 3px 0;}
+  .toc{columns:2;column-gap:26px;font-size:14.5px;list-style:none;padding-left:0;margin:0;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .toc li{margin:5px 0;break-inside:avoid;}
+  .q{font-weight:600;cursor:pointer;}
+  .ans{color:var(--sub);font-size:14.5px;margin:8px 0 0;}
+  details{margin:12px 0;}
+  details summary{font-weight:600;cursor:pointer;color:var(--ink);}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:52px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;} .toc{columns:1;}}
+  .read-toc{background:linear-gradient(135deg,#f0fdfa,#eef2ff);border:1px solid #99f6e4;
+    border-radius:14px;padding:18px 22px;margin:16px 0;}
+  .read-toc .lab{font-weight:700;color:#0f766e;margin-bottom:8px;font-size:15px;}
+  .ep{border-left:4px solid var(--brand);}
+  .epmeta{margin-bottom:8px;font-size:14px;color:var(--sub);}
+  .epmeta b{font-size:16px;color:var(--ink);}
+  .metaphor{background:#fffbeb;border-left:4px solid var(--brand2);padding:10px 14px;
+    border-radius:8px;margin:10px 0;font-size:14.5px;color:#78350f;}
+  .modhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .modrange{font-size:13px;color:var(--sub);}
+</style></head><body><div class="wrap">
+<header class="hero"><h1>AI 四课合集 · 总导读</h1><p>Python 30天 · 数据结构与算法 · 机器学习 · 深度学习 ｜ 全 106 集逐集带读后的总纲</p><p><span class="tag">4 门课 / 106 集</span><span class="tag">修仙路线：凝气→筑基→结丹→元婴</span><span class="tag">目标：看清四门课如何拼成一条完整修炼链</span></p></header>
+<div class="card"><p class="lead">这四门课不是四堆知识点，而是一条<b>连续的升级链</b>：<b>Python 给你手（能写）</b>，<b>数据结构与算法给你尺（写好）</b>，<b>机器学习给你眼（从数据看规律）</b>，<b>深度学习给你丹（理解大模型本体）</b>。四者拼合，正好覆盖修仙文章里从筑基到结丹、再叩元婴之门的全部前置。</p></div>
+<h2 id="toc">本篇阅读目录</h2><div class="read-toc"><div class="lab">页内导航（点标题直达）</div><ul class="toc">
+<li><a href="#map">1. 四门课在修仙路线上的位置</a></li>
+<li><a href="#table">2. 四课对照总表</a></li>
+<li><a href="#chain">3. 依赖链：为什么要按这个顺序学</a></li>
+<li><a href="#cross">4. 跨课交叉核对</a></li>
+<li><a href="#mile">5. 里程碑自检</a></li>
+<li><a href="#quiz">6. 总自测 8 题</a></li>
+</ul></div>
+<h2 id="map">1. 四门课在修仙路线上的位置</h2>
+<div class="card"><svg viewBox="0 0 900 150" width="100%" role="img" aria-label="修仙路线与四门课定位">
+<rect x="0" y="0" width="900" height="150" fill="#ffffff" rx="10"/>
+<text x="20" y="28" font-size="13" font-weight="700" fill="#1f2430" font-family="sans-serif">四门课在修仙路线上的位置</text>
+<rect x="20" y="48" width="200" height="52" rx="9" fill="#e0f2fe" stroke="#94a3b8" stroke-width="1.1"/>
+<text x="32" y="72" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">凝气期</text>
+<text x="32" y="90" font-size="10.5" fill="#5b6472" font-family="sans-serif">建立 AI 基本概念</text>
+<path d="M 220 74 L 238 74" stroke="#2563eb" stroke-width="1.8" fill="none" marker-end="url(#ar2)"/>
+<rect x="242" y="48" width="200" height="52" rx="9" fill="#dcfce7" stroke="#94a3b8" stroke-width="1.1"/>
+<text x="254" y="72" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">筑基期</text>
+<text x="254" y="90" font-size="10.5" fill="#5b6472" font-family="sans-serif">扎马步（安全基础）+ 练内力（Python）</text>
+<path d="M 442 74 L 460 74" stroke="#2563eb" stroke-width="1.8" fill="none" marker-end="url(#ar2)"/>
+<rect x="464" y="48" width="200" height="52" rx="9" fill="#fef3c7" stroke="#94a3b8" stroke-width="1.1"/>
+<text x="476" y="72" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">结丹期</text>
+<text x="476" y="90" font-size="10.5" fill="#5b6472" font-family="sans-serif">数学 / 机器学习 / 深度学习三块基石</text>
+<path d="M 664 74 L 682 74" stroke="#2563eb" stroke-width="1.8" fill="none" marker-end="url(#ar2)"/>
+<rect x="686" y="48" width="200" height="52" rx="9" fill="#fee2e2" stroke="#94a3b8" stroke-width="1.1"/>
+<text x="698" y="72" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">元婴期</text>
+<text x="698" y="90" font-size="10.5" fill="#5b6472" font-family="sans-serif">拆解大模型本体与其攻防面</text>
+<text x="254" y="112" font-size="11.5" fill="#1e40af" font-family="sans-serif">▸ Python 30天（30集）</text>
+<text x="254" y="132" font-size="11.5" fill="#1e40af" font-family="sans-serif">▸ 数据结构与算法（25集）</text>
+<text x="476" y="112" font-size="11.5" fill="#1e40af" font-family="sans-serif">▸ 机器学习（15集）</text>
+<text x="476" y="132" font-size="11.5" fill="#1e40af" font-family="sans-serif">▸ 深度学习（36集）</text>
+<text x="20" y="140" font-size="11.5" fill="#1e40af" font-family="sans-serif">▸ 深度学习末 3 集（GPT）已跨入元婴期入口</text>
+<defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/></marker></defs>
+</svg></div>
+<div class="tip"><b>读法：</b>凝气期建立概念 → 筑基期练手（Python、算法）→ 结丹期炼三块基石（数学、机器学习、深度学习）→ 元婴期拆解大模型本体。本合集覆盖到「结丹圆满、元婴叩门」。</div>
+<h2 id="table">2. 四课对照总表</h2>
+<div class="card"><table><tr><th>课程</th><th class="c">集数</th><th>修仙定位</th><th>学完的标志</th><th>代表性核心概念</th><th>通向哪里</th></tr>
+<tr><td><b>Python 30天</b></td><td class="c">30</td><td>筑基期·练内力</td><td>会写代码、能用代码替自己干活</td><td>list/dict/set、函数与类、venv</td><td>机器学习、深度学习的工具底座</td></tr>
+<tr><td><b>数据结构与算法</b></td><td class="c">25</td><td>筑基期·算法筋骨</td><td>会选型、会算复杂度</td><td>哈希表 O(1)、BST 退化、Dijkstra/Floyd</td><td>判断 AI 系统性能瓶颈的直觉</td></tr>
+<tr><td><b>机器学习</b></td><td class="c">15</td><td>结丹期·ML 基石</td><td>建立「数据→规律」的思维链</td><td>监督/无监督、过拟合诊断、集成学习</td><td>理解 AI 防火墙、Prompt 分类器的原理</td></tr>
+<tr><td><b>深度学习</b></td><td class="c">36</td><td>结丹期深度 → 元婴入口</td><td>从感知机走到手搓 GPT</td><td>反向传播、CNN/RNN、Q/K/V、Decoder-Only</td><td>大模型攻防（注入/越狱）的直接前置</td></tr>
+</table></div>
+<h2 id="chain">3. 依赖链：为什么要按这个顺序学</h2>
+<div class="card">
+<div class="tip"><b>Python 30天 → 其余三门</b><br>所有示例代码都是 Python；sklearn / PyTorch 的接口依赖函数参数、类继承、迭代器协议。</div>
+<div class="tip"><b>数据结构与算法 → 机器学习 / 深度学习</b><br>复杂度直觉决定你能不能处理大规模数据；图论对应计算图执行与依赖解析。</div>
+<div class="tip"><b>机器学习 → 深度学习</b><br>损失函数、梯度下降、过拟合与正则化会原样复现，只是模型从线性换成神经网络。</div>
+<div class="tip"><b>深度学习 → 元婴期（大模型安全）</b><br>Transformer 的 Q/K/V 是理解 Prompt 注入与越狱的前提；手搓 GPT 是拆开大模型的第一步。</div>
+</div>
+<h2 id="cross">4. 跨课交叉核对</h2>
+<div class="card"><table><tr><th>概念</th><th>出现①</th><th>出现②</th><th>交叉理解（重点）</th></tr>
+<tr><td><b>梯度下降</b></td><td>机器学习第5集</td><td>深度学习第7集</td><td>同一思想，规模与优化器升级（SGD → Adam/AdamW）</td></tr>
+<tr><td><b>过拟合与正则化</b></td><td>机器学习第8集</td><td>深度学习第13集</td><td>诊断方法一致（训练好/测试差），手段扩展出 Dropout、权重衰减</td></tr>
+<tr><td><b>特征工程</b></td><td>机器学习第6集预处理</td><td>深度学习第1集</td><td>ML 需人工做特征；DL 把特征工程纳入学习，自动提取</td></tr>
+<tr><td><b>dict 为什么快</b></td><td>Python Day8</td><td>数据结构第6集</td><td>Python 课教用法（O(1) 查找），数据结构课讲原理（哈希+冲突解决）</td></tr>
+<tr><td><b>递归</b></td><td>Python Day13 函数进阶</td><td>数据结构第7-8集树遍历</td><td>前者是语法能力，后者是递归思维的正统训练场</td></tr>
+<tr><td><b>稀疏 vs 稠密</b></td><td>数据结构第19集邻接矩阵/表</td><td>深度学习第28集注意力</td><td>同为「全连接 vs 只连需要的」的空间-时间取舍</td></tr>
+</table></div>
+<div class="warn"><b>交叉理解是这份合集最值钱的部分：</b>同一个概念在两门课里以不同身份出现时，把它对齐一次，理解就从「点」连成了「网」。上表 6 组建议逐条回去对照原文。</div>
+<h2 id="mile">5. 里程碑自检</h2>
+<div class="card"><table><tr><th>里程碑</th><th>达标标志</th><th>对应集数</th></tr>
+<tr><td><b>M1 · 能跑</b></td><td>装好环境、写出第一个脚本、能读写文件、能捕获异常</td><td>Python D1-D16</td></tr>
+<tr><td><b>M2 · 写好</b></td><td>能用 dict/set 做正确选型、会写生成器、能拆模块、懂虚拟环境</td><td>Python D17-D25 + 数据结构第2-6集</td></tr>
+<tr><td><b>M3 · 会算</b></td><td>看到一段代码能估出复杂度；知道 Top K 用堆、依赖用拓扑排序</td><td>数据结构第7-25集</td></tr>
+<tr><td><b>M4 · 懂规律</b></td><td>能走通「数据→模型→评估→诊断」全链路；说清欠拟合与过拟合</td><td>机器学习全 15 集</td></tr>
+<tr><td><b>M5 · 炼金丹</b></td><td>能讲清反向传播、注意力 Q/K/V、为什么 Decoder-Only 赢了</td><td>深度学习第1-33集</td></tr>
+<tr><td><b>M6 · 叩元婴</b></td><td>能手搓一个最小 GPT；理解大模型每一处可能的攻击面</td><td>深度学习第34-36集 → 元婴期</td></tr>
+</table></div>
+<h2 id="quiz">6. 总自测 8 题</h2><div class="card">
+<details><summary>Q1. 四门课分别对应修仙路线的哪一阶段？</summary><div class="ans">答：Python 30天与数据结构与算法 → 筑基期（练内力 / 算法筋骨）；机器学习 → 结丹期的机器学习基石；深度学习前 33 集 → 结丹期的深度学习基石，最后 3 集（Decoder-Only GPT）→ 已跨入元婴期入口。</div></details>
+<details><summary>Q2. 为什么 Python 要先于机器学习、深度学习？</summary><div class="ans">答：因为 sklearn 的 fit/predict、PyTorch 的 nn.Module 继承与 Dataset 迭代器，全部是 Python 语法与面向对象；内力不够深，连示例代码都读不懂，更谈不上改。</div></details>
+<details><summary>Q3. 数据结构与算法在 AI 学习里是不是「面试专用、实战无用」？</summary><div class="ans">答：不是。哈希表的 O(1) 决定 dict 为什么快；Top K 用堆而非全排序决定召回效率；图的拓扑排序就是计算图执行的顺序；「稠密 vs 稀疏」的取舍直接对应邻接矩阵与注意力的实现选择。</div></details>
+<details><summary>Q4. 机器学习里的「过拟合」在 AI 安全视角下意味着什么？</summary><div class="ans">答：过拟合意味着模型记住了训练样本的细节。这正是成员推断攻击（判断某条数据是否在训练集中）与模型窃取能够奏效的根源——模型「背得太熟」反而泄露了隐私。</div></details>
+<details><summary>Q5. 梯度在机器学习和深度学习里分别扮演什么角色？安全视角下有何不同用法？</summary><div class="ans">答：学习时：沿负梯度更新参数以降低损失。安全视角下（对抗攻击）：沿梯度方向给输入加微小扰动，让损失上升、模型判断翻转——FGSM 就是同一条梯度通路的正反两用。</div></details>
+<details><summary>Q6. 为什么 Transformer 被修仙文章称为「金丹大成的关键」？</summary><div class="ans">答：因为 Prompt 注入、越狱、幻觉利用的直接作用对象就是大模型，而这些攻击之所以生效，根源在于自注意力的 Q/K/V 权重分配会被恶意指令劫持。不理解注意力，就看不懂越狱的底层逻辑。</div></details>
+<details><summary>Q7. Encoder-only / Decoder-only / Encoder-Decoder 怎么选型？</summary><div class="ans">答：判断（分类、语义匹配）用 Encoder-only（BERT）；续写生成用 Decoder-only（GPT/Llama/Qwen）；转换（翻译、摘要）用 Encoder-Decoder（T5/原始 Transformer）。</div></details>
+<details><summary>Q8. 四门课走完，距离「能做 AI 安全研究」还差什么？</summary><div class="ans">答：四门课解决的是「能看懂、能跑通、能对话」；还差元婴期对大模型本体（分词、嵌入、解码策略、对齐/RLHF）的拆解，以及化神、婴变期在真实攻防场景（越狱、注入、数据投毒、模型后门）中的实战。</div></details>
+</div>
+<p class="foot">AI 四课合集 · 总导读 ｜ 基于 106 集转写校正版生成 ｜ 修仙学 AI 路线</p>
+</div></body></html>
