@@ -1,0 +1,927 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深度学习 · 课程导读</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --brand2:#f97316; --ok:#16a34a; --warn:#d97706; --risk:#dc2626;
+    --soft:#eef2ff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.78;font-size:16px;}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;border-radius:18px;padding:30px 30px 26px;box-shadow:0 10px 30px rgba(37,99,235,.18);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:21px;margin:42px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:17px;margin:26px 0 10px;color:var(--brand);}
+  h4{font-size:15px;margin:18px 0 6px;color:#334155;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:#fff7ed;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .risk{background:#fef2f2;border-left:4px solid var(--risk);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  blockquote{margin:14px 0;padding:12px 16px;background:#f8fafc;border-left:3px solid #cbd5e1;
+    border-radius:0 8px 8px 0;color:#334155;font-size:15px;}
+  blockquote .src{display:block;margin-top:6px;color:#94a3b8;font-size:12.5px;border:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  td.c{text-align:center;}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600;}
+  .b-read{background:#dbeafe;color:#1e40af;}
+  .b-skim{background:#fef3c7;color:#92400e;}
+  .b-skip{background:#fee2e2;color:#991b1b;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:13px;background:#eef2ff;color:#3730a3;margin:3px 4px 3px 0;}
+  .toc{columns:2;column-gap:26px;font-size:14.5px;list-style:none;padding-left:0;margin:0;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .toc li{margin:5px 0;break-inside:avoid;}
+  .q{font-weight:600;cursor:pointer;}
+  .ans{color:var(--sub);font-size:14.5px;margin:8px 0 0;}
+  details{margin:12px 0;}
+  details summary{font-weight:600;cursor:pointer;color:var(--ink);}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:52px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;} .toc{columns:1;}}
+  .read-toc{background:linear-gradient(135deg,#f0fdfa,#eef2ff);border:1px solid #99f6e4;
+    border-radius:14px;padding:18px 22px;margin:16px 0;}
+  .read-toc .lab{font-weight:700;color:#0f766e;margin-bottom:8px;font-size:15px;}
+  .ep{border-left:4px solid var(--brand);}
+  .epmeta{margin-bottom:8px;font-size:14px;color:var(--sub);}
+  .epmeta b{font-size:16px;color:var(--ink);}
+  .metaphor{background:#fffbeb;border-left:4px solid var(--brand2);padding:10px 14px;
+    border-radius:8px;margin:10px 0;font-size:14.5px;color:#78350f;}
+  .modhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .modrange{font-size:13px;color:var(--sub);}
+</style></head><body><div class="wrap">
+<header class="hero"><h1>深度学习 · 课程导读</h1><p>《深度学习》全 36 集 ｜ 逐集带读 + 宏观框架</p><p><span class="tag">36 集全量带读</span><span class="tag">结丹期深度基石 → 元婴期入口</span><span class="tag">目标：从感知机走到手搓 GPT</span></p></header>
+<div class="card"><p class="lead">这是四门课里最长、也最接近「金丹」的一门。它的主线极其清晰：<b>感知机 → 神经网络与反向传播 → 训练工程 → CNN → RNN/seq2seq → 注意力 → Transformer → Decoder-Only GPT</b>。前 33 集是<b>结丹</b>（把 Transformer 这块金丹炼成），最后 3 集跨进<b>元婴</b>的门——因为「大模型本身就是攻击的直接作用对象」。</p></div>
+<h2 id="toc">本篇阅读目录</h2>
+<div class="read-toc"><div class="lab">页内导航（点标题直达）</div><ul class="toc">
+<li><a href="#frame">1. 修仙定位与整体骨架</a></li>
+<li><a href="#modules">2. 模块划分与核心知识点</a></li>
+<li><a href="#eps">3. 逐集带读（全 36 集）</a></li>
+<li><a href="#cross">4. 交叉核对表</a></li>
+<li><a href="#link">5. 落到修仙路线（跨课连接）</a></li>
+<li><a href="#quiz">6. 读后自测 10 题</a></li>
+</ul></div>
+<h2 id="frame">1. 修仙定位与整体骨架</h2>
+<div class="card"><h4>修仙阶段定位</h4><div class="tip"><b>结丹期（深度基石）→ 元婴期（大模型）入口</b></div><p>修仙文章把结丹期的核心定义为「深入理解大模型及其底层原理」，并明确指出 &lt;b&gt;Transformer 是金丹大成的关键&lt;/b&gt;——它是 Prompt 注入、越狱、幻觉利用的直接作用对象。本课前半（01-33）正是这条结丹路；最后三集（Decoder-Only 的 GPT、手搓 GPT）则跨入元婴期「把大模型拆开看内部构造」的范畴。</p></div>
+<div class="card"><svg viewBox="0 0 918 388" width="100%" role="img" aria-label="课程模块划分图">
+<rect x="0" y="0" width="918" height="388" fill="#ffffff" rx="10"/>
+<text x="24" y="30" font-size="13" font-weight="700" fill="#1f2430" font-family="sans-serif">模块划分（按集数顺序，箭头为主线依赖）</text>
+<rect x="24" y="46" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">开篇与环境</text>
+<text x="36" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">第1-2集</text>
+<rect x="322" y="46" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">神经网络原理</text>
+<text x="334" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">第3-8集</text>
+<rect x="620" y="46" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">训练工程与调参</text>
+<text x="632" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">第9-14集</text>
+<rect x="24" y="152" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">CNN 视觉</text>
+<text x="36" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">第15-18集</text>
+<rect x="322" y="152" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">序列建模与 NLP</text>
+<text x="334" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">第19-23集</text>
+<rect x="620" y="152" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">心法篇</text>
+<text x="632" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">第24集</text>
+<rect x="24" y="258" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">注意力与 Transform…</text>
+<text x="36" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">第25-33集</text>
+<rect x="322" y="258" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">大模型与 GPT</text>
+<text x="334" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">第34-36集</text>
+<path d="M 296 77 L 318 77" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 77 L 616 77" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 108 C 756 134 160 122 160 148" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 296 183 L 318 183" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 183 L 616 183" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 214 C 756 240 160 228 160 254" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 296 289 L 318 289" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/></marker></defs>
+</svg></div>
+<h2 id="modules">2. 模块划分与核心知识点</h2>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 1 · 开篇与环境</h3><span class="modrange">第1-2集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>入门：先见森林，再备行装。</div>
+<h4>核心知识点</h4><ul>
+<li>深度学习的定位：机器学习的分支，用多层神经网络自动学习特征</li>
+<li>与机器学习的核心区别：把「特征工程」本身纳入学习过程</li>
+<li>发展简史三起两落：感知机 → 明斯基批判 → 反向传播 → SVM 寒冬 → 2006 Hinton → 2012 AlexNet → 2017 Transformer</li>
+<li>环境安装：框架与 GPU 环境，别在环境上耗死</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 2 · 神经网络原理</h3><span class="modrange">第3-8集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>筑炉：感知机是火种，反向传播是鼓风，激活函数是灵魂。</div>
+<h4>核心知识点</h4><ul>
+<li>感知机：深度学习的 Hello World，单层只能解线性可分（异或即其死穴）</li>
+<li>MLP 到神经网络的升级：多层 + 非线性 = 能拟合任意复杂函数</li>
+<li>反向传播：链式法则把误差从输出层层传回，让海量参数可训练</li>
+<li>激活函数为网络注入非线性：sigmoid/tanh 易梯度消失，ReLU 成为主流，输出层用 softmax</li>
+<li>梯度下降：模型自己寻找最优参数的引擎</li>
+<li>损失函数：定义「错了多少」，是训练的目标函数</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 3 · 训练工程与调参</h3><span class="modrange">第9-14集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>控火：火候即调参，差之毫厘谬以千里。</div>
+<h4>核心知识点</h4><ul>
+<li>识别手写数字：别死磕 PyTorch 语法，先跑通全流程</li>
+<li>学习率：最敏感的超参，过小收敛慢、过大震荡发散</li>
+<li>参数初始化：Xavier / Kaiming(He) 初始化，决定梯度能否健康流动</li>
+<li>归一化：BatchNorm / LayerNorm，Transformer 也用它稳定训练</li>
+<li>正则化：L1/L2、Dropout、权重衰减（AdamW 的关键）对抗过拟合</li>
+<li>优化器演进：SGD → Momentum → RMSProp → Adam / AdamW</li>
+<li>完整训练流程：数据 → 前向 → 损失 → 反向 → 更新 → 评估</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 4 · CNN 视觉</h3><span class="modrange">第15-18集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>开目：以卷积为眼，观局部而成全局。</div>
+<h4>核心知识点</h4><ul>
+<li>为什么需要 CNN：全连接处理图像参数爆炸且丢失空间结构</li>
+<li>卷积层：局部感受野 + 权值共享，逐层提取边缘→纹理→语义</li>
+<li>池化层降维、特征图、通道的含义，以及完整分类头</li>
+<li>残差连接 ResNet：用「捷径」让梯度直达浅层，使网络可以做到很深</li>
+<li>残差连接后来被 Transformer 原样采用，是 CV 与 NLP 的共同捷径</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 5 · 序列建模与 NLP</h3><span class="modrange">第19-23集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>通语：让模型记住顺序，理解前因后果。</div>
+<h4>核心知识点</h4><ul>
+<li>NLP 概述：从规则穷举、统计方法到神经网络再到 Transformer 与大模型</li>
+<li>Embedding 与 word2vec：把词变成向量，语义相近则向量相近</li>
+<li>RNN：引入隐状态处理序列，但存在长期依赖遗忘</li>
+<li>LSTM 与 GRU：用门控机制（遗忘门/输入门/输出门）带来长期记忆</li>
+<li>编码器-解码器与 seq2seq：翻译等「序列到序列」任务的经典框架</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 6 · 心法篇</h3><span class="modrange">第24集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>问道：不走死路，方得长生。</div>
+<h4>核心知识点</h4><ul>
+<li>不要死磕 PyTorch 语法和数学推导，先建立直觉再补细节</li>
+<li>学习路径建议：先跑通 → 再读论文 → 最后手搓</li>
+<li>这门课反复强调的学习观：理解 &gt; 记忆，动手 &gt; 抄代码</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 7 · 注意力与 Transformer</h3><span class="modrange">第25-33集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>结丹：注意力是金丹，Transformer 是丹炉。</div>
+<h4>核心知识点</h4><ul>
+<li>注意力机制：大模型前夜的最后一块拼图，解决 seq2seq 的信息瓶颈</li>
+<li>Q/K/V 三元组：Query 查、Key 匹配、Value 取值，本质是「按相关性加权求和」</li>
+<li>自注意力让序列中每个位置都能直接看到所有位置</li>
+<li>Multi-Head Attention：多个角度并行提取不同子空间的特征</li>
+<li>位置编码：给无顺序的注意力注入位置信息</li>
+<li>编码器 / 解码器工作流程：掩码注意力、交叉注意力</li>
+<li>缩放点积注意力除以 √d_k 防止点积过大导致梯度饱和</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 8 · 大模型与 GPT</h3><span class="modrange">第34-36集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>元婴：丹碎婴生，一法通万法。</div>
+<h4>核心知识点</h4><ul>
+<li>为什么是 Decoder-Only 的 GPT 赢了：自回归生成天然统一了理解与生成</li>
+<li>BERT（Encoder-only）擅长理解判断，GPT（Decoder-only）擅长生成，T5（Encoder-Decoder）擅长转换</li>
+<li>一小时手搓现代 GPT：从 token 到注意力到生成，写古诗验证</li>
+<li>现代 LLM 组件：RMSNorm、SwiGLU、RoPE、GQA 等</li>
+<li>课程总结与学习路径：从 MLP 到 GPT 的完整串联</li>
+</ul></div>
+<h2 id="eps">3. 逐集带读（全 36 集）</h2>
+<div class="tip">以下每集卡片均来自该集转写校正版：<b>核心知识点</b>为该集可考核要点，<b>引文</b>摘自校正后的口播原句，<b>红框</b>为口径校正与技术备注。集数顺序即修炼顺序。</div>
+<h3 id="m1">模块 1 · 开篇与环境 <span class="modrange">（第1-2集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>入门：先见森林，再备行装。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第1集</span> <b>深度学习第一课</b> <span class="pill">BV1rARgBYE3J</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>深度学习定义：机器学习的一个分支，使用多层神经网络从原始数据中自动学习特征，完成预测或决策。</li>
+<li>与机器学习的核心区别：把"特征工程"本身纳入学习过程——由模型自动从原始数据（图像像素、音频波形）中提取特征，摆脱对领域专家手工特征的依赖。</li>
+<li>发展简史（三起两落）：1943–1958 神经元模型/感知机首次兴起 → 1969 明斯基《感知机》证明单层无法解决异或 → 反向传播出现 → SVM 兴起致第二次寒冬 → 2006 Hinton 深度信念网络+逐层预训练、首次使用"深度学习"一词（2006 被视为元年）→ 2012 AlexNet 在 ImageNet 引爆热潮。</li>
+<li>2012 爆发三要素：大数据（ImageNet 1400 万标注）、GPU 硬件、更好训练技巧（ReLU / Dropout / 初始化策略）。</li>
+<li>2017 Google《Attention Is All You Need》提出 Transformer，成为今天大模型的基础；课程主线：MLP→CNN→NLP→seq2seq→Transformer→BERT/GPT→Agent。</li>
+</ol>
+<blockquote>"既然让人类去定义特征、去提取特征这么的难，那么就让机器自己去海量的数据中总结特征。"<span class="src">—— 第1集《深度学习第一课》· 转写校正版</span></blockquote>
+<blockquote>"2006 年被很多人也称为深度学习的元年。"<span class="src">—— 第1集《深度学习第一课》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"杨丽坤"→杨立昆（Yann LeCun）、"李菲菲"→李飞飞、"伊利亚苏斯科夫"→Ilya Sutskever，以及 AlexNet / ImageNet / ChatGPT / NumPy / Miniconda / PyTorch / Matplotlib 等术语均已校正。</li>
+<li>口误：把感知机说成"通过简单的线性回归就能判别"，实为线性分类器，原文存疑保留。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（ASR 误识较多，但校正稿已修复关键人名/模型名，可正常阅读）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第2集</span> <b>深度学习环境安装</b> <span class="pill">BV1db9dBEETc</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>为何用 conda：深度学习依赖复杂（Python / CUDA / 框架 / 第三方库多版本配合），系统 Python+pip 易冲突、污染环境；conda 可隔离项目依赖并简化 CUDA 管理。</li>
+<li>Miniconda 优于 Anaconda：仅含基础 conda+Python，轻量干净，按需安装，业界推荐。</li>
+<li>配置流程：换国内镜像（清华）加速 → `conda init` 初始化 → Windows 勾选环境变量、Mac/Linux 用 zsh `source .zshrc` → `conda --version` 验证。</li>
+<li>建环境：Python 3.10 + PyTorch 2.0+ 为主流稳定搭配；按显卡选 CUDA（50 系前用 11.x，50 系后用 12.x）；conda 与 pip 不要混装同一环境。</li>
+<li>常用工具包：NumPy / pandas / Matplotlib / scikit-learn / JupyterLab；管理命令 create / activate / deactivate / env list / update / remove / export。</li>
+</ol>
+<blockquote>"深度学习的环境依赖通常是非常复杂的……使用一个比较专业的环境管理工具这种时候就非常有必要了。"<span class="src">—— 第2集《深度学习环境安装》· 转写校正版</span></blockquote>
+<blockquote>"Python 3.10 和 PyTorch 2.0 以上的版本是比较主流且稳定的搭配。"<span class="src">—— 第2集《深度学习环境安装》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"扩大"→CUDA、"康纳"→conda、"mini康纳"→Miniconda、"牌子了"→PyTorch、"home blue"→Homebrew 等均已校正。</li>
+<li>"英伟达 50 系列"指 RTX 50 系显卡；4090 属 40 系，原文逻辑无误。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（命令/术语误识多，但校正记录详尽，可照做安装）</p>
+</div>
+<h3 id="m2">模块 2 · 神经网络原理 <span class="modrange">（第3-8集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>筑炉：感知机是火种，反向传播是鼓风，激活函数是灵魂。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第3集</span> <b>感知机：深度学习的 Hello World</b> <span class="pill">BV1FW9ZBhEEN</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>感知机是第一个真正落地的可学习机器方案（1957–1958 罗森布拉特），麻雀虽小五脏俱全，包含神经网络全部核心要素雏形：输入、权重、求和、激活、误差反馈、参数更新。</li>
+<li>仿生与理论起源：1943 MP 神经元（阈值激活，输出 0/1）；1949 Hebb《行为的组织》提出权重可随"同时激活"增强（Hebbian learning）；1957 罗森布拉特加入"用错误反馈自动调整权重"使其真正可学习。</li>
+<li>工作机制：加权求和 + 偏置 → 阶跃激活（≥0 输出 1，否则 0）；用 残差×学习率×输入 更新权重，多轮迭代收敛得到决策边界（线性可分）。</li>
+<li>代码实现：NumPy 准备身高/体重数据 → 归一化到 0~1 → 定义 Perceptron 类 → 训练更新 W/bias → 绘制决策边界与误差曲线。</li>
+<li>局限与转折：单层感知机只能解决线性可分问题；XOR（异或）线性不可分；1969 明斯基《Perceptrons》严密证明 → 神经网络 20 年寒冬；多层可解但当时无法训练，留待反向传播。</li>
+</ol>
+<blockquote>"感知机麻雀虽小五脏俱全，它完整地包含了神经网络所有的核心要素的雏形了。"<span class="src">—— 第3集《感知机：深度学习的 Hello World》· 转写校正版</span></blockquote>
+<blockquote>"在1969年……马文·明斯基……出版了一本书《Perceptrons》……核心结论：感知机根本就没法解决 XOR 这样的非线性问题。"<span class="src">—— 第3集《感知机：深度学习的 Hello World》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"mark one perceptron"→Mark I Perceptron、"马文明斯基"→Marvin Minsky、"帕普特"→Papert、"易或"→异或/XOR、"点击"→点积、"perceptron"类名 等均已校正。</li>
+<li>MP 神经元具体人名（McCulloch / Pitts）转写未出现，保留"MP 神经元"。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（口语重复与术语误识较多，但校正稿非常详尽，技术内容准确可读）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第4集</span> <b>深度学习架构：MLP到神经网络的升级，理解反向传播的基础</b> <span class="pill">BV1XoRJB7ERe</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>从单层感知机到 MLP：用两层感知机（含隐藏层）即可解决 XOR——第一层两个神经元分别学"至少一个为 1""不能同时为 1"（即 OR 与 NOT-AND 组合），输出层再 AND，等价于门电路堆叠。</li>
+<li>仿生与数学依据：大脑皮层分层处理（底层响应边缘方向、高层响应人脸物体）；数学上任何复杂函数可由简单函数组合逼近（泰勒展开、傅里叶变换）。</li>
+<li>全连接 MLP 结构：层间全连接，本质是函数的嵌套（上一层输出为下一层输入），同层多个神经元并行提取不同特征，多层逐级抽象。</li>
+<li>为何必须非线性激活：多层线性变换组合仍为线性变换（W2·(W1X+B1)+B2 = W'X+B'），永远是一条直线；插入非线性（阶跃/ReLU/Sigmoid/Softmax）才能逼近复杂函数；1989 万能逼近定理：足够宽 MLP 可任意精度逼近任意连续函数。</li>
+<li>寒冬症结：单层感知机学习规则只适用单层；只知道最终误差、不知隐藏层该调哪些权重——直到反向传播用链式法则逐层分配"责任"才解决。</li>
+</ol>
+<blockquote>"一些复杂的功能你是可以通过一些简单模块的层层组合得到的，并不需要一次到位。"<span class="src">—— 第4集《深度学习架构：MLP到神经网络的升级，理解反向传播的基础》· 转写校正版</span></blockquote>
+<blockquote>"一个含有足够多神经元的 MLP 呢，它能够用任意的精度来逼近任意的连续函数。"<span class="src">—— 第4集《深度学习架构：MLP到神经网络的升级，理解反向传播的基础》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"RN"→RNN、门电路 AND/NOT/OR 已校正、"易或"→XOR、"傅利叶"→傅里叶、"relu/GLU/sigmo"→ReLU/GeLU/Sigmoid/Softmax、"节约函数"→阶跃函数 等均已校正。</li>
+<li>"MLP 的结构，1960 年就被提出了"（一般认知为 Rosenblatt 1962 年著作中讨论多层网络），年份略有出入，存疑保留。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语误识多，但校正记录详尽，技术内容准确）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第5集</span> <b>反向传播：海量参数的神经网络如何训练</b> <span class="pill">BV1Lg5T6SEmP</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>反向传播的中轴作用：解释"预测出错时该调哪些参数"，用公司层层追责类比——误差从输出层逐层往回分配责任（权重即责任），责任大则参数调整大。</li>
+<li>训练完整循环：初始化参数 → 前向传播（用参数做预测）→ 损失函数（回归 MSE / 分类交叉熵）算误差 → 反向传播（链式法则逐层求梯度/责任）→ 梯度下降（带学习率 η 更新参数）→ 迭代直至损失收敛。</li>
+<li>前向传播数学：单层运算 = 线性变换 Wx+b + 非线性激活 σ；用矩阵一次算整层（GPU 擅并行矩阵运算）；给出第 L 层第 i 个神经元通项公式。</li>
+<li>反向传播数学：复合函数用链式法则求导；以 3 层单神经元、无偏置、ReLU 激活、MSE 为例手工推演，算出 W1/W2/W3 的梯度（W3 影响最大），用学习率 0.01 更新后损失 18 → 5.63。</li>
+<li>PyTorch 实操：用 nn.Linear + ReLU 搭网络、MSE、SGD(0.01)，forward→loss→zero_grad→backward→step 循环；PyTorch 自动微分（计算图）免去手工求导，是其取代 TensorFlow 的关键。</li>
+</ol>
+<blockquote>"反向传播其实是来（确）定各个神经元的参数（该）为最终的误差负多大责任的算法。"<span class="src">—— 第5集《反向传播：海量参数的神经网络如何训练》· 转写校正版</span></blockquote>
+<blockquote>"前向传播用来算误差……利用反向传播来算梯度……利用梯度下降来更新参数。"<span class="src">—— 第5集《反向传播：海量参数的神经网络如何训练》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"偏执"→偏置、"排套式"→PyTorch、"re录"→ReLU、"J录"→GeLU、"TENSORFLOW"→TensorFlow、"BIOS"→bias 等均已校正。</li>
+<li>示例"参数达到 29 个"具体网络结构未明，存疑保留；梯度数值口语读法（六/二/三）按原貌保留。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（数学/代码术语误识多，但校正详尽，推导准确可读）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第6集</span> <b>激活函数：为神经网络注入灵魂</b> <span class="pill">BV1RQL36cELq</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>为何必须非线性：无激活则多层退化为单次线性变换（W'X+B'），永远一条直线；现实规律多为非线性。工程上先做线性（Wx+B，GPU/TPU 硬件加速、求导简单）再做独立非线性激活，并刻意选有界/温和导数的函数以抑制数值膨胀。</li>
+<li>好激活函数的"基本素养"：非线性、处处可导（特殊点可规定）、梯度行为良好（不爆炸不消失）、计算廉价、最好零中心、单调平滑有界。</li>
+<li>家族演进：阶跃（1958，不可导、信息损失大、无法训练多层）→ Sigmoid（1986，0~1 处处可导、适合二分类输出层，但导数最大 0.25 致梯度消失、非零中心、含指数计算贵）→ tanh（杨立昆 LeNet，输出 -1~1、导数最大 1、零中心减轻震荡，但本质仍 S 型两端饱和）→ ReLU（2010 辛顿/AlexNet，正半轴导数恒 1 缓解梯度消失、计算极快、稀疏激活自带正则，但有 Dying ReLU 死亡神经元、输出无上界）。</li>
+<li>ReLU 历史地位：让深层网络首次真正可训练，开启现代深度学习；平滑变体 Leaky ReLU / GeLU / SiLU 成为 Transformer 时代主流（GeLU 用于 BERT/GPT/ViT，SiLU 用于 LLaMA 系开源模型）。</li>
+<li>选择指南：二分类输出用 Sigmoid、多分类用 Softmax；普通隐藏层资源有限用 ReLU，大模型精细训练用 GeLU/SiLU；激活函数提供非线性、梯度下降提供学习能力，二者配合训练网络。</li>
+</ol>
+<blockquote>"只有引入非线性才能让它发生弯曲，模拟一些复杂的情况。"<span class="src">—— 第6集《激活函数：为神经网络注入灵魂》· 转写校正版</span></blockquote>
+<blockquote>"ReLU 的伟大之处呢，也可以恰恰说是它的粗糙……它可以说是深度学习历史上一个比较重要的里程碑意义的激活函数了。"<span class="src">—— 第6集《激活函数：为神经网络注入灵魂》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"杨丽坤"→杨立昆、"节跃/节约函数"→阶跃函数、"易货"→XOR、"TH/太H"→tanh、"J路/GLU"→GeLU、"Swiss/Slu"→SiLU、"拉AMA"→LLaMA、"net"→LeNet、"sigmod"→sigmoid、"soft max"→Softmax 等均已校正。</li>
+<li>"2010 年辛顿提出 ReLU"年份表述略有出入（一般归 2011 Nair &amp; Hinton 论文及 2012 AlexNet 推广），存疑保留。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（人名/函数名误识极多，但校正记录详尽，技术脉络清晰准确）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第7集</span> <b>梯度下降：神经网络是怎么找到一组好参数的</b> <span class="pill">BV1XbLh6mEru</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>训练 = 最小化损失函数：上亿参数无解析解（百亿方程组解不出），只能靠梯度下降一步步逼近；类比为"蒙眼下山"——沿梯度反方向走下降最快。</li>
+<li>数学基础：多维下对各变量求偏导组成梯度向量，指向上升最快方向；更新 θ = θ - η·∇L。导数为零（鞍点/平坦区）会导致无法继续下降。</li>
+<li>三种梯度下降变体：Batch GD（全样本，准但慢、易陷鞍点）→ 随机 GD（单样本，快但有噪声、易被离群点带偏）→ Mini-batch SGD（折中，32/128 样本，统计与计算效率平衡，现"SGD"默认指此）。</li>
+<li>动量法（1964 苏联数学家，PyTorch SGD 默认带 0.9 动量）：累积历史梯度方向，加速穿越狭长山谷与鞍点、抑制左右震荡。</li>
+<li>自适应学习率与优化器演进：AdaGrad（每参数独立学习率，但分母平方累加致学习率单调衰减到零）→ RMSProp（Hinton 网课提出，只用近期梯度，避免衰减到零，RNN 常用）→ Adam（2015，动量+自适应结合，长期默认）→ AdamW（2017 Ilya，解耦权重衰减修复正则 bug，Transformer/BERT/ViT 事实标准）→ Muon（2024，矩阵正交化更新方向，Kimi 等开源模型兴起）。</li>
+</ol>
+<blockquote>"训练就是求一个最小化的问题……其实就是让损失函数变得最小。"<span class="src">—— 第7集《梯度下降：神经网络是怎么找到一组好参数的》· 转写校正版</span></blockquote>
+<blockquote>"其实每一次（变化）的背后的驱动呢，都是怎么让参数更新的又快又稳。"<span class="src">—— 第7集《梯度下降：神经网络是怎么找到一组好参数的》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"排套式"→PyTorch、"SJD"→SGD、"安点"→鞍点、"i m s prop"→RMSProp、"ADAMM"→Adam、"伊利亚苏斯科福"→伊利亚·苏茨克维、"MIR"→Muon、"bot/v i it"→BERT/ViT 等均已校正。</li>
+<li>"柯西研究彗星轨道"（1847 年柯西无误，"彗星轨道"细节无法核实），存疑保留。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（优化器/人名误识多，但校正记录详尽，技术演进脉络清晰）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第8集</span> <b>损失函数：告诉模型错了多少</b> <span class="pill">BV1jgGB6PE7S</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>损失函数的三重角色：度量误差（预测与标签差距）、作为反向传播起点（求导得梯度）、把人类意图翻译给优化器（任务目标设定）。</li>
+<li>回归任务用 MSE（均方误差）：= 误差平方求平均；平方可消除正负抵消、放大大误差（抓大放小）、导数简单（2·(ŷ-y)）；隐含数据为高斯/正态分布假设；离群点多时改用 MAE。</li>
+<li>分类为何不用 MSE：用 sigmoid 输出概率时，预测越错（该为 1 却预测为 0）导数反而为 0，梯度消失无法训练；需满足"关于 P 单调递减、错得越狠惩罚越大（趋向无穷）、多样本可加"。</li>
+<li>负 log P = 交叉熵（Cross Entropy）：衡量预测分布与真实标签分布的差异；二分类 CE 可统一写成 y·logŷ + (1-y)·log(1-ŷ)（与 sigmoid 配合求导 = ŷ-y，极简）；多分类用 Softmax + 交叉熵（求导 = 预测-真实）。</li>
+<li>PyTorch API 与坑：回归 nn.MSELoss；二分类 BCEWithLogits；多分类 CrossEntropyLoss（自带 Softmax，网络最后一层不要自己写 Softmax，否则训练不动）。</li>
+</ol>
+<blockquote>"损失函数（它）是把人类的意图翻译给优化器，也就是梯度下降的唯一的通道了。"<span class="src">—— 第8集《损失函数：告诉模型错了多少》· 转写校正版</span></blockquote>
+<blockquote>"优化器呢是决定怎么走，损失函数决定的是走向哪里。"<span class="src">—— 第8集《损失函数：告诉模型错了多少》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"MS1/MISE"→MSE、"交叉商"→交叉熵、"SIGMI"→sigmoid、"最大自然估计"→最大似然估计、"杨丽坤"→杨立昆、"BCEBINERARY"→BCEWithLogits、"so max"→Softmax、"分部"→分布 等均已校正。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语误识多，但校正记录详尽，公式准确）</p>
+</div>
+<h3 id="m3">模块 3 · 训练工程与调参 <span class="modrange">（第9-14集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>控火：火候即调参，差之毫厘谬以千里。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第9集</span> <b>识别手写数字——为何不该死磕 PyTorch 语法</b> <span class="pill">BV1uPGj6fEQh</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>核心观点：看不懂 PyTorch 代码往往不是不懂 API，而是不懂深度学习原理；30 多行代码即可完成训练循环（前向传播→损失函数→反向传播→梯度下降），从 MNIST 到 GPT 训练本质相同。</li>
+<li>MNIST 数据集：CV 任务的 Hello World，黑白 28×28（拍平 784 维），0~9 共 10 类，6 万训练/1 万测试，CPU 可跑。</li>
+<li>数据预处理：ToTensor（/255 转 0~1、通道前置）× Normalize（标准化，预热 BN/LN 思想）。</li>
+<li>手写两层 MLP：输入 784 → 隐藏层 128（ReLU）→ 输出层 10（logits，不加 Softmax）；手动实现参数初始化、前向、交叉熵损失、loss.backward、with torch.no_grad 更新参数、清零累积梯度。</li>
+<li>PyTorch 简化版（nn.Module / SimpleMLP / optimizer.zero_grad / loss.backward / optimizer.step）：5 轮训练准确率约 94% → 97%；现场画板 demo 验证；引申后续要讲学习率、参数初始化、归一化、正则化（Dropout）、深层网络为何需 CNN/残差。</li>
+</ol>
+<blockquote>"我们很多人说看不懂 PyTorch（写）的模型代码，我是不是要学一下 PyTorch 的语法？完全不应该，你应该学的是深度学习的基础。"<span class="src">—— 第9集《识别手写数字——为何不该死磕 PyTorch 语法》· 转写校正版</span></blockquote>
+<blockquote>"PyTorch 只是个工具……深度学习才是思路。"<span class="src">—— 第9集《识别手写数字——为何不该死磕 PyTorch 语法》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"LMLP"→MLP、"minister"→MNIST、"touch vision"→torchvision、"RELO"→ReLU、"require grand"→requires_grad、"with grant"→with torch.no_grad、"老JS"→logits、"NN点model"→nn.Module、"auto ground"→autograd、"job hot"→Dropout、"杨丽坤"→杨立昆 等均已校正。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（库名/代码术语误识多，但校正记录详尽，可复现代码）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第10集</span> <b>小小学习率竟然能这么显著影响模型训练结果</b> <span class="pill">BV1NMVn6vE7o</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>学习率是最重要、最敏感的超参数（属超参数，需手工设定）：量级错则训练不起来；固定不变则精度被压上限；需"调度（schedule）"让其在训练中按节奏变化。</li>
+<li>为何要变化：类比跑步——先热身（warm-up）用小学习率探测进入优化区，再加大快速下降，临近最优再调小精修。</li>
+<li>上升阶段：warm-up（线性/指数），训练最开始若干步从小值爬升到目标值，让参数与动量估计稳定。</li>
+<li>下降阶段策略：step decay / MultiStepLR（人工指定节点，节奏固定、换任务难复用）→ 指数衰减（前期降太快、与需求相反，现几乎不用）→ 余弦退火（最广泛默认，前期慢降后期快降再精修）→ 带重启的余弦退火（跳出局部极小，但大模型因稳定性/成本/超参风险不常用，多见于刷榜）。</li>
+<li>自适应调度 ReduceLROnPlateau（监测验证集平台期再降，不依赖先验但滞后、需验证集，适合中小/微调）；总结：大模型预训练默认 warm-up+余弦退火；OneCycleLR（按 batch 更新、极短训练达高精度，需大 batch，CV 微调好用）。</li>
+</ol>
+<blockquote>"学习率调度呢本质上都是在回答一个问题：在训练的不同阶段该用什么学习率。"<span class="src">—— 第10集《小小学习率竟然能这么显著影响模型训练结果》· 转写校正版</span></blockquote>
+<blockquote>"对于大规模的预训练，那么就是用默认（的）warm-up 加上余弦退火就是标配了。"<span class="src">—— 第10集《小小学习率竟然能这么显著影响模型训练结果》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"ADAMADAMW"→Adam/AdamW、"移弦退火"→余弦退火、"OMUP加剧圈退火"→warm-up加余弦退火、"MECYCLE"→OneCycleLR、"e Poke"→epoch、"ZIVA"→Xavier、"凯明"→Kaiming(He)、"RESNET"→ResNet、"SDD"→SGD 等均已校正；"爬到了0.2"已订正为 0.02。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（调度器/术语误识多，但校正记录详尽，技术脉络清晰）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第11集</span> <b>参数初始化——你和调参高手就差一点点</b> <span class="pill">BV17i7Q6HEFt</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>初始化重要性：深层网络能否训练，第一次前向传播就已决定；也是理解 Transformer 的 LayerNorm 的铺垫。</li>
+<li>对称性破缺：全零或所有相同常数 → 所有神经元等价、梯度相同 → 无法训练（对称性问题）；权重必须随机；偏置可全零（因权重已随机，不影响）。</li>
+<li>方差/尺度稳定：层间大量连乘，稍大稍小经多层即梯度爆炸/消失；目标是"每层输出方差 ≈ 输入方差"。实验：std=1 → 10^16 爆炸，std=0.01 → 归零消失，std=1/√512 → 稳定（512=神经元数）。</li>
+<li>理论推导：线性层输出方差 = N·Var(W)·Var(X)，需 Var(W)=1/N（N=输入神经元数）才稳定。经典初始化逻辑：随机分布打破对称 + 公式控方差 + 按激活函数修正。</li>
+<li>Xavier（2010 Bengio，适合 sigmoid/tanh，方差=2/(Nin+Nout)）与 He/Kaiming（2015 何凯明，针对 ReLU 把方差×2 补偿半边置零，即 2/Nin）初始化；PyTorch 默认 nn.Linear 内部调 kaiming_uniform（带 a=√5 微调），中等网络可不管，深层 ReLU 建议显式覆盖为 kaiming_normal。</li>
+</ol>
+<blockquote>"对于一个深度的神经网络能不能训练起来，往往在第一次前向传播的时候就已经确定了。"<span class="src">—— 第11集《参数初始化——你和调参高手就差一点点》· 转写校正版</span></blockquote>
+<blockquote>"参数初始化呢其实目标也不是随便给个随机数就行了，而是得让网络在训练一开始就处在一个信号尺度非常合理的状态。"<span class="src">—— 第11集《参数初始化——你和调参高手就差一点点》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"偏执"→偏置、"连城"→连乘、"ZV点初始化"→Xavier、"E初始化"→He、"凯明normal"→kaiming_normal、"立刻RELO"→leaky ReLU、"reload"→ReLU、"NN点liner"→nn.Linear 等均已校正。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（人名/初始化术语误识多，但校正记录详尽，推导准确）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第12集</span> <b>归一化：Transformer 用了都说好的训练技巧</b> <span class="pill">BV1X2Ex6rEu9</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>动机：He 初始化只管第一次；训练后权重被梯度下降修改，分布偏移 → 内部协变量偏移（ICS），导致激活值过大/进入饱和区梯度消失、优化器震荡。</li>
+<li>标准化操作：减均值 ÷ 标准差（深度学习社区统称 normalization，实际是标准化），只做平移缩放、分布形状不变，让网络学模式而非绝对值，故不影响训练反而更稳。</li>
+<li>Batch Normalization（BN）：在 batch 维度对同一特征列计算均值/标准差（如 128×256 矩阵的每列），再加可学习 γ/β 恢复表达力；训练维护滑动均值供推理。CNN/MLP/大 batch 常用。</li>
+<li>Layer Normalization（LN）：序列任务中同 batch 内相同 token 位置无关，应在同一样本的所有特征维度上归一化（横切）；不依赖 batch size、对变长序列天然友好，是 Transformer/RNN/大语言模型标配。</li>
+<li>变体：Group Norm（BN/LN 折中，小 batch CNN/目标检测好用）、RMSNorm（去掉减均值，仅 ÷均方根，只留 γ，大模型几乎都用）。总结：初始化 + 归一化共同保证训练全程方差守恒；下接残差连接、正则化。</li>
+</ol>
+<blockquote>"其实在深度学习的语境下，我们提到了归一化做的事情实际是标准化。"<span class="src">—— 第12集《归一化：Transformer 用了都说好的训练技巧》· 转写校正版</span></blockquote>
+<blockquote>"Transformer 以及后面我们所有的大语言模型用的都是 LN（Layer Normalization）。"<span class="src">—— 第12集《归一化：Transformer 用了都说好的训练技巧》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"P归一化"→BatchNorm/归一化、"NOBLIZATION"→Normalization、"re录"→ReLU、"凯明"→Kaiming、"group norm/r m s norm"→Group Norm/RMSNorm、"ADD and and norm"→Add &amp; Norm、"jp out"→Dropout 等均已校正。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（归一化/术语误识极多，但校正记录详尽，概念清晰）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第13集</span> <b>过拟合的克星——正则化</b> <span class="pill">BV1DHJ76SEmj</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>过拟合/欠拟合/good fit 三态：训练损失持续下降、验证损失先降后升即过拟合；本质是模型容量超过任务所需复杂度，多余参数不去学数据背后规律，而是死记训练集噪声或个例。</li>
+<li>正则化 = 奥卡姆剃刀原则的数学实现，强迫模型学习更简单、更通用的模式；广义上一切抗过拟合技术都算（狭义仅指 L1/L2 惩罚项）。</li>
+<li>L1 / L2：在损失后加权重惩罚项。L1（Lasso）倾向产生稀疏权重（近零比例 2.5%→22%，自动做特征选择、踢掉无用特征）；L2 倾向让所有权重均匀压小（近零比例 2.5%→3.8%，深度学习更常用，依赖神经元协同、处处可导对优化器友好）。</li>
+<li>权重衰减 vs L2：标准 SGD 下二者数学等价；但 Adam 自适应缩放会把统一的 λ 扭曲（梯度小反而惩罚大），2017 年 AdamW 把权重衰减从自适应机制中独立出来，修复该 bug。</li>
+<li>Dropout（Hinton）：随机关闭部分神经元，强迫模型不依赖特定神经元、具隐式集成效果（每次不同子网络、推理≈集体投票）；Inverted Dropout 训练时放大保留神经元以保持期望一致；训练用 model.train()、推理用 model.eval()；隐藏层概率 0.5、输入层 0.1~0.2、Transformer &lt;0.1、CNN 一般不用（用 BatchNorm）。</li>
+<li>Early Stopping：监控验证集，连续 5~20 epoch（patience）无改善即退回最佳 checkpoint 停，属隐式正则化、近乎零成本。</li>
+<li>数据增强（严格不算正则化但最有效）：翻转/裁剪/旋转/色彩抖动，扩大训练分布、强迫学通用特征；结合其他技巧使用；最终指向 Scaling Law——增大数据最有效。</li>
+</ol>
+<blockquote>"正则化就是指一系列用来对抗过拟合的技术，来迫使模型学习更简单、更通用的模式，而不是记忆训练数据的细节。"<span class="src">—— 第13集《过拟合的克星——正则化》· 转写校正版</span></blockquote>
+<blockquote>"虽然学了这么多技巧，还是增大数据最有用。"<span class="src">—— 第13集《过拟合的克星——正则化》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"郑泽化/正能化"→正则化、"招牌/招炮"→Dropout、"海涛式/反向招炮"→Inverted Dropout、"辛盾"→辛顿(Hinton)、"ADAMM/ADAMWW"→Adam/AdamW、"fit decay/权重筛减"→weight decay/权重衰减、"拉so套索"→Lasso、"skin law"→Scaling Law、"batch storm"→Batch Norm、"隐士正则化"→隐式正则化、"model点train/e value"→model.train()/model.eval() 等均已校正。</li>
+<li>存疑："讲继续学习的时候也提到过"中"继续学习"疑为"机器学习"之误，无法确认，保留原文。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语误识极多，但校正记录详尽，技术内容准确可读）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第14集</span> <b>如何训练一个深度学习模型（知识串联）</b> <span class="pill">BV1FmJJ6rEqS</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>训练三阶段总览：初始化网络 → 循环（前向传播→损失→反向传播→参数更新）→ 早停；将前十几集知识映射到训练流程各节点，做整体串联。</li>
+<li>初始化：结构设计（层数/神经元数/连接方式）+ 参数初始化（对称性破缺不可全零、控方差；sigmoid/tanh 用 Xavier、ReLU/变体用 He/Kaiming）。</li>
+<li>前向传播组装链路：线性变换 WX+B → 激活（隐藏层 ReLU 及其变体 Leaky ReLU/SiLU/GeLU、输出层 sigmoid/Softmax）→ Dropout → 归一化（BN：跨样本同特征；LN：每样本跨特征；RMSNorm 去减均值更高效）组装；PyTorch 代码即线性层→Norm→激活→Dropout→输出 logits。</li>
+<li>损失与正则：回归 MSE、分类交叉熵（二分类 BCEWithLogits、多分类 Softmax+CE，不能用 MSE 否则 sigmoid 两端梯度趋零训不动）；加 L1/L2 惩罚项防过拟合（L1 趋稀疏、L2 趋均匀缩小）。</li>
+<li>反向传播+优化器：链式法则逐层"追责"；SGD→momentum→RMSProp→Adam→AdamW（权重衰减解耦修复 bug）；学习率调度采用 warm-up 线性上升 + 余弦退火；CV 任务常用 SGD+momentum，大模型/Transformer 用 AdamW。</li>
+<li>早停：监控验证集连续 5~20 epoch 无改善即停。</li>
+<li>综合 MNIST 实战：把全部技巧用上（He 初始化、BN、ReLU、Dropout、AdamW、warm-up+余弦退火）达 98%（此前简单版约 97%），印证基础知识串联价值。</li>
+</ol>
+<blockquote>"你单独来看这些代码，其实每一行都不复杂……看不懂是因为我们对于深度学习的一些基础知识不了解造成的，所以不要刻意的去学 PyTorch。"<span class="src">—— 第14集《如何训练一个深度学习模型（知识串联）》· 转写校正版</span></blockquote>
+<blockquote>"几乎就是训练一个模型所用到的基础知识。"<span class="src">—— 第14集《如何训练一个深度学习模型（知识串联）》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"ZIVA/HE/凯明初始化"→Xavier/He/Kaiming、"SIGMOIDTAH"→sigmoid/tanh、"RELOON/reload"→ReLU、"LINKYRELO"→Leaky ReLU、"salute/SWISS/JU和SU"→SiLU/Swish/GeLU、"i m proper"→RMSProp、"v i it"→ViT、"MS1/MC分类交叉商"→MSE/交叉熵、"CNN r n transformer"→CNN/RNN/Transformer、"9%16"→97% 等均已校正。</li>
+<li>存疑："引入STD也可以引入这moment"中 STD 疑为学习率 lr 之误（按上下文拟改，无法确认）；"同时我们也不能用随机数"本意应为"不能用未经缩放的随机数"（保留原话）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（优化器/术语误识极多，但校正记录详尽，知识串联清晰准确）</p>
+</div>
+<h3 id="m4">模块 4 · CNN 视觉 <span class="modrange">（第15-18集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>开目：以卷积为眼，观局部而成全局。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第15集</span> <b>CNN 第一课：为什么需要 CNN</b> <span class="pill">BV1TtjJ6CEbe</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>CV 任务范畴：图像分类、目标检测、语义分割、人脸检测、OCR、自动驾驶等；图像在计算机本质是一组像素对应的 RGB 数值。</li>
+<li>颜色与张量表示：RGB 三原色各取 0~255 亮度（同值即灰度）；灰度图单通道、彩色图为三维张量（如 32×32×3 = 3072 个元素）。</li>
+<li>MLP 处理图像的失败：MNIST 28×28 灰度展平 784 可行；但 224×224×3 展平成 15 万输入×512 隐藏层≈7000 万参数（早年不可行、易过拟合）；更致命的是展平破坏了图像空间结构。</li>
+<li>图像三大内在规律：① 局部相关性（像素与邻域相关）② 平移等变性/不变性（模式位置变但本身不变）③ 层次结构（底层边缘纹理→高层部件→整体，符合哺乳动物视觉皮层机制）。</li>
+<li>CNN 核心思路"先看局部，再渐渐看整体"；神经科学渊源：1950s 猫视觉皮层实验（Hubel &amp; Wiesel，后发现局部感受与分层抽象规律获诺奖）。</li>
+<li>卷积操作：卷积核/滤波器（一组可训练数字）扫描图像做卷积得响应；每个卷积核对应一张特征图 Feature map（高响应处亮）；多通道 RGB 经三维矩阵运算一遍完成。</li>
+<li>CNN 两大设计对应图像规律：局部连接（对应局部相关性，仅看 3×3/5×5 小窗=感受野）→ 参数共享（对应平移等变性，同卷积核全图同参数，参数量骤降）；层数越深感受野越大、特征越抽象；池化层做聚合下集详述。</li>
+</ol>
+<blockquote>"模型的结构应该顺应数据的结构……我们应对特殊的数据结构，对我们的全连接的 MLP 做了一定的调整。"<span class="src">—— 第15集《CNN 第一课：为什么需要 CNN》· 转写校正版</span></blockquote>
+<blockquote>"CNN 大概也是这么工作的——先看局部，再渐渐的看整体。"<span class="src">—— 第15集《CNN 第一课：为什么需要 CNN》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"mini/minutes"→MNIST、"卷积壳"→卷积核、"全链接"→全连接、"RCNN"→CNN、"模式监测"→模式检测器、"感受 field"→感受野(receptive field)、"三的三维的张亮"→三维张量、"热敏"→热成像、"32×32×3（3074）"→3072 等均已校正。</li>
+<li>存疑："这两个人…得了诺贝尔奖"（指 Hubel 与 Wiesel 1981 年诺奖，原话过略，保留）；"早在1950年左右"（Hubel-Wiesel 关键实验在 1959–1962，原话为约数，保留）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语/数字误识极多，但校正记录详尽，概念脉络清晰准确）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第16集</span> <b>CNN 架构详解：卷积层、特征图、池化层</b> <span class="pill">BV1NR7L6YEiF</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>CNN 整体架构：前段"特征提取器"（卷积层 → ReLU → 池化层 反复堆叠）+ 后段"分类器"（特征图展平 → 全连接 → Softmax）。</li>
+<li>卷积层：用小矩阵（卷积核/滤波器）在图上滑动，逐窗口做对应位置相乘再求和，得到特征图（响应值 = 与卷积核模式的匹配程度）；无需展平、无需全连接，故参数量远少于 MLP。</li>
+<li>卷积三要素：① 尺寸（3×3/5×5，越大视野大、参数多，现代多用 3×3）② 步幅 stride（默认 1，调大则特征图更小）③ padding（边缘补零以保持尺寸）。</li>
+<li>输出尺寸公式：H_out = (H_in − K + 2P) / S + 1（例：32×32、K=3、P=1、S=1 → 32×32；S=2 → 16×16）。</li>
+<li>多通道处理：卷积核维度 = 输入通道数（如 3×3×3），跨通道相乘求和再加偏置 → 一个卷积核只产出一张特征图；用多少个卷积核 = 输出多少个通道（特征图张数，与输入通道数无关）。</li>
+<li>参数量优势：单层参数仅由卷积核决定（如 3×3×3×16 + 16 偏置 = 448），对比 MLP 动辄百万，差距巨大。</li>
+</ol>
+<blockquote>"卷积层就是把局部的模式变成一个特征图……在不展平图像的情况下，也不做全连接，从图像中提取到有意义的局部特征。"<span class="src">—— 第16集《CNN 架构详解：卷积层、特征图、池化层》· 转写校正版</span></blockquote>
+<blockquote>"一个卷积核只会得到一个特征图……你用多少个卷积核，它就会得到多少个输出通道。"<span class="src">—— 第16集《CNN 架构详解：卷积层、特征图、池化层》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"Relose/reload"→ReLU、"感受也"→感受野、"全链接"→全连接、"石化层"→池化层、"偏执"→偏置、"pending"→padding、"不服/死拽"→步幅/stride、"PYTORCH"→PyTorch、"K乘K"→K×K、"33"→3×3、"3×32乘32→32×32"等均已校正。</li>
+<li>存疑："四呢…3×3的判定"（原文"四呢"语义残缺，按上下文补全为卷积核尺寸参数，无法完全确定）；"里面可能就是…我扫描出来的图的话…可以演示的"（原句语义不完整，已顺句）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语/数字误识多，但校正记录详尽，卷积运算讲解准确）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第17集</span> <b>CNN 架构（下）：激活层 / 池化层 / 分类器</b> <span class="pill">BV1fW7L6XEiv</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>激活层（ReLU）必要性：卷积本质是乘加线性运算，无非线性则堆叠仍线性；ReLU 引入非线性使后续层能组合出复杂视觉特征（卷积负责局部检测、ReLU 负责非线性组合）。</li>
+<li>池化层（Pooling）：小窗口（如 2×2）在特征图上滑动做下采样（一般 stride=2，高宽减半）；最常见最大池化（保留响应最强值）。核心作用不只是降运算量——更关键的是扩大后续卷积核感受野（图变小、核不变，覆盖原图区域变大），实现"渐渐看整体"的层次抽象。</li>
+<li>分类器：特征图通道数增、尺寸经池化变小，展平成向量（如 2048 维）→ 全连接 → Softmax 得概率。CNN 用全连接在最后没问题，因为输入已是高层语义特征、参数已大幅减少，与 MLP 直接展平原始像素不同。</li>
+<li>经典小 CNN 形态：Input(3×32×32) → [Conv(stride1,padding1)+ReLU+MaxPool2×2] 反复堆叠，通道翻倍（16→32）、尺寸减半；全连接 10 分类。</li>
+<li>PyTorch 实现：nn.Conv2d(in_ch,out_ch,3,padding=1)、MaxPool2d(kernel_size=2)、ReLU 组装；仅 2 组卷积训练 5 轮约 61%。</li>
+<li>CNN 效果提升靠综合训练技巧：标准化、更好初始化、堆更多层、BatchNorm、Dropout、数据增强（翻转/裁剪，最有效）、学习率调度；加技巧后 10 轮达 79%。引出下一集"残差连接"（堆层后训练集也下降=网络退化，非过拟合）。</li>
+</ol>
+<blockquote>"池化……更重要的呢是扩大后续卷积核的感受野，最终则由分类器输出图像的类别。"<span class="src">—— 第17集《CNN 架构（下）：激活层 / 池化层 / 分类器》· 转写校正版</span></blockquote>
+<blockquote>"CNN 的架构设计呢也不只是堆卷积层……归一化、正则化、数据增强、学习率调度，共同决定这些特征能不能被稳定地学出来。"<span class="src">—— 第17集《CNN 架构（下）：激活层 / 池化层 / 分类器》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"CN架构"→CNN、"re录/RELO"→ReLU、"strike调成二/不服"→stride调成2/步幅、"Pulling"→Pooling、"石化"→池化、"展评"→展平、"全链接"→全连接、"soft max"→Softmax、"PYTORCH"→PyTorch、"2GB3"→RGB 3、"connode size 其二"→kernel_size=2、"max铺"→MaxPool、"SDD/ADAM"→SGD/Adam、"bathroom m"→BatchNorm、"DP out"→Dropout 等均已校正。</li>
+<li>存疑："3×30 2×32的彩色图片"（"2×32"疑为转写赘余已删）；"刺耳级是不动的"→"标注（标签）是不动的"（原词不清）；"四是代表什么/十呢/三和16"已按 batch size/分类数/通道数语义补全。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语/数字误识极多，但校正记录详尽，架构讲解清晰）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第18集</span> <b>残差连接：让网络走向深度</b> <span class="pill">BV1LGMw6HEEB</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>深度重要性 + 退化问题：残差连接发明前网络被限 20 层左右；ResNet 论文对比 20 层 vs 56 层，56 层在训练/测试集上皆更差——此乃"网络退化"（两者皆差），不同于过拟合（训练好、测试差）。</li>
+<li>为何难"什么都不做"：恒等映射 H(x)=x 需多层复杂变换恰好抵消，权重要求极高；残差改为学 F(x)=输出−输入 的"差距"，差距=0 只需权重置零，极其简单。</li>
+<li>残差核心：两条路径——主路径学残差（对特征图的修正量）、捷径（skip connection）直接传 X，二者相加得输出（对应 Transformer 中 Add &amp; Norm 的 Add）。</li>
+<li>CNN 演进脉络：LeNet-5(1998, ~5层, 卷积+池化+全连接范式) → AlexNet(2012, 8层, GPU, ImageNet 错误率 26%→15%) → VGGNet(2014, 16/19层) → GoogLeNet(2014, 22层, Top-5 6.67%) → ResNet(152层, 错误率 3.57%，超人类约 5%)。</li>
+<li>ResNet 结构：stem（主干：Conv+BN+ReLU+MaxPool）→ 多个 stage（每 stage 内若干残差块，通道翻倍、尺寸减半）→ 全局平均池化 GAP（每通道取均值→一维向量）→ 全连接。stage 间首个残差块做下采样（stride=2）并用 1×1 卷积对齐 X 形状（shortcut）。</li>
+<li>两种残差块：BasicBlock（浅层 18/34 层，两个 3×3 卷积）；Bottleneck（深层 50/152 层，1×1 降通道→3×3→1×1 升通道，中间细=瓶颈，大幅降运算量）。</li>
+<li>影响：残差连接成为几乎所有深度学习架构（含 Transformer 每子层外都套 Add &amp; Norm）的标配；ResNet 论文被引约 20 万次（AI 领域最高之一），何凯明等华人作者；引出后续 NLP/Transformer 基础。</li>
+</ol>
+<blockquote>"残差连接就是把这种在已有的结果上做修正的思想搬进了深层的 CNN……让网络去学在已有基础上的增量，而不是从零开始全部（学）。"<span class="src">—— 第18集《残差连接：让网络走向深度》· 转写校正版</span></blockquote>
+<blockquote>"残差连接介绍完了……接下来我们就会进入 NLP（序列模型）的发展了……讲的每个部分都和 Transformer 相关。"<span class="src">—— 第18集《残差连接：让网络走向深度》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>转录将"CN架构"→CNN、"EMAGE大赛"→ImageNet大赛、"LENET/杨丽坤"→LeNet/杨立昆、"alex net/v g g net/google啊 net"→AlexNet/VGGNet/GoogLeNet、"top5错误率"→Top-5错误率、"RELU/re录"→ReLU、"P归一化"→批归一化(BatchNorm)、"straight/stat"→stride、"判定"→padding、"残渣块"→残差块、"steam"→stem、"ADD and norm"→Add &amp; Norm、"sf2/sf20"→CIFAR-10、"item w"→AdamW、"M加动量"→SGD加动量、"big basic block"→BasicBlock、"best snet"→ResNet、"PYTORCH"→PyTorch 等均已校正。</li>
+<li>存疑："i m s norm"→RMSNorm（原音不清）；"无线（上也可以应用）"→云端（疑为服务器端/云端）；"LLP的发展/ALP"→NLP发展/Transformer；"256×56 再乘56"等张量尺寸已补×；"20万"→20万次引用。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（术语/模型名/版本号/数字误识极多，但校正记录极详尽，历史脉络与原理准确；为本批 16–18 中术语密度最高的一集） --- # 深度学习课程带读摘要（第 19–36 集） &gt; 课程：《合集·深度学习》（B 站，共 36 集） &gt; 摘要范围：第 19–36 集 &gt; 摘要来源：各集 `transcript_校.txt`（19–35 为既有校正稿，36 为本轮校正稿） &gt; 格式：核心知识点 / 关键引文 / 口径校正·技术备注 / 转写质量</p>
+</div>
+<h3 id="m5">模块 5 · 序列建模与 NLP <span class="modrange">（第19-23集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>通语：让模型记住顺序，理解前因后果。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第19集</span> <b>NLP 概述：从规则穷举到 Transformer 与大模型</b> <span class="pill">BV1RMMu6TEpu</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>NLP 的定义与目标：让计算机理解、处理、生成人类自然语言；任务谱系包括机器翻译、情感分析、信息抽取、文本生成（摘要/对话/写代码）。与编程的根本差别：编程是人学机器语言（中间语言+编译器），NLP 让人用自然语言直接下指令，负担转嫁给机器，从而让 AI 普惠。</li>
+<li>发展脉络三阶段：符号主义（写规则穷举语法、词典替换做机器翻译，乔姆斯基形式语言/生成语法强化"语言可规则化"信念）→ 因规则量无穷、语境依赖（"你可真会说话"可褒可贬）而破产 → 统计/机器学习时代（80 年代末算力提升+语料增加，语言当成可估计的概率分布，n-gram 语言模型、CRF、统计机器翻译；名言"每当我开除一个语言学家，语音识别率就上升一点"）。</li>
+<li>统计方法的死穴：只统计共现频率，不知道"猫和狗近、猫和冰箱远"；one-hot 维度极高、信息密度低、向量两两正交（余弦相似度恒为 0），无语义。分布式假设（Distributional Hypothesis）指出词义由上下文决定 → Bengio 等提出 word embedding（2013 word2vec 落地，king − man + woman ≈ queen）。</li>
+<li>从词到句：embedding 无法区分"狗咬人/人咬狗""我（不）喜欢这部电影" → 需要建模顺序，RNN 用隐藏态逐词阅读记住前文；RNN 长程遗忘 → LSTM（遗忘门）/ GRU（2014）→ Encoder-Decoder / seq2seq（2014，Ilya 团队，编码器把源序列压成中间表示，解码器逐词生成，可处理输入输出不等长）→ 注意力（解码时回看编码器各隐藏态，按相关性加权求和）。</li>
+<li>2017 年 Google 八位作者《Transformer》：自注意力让序列内任意两词直接建联（it 指代 animal 的例子），可并行（不再像 RNN 串行），是算法+工程双重创新；因创新点"站在前人肩膀上"，Google 当时未认识到价值。之后 BERT（MLM 随机遮盖词预测，双向编码）、T5（把所有 NLP 任务统一为 text-to-text）、GPT（Generative Pre-trained Transformer，decoder-only，只做"预测下一个词"）→ 预训练+微调成为主流，语言变成人机交互统一接口。</li>
+<li>静态 vs 动态表示：word2vec 每个词向量固定；ELMo 按上下文动态生成 embedding（bank 在金融/河岸语境下向量不同）。</li>
+</ol>
+<blockquote>"每当我开除一个语言学家，我的语音识别率呢就上升一点……系统不再主要依赖专家写规则了，而是依赖概率，把大量的文本和语音的数据呢当做经验去统计。"<span class="src">—— 第19集《NLP 概述：从规则穷举到 Transformer 与大模型》· 转写校正版</span></blockquote>
+<blockquote>"Transformer 可以说 2/3 的知识都是用的前面的基础，它只站在前人的肩膀上，然后做出了特别大的革命性的创新。"<span class="src">—— 第19集《NLP 概述：从规则穷举到 Transformer 与大模型》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>ASR 反复把 NLP 误识为 LLP/ALP/NRP/L2P，均已统一为 NLP；"chart"→chat、"RCRF"→CRF（条件随机场）、"ERMO"→ELMo、"word to vector/worvex"→word2vec、"gr u"→GRU、"RN"→RNN、"伊利亚"→Ilya（伊利亚·苏茨克维）、"本杰奥"→本吉奥（Bengio）。</li>
+<li>存疑："主谓宾、动系表、从句（存疑，原音'复述'）"，保留原文并标注。另有一处口语把 BERT 的贡献说成"做机器翻译"，实为 MLM 预训练，校正稿已注明。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（虽为平台自动字幕，人名/模型名误识较多，但校正稿逐条修正、脉络完整，可直接作为 NLP 全景导览阅读）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第20集</span> <b>Embedding 与 word2vec：模型如何理解一个词</b> <span class="pill">BV16cNP6oE4R</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>词的三种朴素表示及其缺陷：整数编号（引入虚假的大小/距离关系，模型会认为"火车 &gt; 苹果"）→ one-hot（只表身份、消除虚假序关系，但维度随词表爆炸、信息密度极低、任意两词正交/余弦相似度为 0，无语义）→ 共现矩阵（co-occurrence matrix，用窗口统计上下文共现次数，有语义但维度高、平方级体积、稀疏、对未登录词/方言泛化差、受噪声影响）。</li>
+<li>理论基础是分布式假设：一个词的含义可由其惯常出现的上下文刻画（"我吃了一个苹果/香蕉"常见，"我吃了一个汽车"罕见）；相似上下文 = 相似语义，目标是把这个关系压缩成低维、稠密、可学习可运算的连续坐标——即 Embedding。</li>
+<li>Embedding 的性质：每个词不再是词表位置而是一个可计算坐标；维度不高（如 100 维，常归一化到 −1~1）；每个维度的值由训练得到、单个数字人不可解释（类比 PCA），只有整个向量合起来才有意义。</li>
+<li>word2vec 的关键取舍：不再构建完整语言模型（此前神经语言模型"预测下一个词"是主目标、词向量只是副作用，成本太高），改为把"学词向量"本身作为轻量预测任务，用上下文反复预测 + 反向传播调向量，训练快、效果好；经典结果是 king − man + woman ≈ queen，说明向量空间编码了语义与语法的几何结构。</li>
+<li>两种训练方式对比：CBOW（连续词袋）用上下文向量求平均后预测中心词，训练快、对高频词友好；Skip-gram 用中心词分别预测窗口内每个上下文词，一个词能拆出多个样本，对低频词/专有名词友好、样本少时更好。两者方向相反、原理相同，按数据特征选择。</li>
+<li>工程演示（gensim）：对《西游记》分词 → Word2Vec(sentences, vector_size=100, window=5, min_count=3, sg=1 表示 Skip-gram/0 表示 CBOW, epochs, workers) → `model.wv.most_similar` 查相似词（孙悟空与唐僧相似度 0.17，与唐太宗 0.05）；用 PCA 降到二维可视化，菩萨/如来/佛祖/玉帝聚在一起，孙悟空/花果山/金箍棒聚在一起。</li>
+<li>概念澄清与外延：更标准的单位是 token 而非"词"（"孙悟空"不应切成"孙/悟空"，复合词 review 可能切成 re+view，这属于归纳偏置）；Embedding 是"离散对象→连续向量"的通用接口，也是 RAG 向量召回、推荐系统 i2i/u2i、图像与氨基酸序列编码的第一步；但静态 embedding 无法理解句子（"我不喜欢这部电影" vs "我喜欢这部电影"、"苹果发布新产品" vs "我吃了一个苹果"），需要 RNN/LSTM/GRU/Transformer 建模顺序。</li>
+</ol>
+<blockquote>"一个词的含义啊，可以通过它经常出现的上下文来理解，意思很相近的词，它们的上下文也是非常接近的。"<span class="src">—— 第20集《Embedding 与 word2vec：模型如何理解一个词》· 转写校正版</span></blockquote>
+<blockquote>"它为每个离散的对象……进行了一个向量表示，然后这个向量表示就能被模型所计算所运用了。"<span class="src">—— 第20集《Embedding 与 word2vec：模型如何理解一个词》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>统一术语："共线矩阵/贡献矩阵"→共现矩阵（co-occurrence matrix）、"连续磁带/COPW"→CBOW（连续词袋模型）、"Skip ram"→Skip-gram、"content window"→context window、"交叉商损失"→交叉熵损失、"归啊归纳偏执"→归纳偏置（inductive bias）、"Generate similarity"→gensim 的 similarity、"WV点 most similar"→`model.wv.most_similar`、"jupiter notebook"→Jupyter Notebook、"rap"→RAG、"i to i/u to i"→i2i/u2i。</li>
+<li>数学表达规范化：cos theta → cosθ；window12/window11 → window=2 / window=1。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（平台字幕+详尽校正记录，代码参数与 API 名均已还原，实验结果数据清晰）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第21集</span> <b>RNN：模型开始理解自然语言序列</b> <span class="pill">BV1FbNT6NEJL</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>为什么 FNN/MLP 处理不了语言序列：①无法建模前后依赖（把词摊平一次性输入，丢失顺序；"银行"的含义依赖前文）②输入维度固定而句子变长，强行截断丢信息、padding 补位引入噪声。</li>
+<li>RNN 的核心思路：不改变词向量，改变"读句子的方式"——按时间步 t 从左到右逐 token 阅读，每步把当前输入 X_t 与上一步隐藏态 H_{t-1} 结合生成新隐藏态 H_t，直到 &lt;EOS&gt;；隐藏态是固定维度的浮点向量，是"对前面序列的有损摘要/记忆"，并非逐步对应某个词。</li>
+<li>数学形式：H_t = tanh(ReLU)(W_x·X_t + W_h·H_{t-1} + b_h)；RNN cell 是同一个、参数共享（W_x/W_h/b_h 同步更新），因此参数量与句子长度解耦，可处理 10 个或 100 个 token，也天然支持不定长。</li>
+<li>三类任务决定"何时输出"：整体分类（只用最后隐藏态接线性层+Softmax，如情感正负）序列标注（每个时间步的 hidden state 都接同一个任务头，如词性标注：代/副/动/名）序列生成（每步预测下一个 token，训练时把语料整体左移一位构造"输入—目标"，GPT 即此类）。</li>
+<li>代码要点（PyTorch）：embedding 层（词表大小/embedding 维度）→ nn.RNN(input_size, hidden_size, batch_first=True) → 线性层输出 logits；训练用交叉熵损失（内部自带 Softmax，故训练时不手动 Softmax）+ 梯度下降，注意 padding 位置不计损失、生僻词用 &lt;UNK&gt; 兜底、句尾用 &lt;EOS&gt; 让模型学会停。</li>
+<li>推理/生成策略：手工 Softmax 转概率后取 top-k；贪心（greedy）取概率最高，或通过 temperature / 在前 k 个中采样来增加多样性；`predict_next` 循环调用即构成 `generate`。</li>
+<li>RNN 的三大遗憾（也是后续模型的动机）：表示容量有限（全部历史压进固定维度，早期信息被后续乘法覆盖/弱化）、沿时间反向传播多次矩阵相乘导致梯度消失/爆炸（爆炸可控、消失难控）、本质是 while 循环/递归，前后依赖导致无法并行、训练效率低。改进路线：LSTM/GRU（门控，缓解长程依赖与梯度问题）→ Encoder-Decoder / seq2seq（输入输出不等长）→ Attention（回看全部隐藏态，缓解定长瓶颈）→ Transformer（自注意力 + 可并行）。</li>
+</ol>
+<blockquote>"它从整体思路上做了一些变化……从左到右，一个 token、一个 token 的读，读第一个词的时候就根据当前的输入来确定一个状态。"<span class="src">—— 第21集《RNN：模型开始理解自然语言序列》· 转写校正版</span></blockquote>
+<blockquote>"RNN 保存的其实是任务相关的摘要，不是对历史内容的无损的备份，它是有损的，越往后面他记得越清楚。"<span class="src">—— 第21集《RNN：模型开始理解自然语言序列》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语/符号：多处 "RN"→RNN、"RNSL"→RNN cell、"FN"→FNN（前馈神经网络）、"poker"→token、"DT 部"→第 T 步、"secret length"→sequence length、"space"→hidden state、"logic"→logits、"US"→&lt;EOS&gt;、"贪心新生成"→贪心（greedy）生成、"task 任务投"→任务头；大小写统一 ReLU / Softmax / PyTorch / Skip-gram。</li>
+<li>存疑：优化器处原音 "item"（疑为 Adam）与"地震的开发"（疑为"大模型（应用）的开发"）保留原文并标注存疑。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（伪代码与公式层级清晰，校正记录把 RNN cell/时间步符号全部还原，可直接照做实验）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第22集</span> <b>LSTM 与 GRU 改进 RNN 带来长期记忆</b> <span class="pill">BV1ecKP6SELq</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>RNN 短记性的根因：H_t = tanh(W_x·X_t + W_h·H_{t-1} + b)，把 H_t 代入 H_{t+1} 后 W_h 被连续相乘（0.9 连乘 4 次已衰减到约 0.6，连乘 1000 次几乎归零）——前向传播早期信息被冲淡，反向传播则梯度消失（&lt;1）或梯度爆炸（&gt;1），训练极难。</li>
+<li>LSTM 的关键改动：除隐藏态 H_t 外新增细胞态 C_t（长期记忆，与主输出解耦），并用三个门做选择性读写——遗忘门 F_t（旧记忆保留多少）、输入门（候选记忆 \tilde{C}_t 写入多少）、输出门（暴露哪些记忆给 H_t）；门是 sigmoid 输出的 0~1 向量，逐维度连续控制比例（不是整体开关），由反向传播学出。</li>
+<li>更新公式要点：C_t = F_t ⊙ C_{t-1} + I_t ⊙ \tilde{C}_t（按位相乘 element-wise），H_t = O_t ⊙ tanh(C_t)；加法路径是关键——与 ResNet 同构，让早期状态有"直通通道"，梯度不必反复连乘，显著减轻（非消除）梯度消失。</li>
+<li>GRU 是 LSTM 的简化：只有重置门 R_t（生成候选态时参考多少历史）和更新门 Z_t（旧状态与新候选各占多少），不再单独维护细胞态，H_t 兼任记忆与输出；H_t = Z_t ⊙ H_{t-1} + (1 − Z_t) ⊙ \tilde{H}_t（部分资料 Z_t 写法相反，等价）。参数更少、训练更快。</li>
+<li>三者对比：参数量 RNN &lt; GRU &lt; LSTM；RNN 每步整体重写、效果最差；LSTM 控制最精细、长依赖最强但最慢；GRU 折中，数据量小或要求实时性时优选；纯 RNN 现已很少用。PyTorch 上层 API 几乎一致（nn.LSTM / nn.GRU，input_size、hidden_size、batch_first），只是 LSTM 前向传播返回 (h_n, c_n)、GRU 只返回 h_n。</li>
+<li>实验佐证：口令回忆任务（8 种口令 + 大量干扰 token + 末尾 query），随机猜 12.5%；RNN 在长度 100~120 时只记住约 24%~26%，GRU/LSTM 接近 100%。</li>
+<li>思想史联系：2015 年初 Highway Network 受 LSTM 门控启发（把"信息高速公路"搬进 FNN），2015 年底 ResNet 作为其特殊形式（默认让原信息全部通过、只学残差）胜出并统治深层网络。</li>
+<li>局限与去向：仍是循环结构，H_t 依赖 H_{t-1} 故无法并行；门控只是缓解超长距离衰减；状态仍是固定维度瓶颈，无法直接访问更早表示 → 引出 attention（用时直接去查看，不必一路携带），Transformer 的 Self-Attention 进一步去掉时间步递推、实现并行。</li>
+</ol>
+<blockquote>"门控真正改变的是状态更新的路径……老的内容呢，你是能够被单独的通道留起来的，实际上这基本上和残差连接的思想是特别的像的。"<span class="src">—— 第22集《LSTM 与 GRU 改进 RNN 带来长期记忆》· 转写校正版</span></blockquote>
+<blockquote>"与其我们一路把所有的历史经过各种各样的变换处理都携带，那不如说我在用的时候呢，我去看看不就行了吗，这个就是我们后面要介绍的 attention 的机制。"<span class="src">—— 第22集《LSTM 与 GRU 改进 RNN 带来长期记忆》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语统一："连城"→连乘、"细胞肽/细胞胎"→细胞态（cell state, C_t）、"候选太/候选肽"→候选态、"按着 V 做乘法/安慰成"→按位（element-wise）相乘、"碳 H/太 H"→tanh、"WSST/WH"→W_x·X_t / W_h、"RT/ZT"→R_t / Z_t、"heavy network/HIV"→Highway Network、"Rest"→ResNet、"N 点 LSTM"→nn.LSTM、"排套"→PyTorch。</li>
+<li>存疑："BT 中的"疑为 input、"30% 左右的 Transformer"按语义写作"（雏形版的）Transformer"，均已标注。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（门控公式讲解密集，校正记录完整还原符号与模型名，可作为 LSTM/GRU 复习材料）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第23集</span> <b>编码器-解码器 与 seq2seq</b> <span class="pill">BV1Gk3G6pESk</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>任务形态划分：RNN 擅长 sequence to one（读完整句用最后隐藏态分类：情感分析/新闻分类/垃圾邮件）与 sequence labeling / 序列标注（每个隐藏态接同一任务头，输入输出一一对应且同序：词性标注）；但机器翻译等属于 序列到序列——输入输出都是序列，且长度、语序、时间轴彼此独立（There's a cat under the table → 桌子下面有一只猫，语序与 token 数都不同），前两种都做不了。</li>
+<li>史的两个节点：2014 年 6 月 Bengio 团队《RNN Encoder-Decoder》（同时提出 GRU）只是把 SMT（统计机器翻译）中的"短语匹配打分"换成神经网络编码的向量相似度，整体仍是统计机器翻译框架，Encoder-Decoder 只是辅助打分模块；2014 年 9 月 Google 的 Ilya Sutskever 等《Sequence to Sequence》才把整个句子端到端交给神经网络，去掉统计打分环节，编码器用四层 LSTM 读完整句得到 context vector，解码器逐词生成译文。</li>
+<li>推理流程六步：编码器读完全部 token 得到上下文 → 用上下文初始化解码器隐藏态 S0 → 送入 BOS/SOS 开始符 → 逐步生成（I → like → …）→ 每步把自己的输出作为下一步输入，即自回归 → 遇到 &lt;EOS&gt; 或超过最大长度停止。</li>
+<li>训练技巧一 Teacher Forcing：推理用自己上一步输出，训练则无论模型预测出什么都把真实标签作为下一步输入（把目标序列整体右移一位作解码器输入），否则一步错步步错、误差累积无法训练；注意损失仍按模型自己的错误预测计算，teacher forcing 只改变"下一步输入什么"，不改变损失函数。序列头尾处理：&lt;BOS&gt; + 目标 + &lt;EOS&gt;，解码器输入去掉尾部 &lt;EOS&gt;，监督目标去掉头部 &lt;BOS&gt;。</li>
+<li>训练技巧二 源语句倒序输入（同为 Ilya 论文技巧）：让源句开头的词靠近解码起点，缩短源-目标 token 间的依赖路径，缓解 RNN/LSTM 记忆衰减（只是技巧，未解决循环依赖）。</li>
+<li>代码与张量（PyTorch）：Encoder = Embedding(vocab, emb_dim, padding_idx) + 单层 GRU（embedding 64 维、hidden 128 维），batch_first 后形状 (B, S, emb)；padding 时需按真实长度取对应位置的隐藏态（index = len − 1），而非直接取最后一个；Decoder = Embedding + GRU + Linear(hidden, 中文词表 58)；损失用交叉熵（内部自带 Softmax，故模型输出 logits 不归一化，且 logits 对知识蒸馏有价值），ignore_index 屏蔽 &lt;PAD&gt;，优化器用 Adam，并做梯度裁剪（gradient clipping）防爆炸；验证/推理用 torch.no_grad。</li>
+<li>迷你英中翻译实验：受控语对（controlled pair，动物/颜色/位置/物体/数量组合，含语序变化句式与一致句式两种），英 71 / 中 58 token，8:1:1 划分，batch=128（同批按最长句 padding），参数约 16 万，35 轮 CPU 约 6.9 秒，验证集上基本全对，并能泛化到训练集外的新句子且学会 &lt;EOS&gt; 停止。</li>
+<li>seq2seq 的两大局限 → attention 的动机：①依然是 RNN 逐步推进，训练与推理都无法并行，效率低；②整句被压进固定长度上下文向量（如 128 维），长句/长文摘要时前面的信息严重损失（信息瓶颈）。Attention 的做法是解码每一步都拿到编码器的全部隐藏态，并自己算分数决定更关注哪个（译 deep 时重点看 H3，译 learning 时重点看 learning 对应的隐藏态），从而各取所需、大幅缓解瓶颈；Transformer 进一步"只要注意力、不要隐藏态"，故论文名为 Attention Is All You Need。</li>
+</ol>
+<blockquote>"Encoder-Decoder 是思想，先编码再解码，这是思想；而 Sequence to Sequence 呢是具体的架构了。"<span class="src">—— 第23集《编码器-解码器 与 seq2seq》· 转写校正版</span></blockquote>
+<blockquote>"无论模型在第 T-1 步预测出来了什么，我们都把真实的标签当成下一步的输入……其实呢这个就叫做 teacher forcing。"<span class="src">—— 第23集《编码器-解码器 与 seq2seq》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>人名/术语：本吉奥（Bengio）、辛盾→Hinton（辛顿）、杨丽坤→杨立昆（Yann LeCun）、伊利亚→Ilya Sutskever，三人均获图灵奖；"SMIT"→SMT（统计机器翻译）、"sequence leveling"→sequence labeling、"contest vector"→context vector、"汽车 forcing"→teacher forcing（"汽车"为 EOS 误识）、"logic"→logits、"no ground"→no_grad、"梯度剪裁"→梯度裁剪（gradient clipping）、"lost 点 item"→loss.item()、"弟子"→batch size、"发言人底层"→RNN 底层、"128 位"→128 维。</li>
+<li>存疑并保留：示例首词"亨利"、维度处"七一百/base"按上下文重构为 S=10、hidden_size=128、vocab=58；"384 对"疑为样本数。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（本集最长、代码讲解最细，校正稿把 API/符号/数据规模全部还原，并标注了多处存疑，可信度高）</p>
+</div>
+<h3 id="m6">模块 6 · 心法篇 <span class="modrange">（第24集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>问道：不走死路，方得长生。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第24集</span> <b>如何入门深度学习——不要死磕 PyTorch 和数学</b> <span class="pill">BV1rB3E6JEEd</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>核心判断：PyTorch API 与完整数学教材都不是学深度学习的前置条件；真正的前置是"数据→模型→损失→优化→验证/泛化"这一整套认知框架。</li>
+<li>为什么看不懂训练代码：主因通常不是不会 PyTorch，而是①Python 基础不足 ②没掌握机器学习/深度学习基本理论。以 MLP 识别 0~9 手写数字为例，代码本身只有"创建对象、调用函数、传参"，难点在于理解每一步在训练流程中的作用：为什么 model(x) 能出预测、为什么一个数字能代表错误程度、为什么反向传播能得到梯度、有了梯度为什么能更新参数。</li>
+<li>PyTorch 的正确定位：它是把数学公式与模型结构转成程序的工具（反向传播一行 loss.backward() 搞定），但前提是理解反向传播；入门只需约 1 小时浏览最常用的部分——Tensor 基本操作、nn.Module、模型结构定义、Dataset/DataLoader、损失函数、优化器、autograd 自动求导，其余交给 AI 辅助编程，模型架构设计与训练流程组织仍需自己掌握。</li>
+<li>数学的正确学法：不按教材从头啃微积分/线代/概率论/数理统计（脱离问题易陷"记住公式不知解决什么"的困境，如梯度下降公式与代码对不上）；应边学边补——线代（向量矩阵乘法、维度）、损失函数（均方差、方差、概率与对数）、反向传播（导数、偏导、链式法则）、优化器（梯度即偏导组成的向量、方向/步长）、分类模型（正态分布、最大似然估计）。最低要求：向量矩阵乘加与点积、导数/偏导/梯度、均值/概率/对数。</li>
+<li>真正的起点是机器学习：深度学习是机器学习的分支，换模型（RNN/seq2seq/Transformer）不改变机器学习要回答的五个基本问题——哪些是输入、哪些是标签、模型如何预测、如何评价预测、如何据误差修改模型、如何判断泛化能力；机器学习问题更简单、框架搭得清楚，学完再看深度学习会顺畅很多。两者最大区别：机器学习人工设计特征（边缘/纹理/形状），深度学习把特征提取也交给网络自动学习（如 CNN），代价是参数量大、训练难度高。</li>
+<li>时间极其有限时的最小集（约 10 小时内）：样本/特征/标签、监督与无监督、训练集/验证集/测试集划分与作用；线性回归与逻辑回归；均方差与交叉熵损失；梯度下降工作原理；过拟合处理与泛化能力判断。</li>
+</ol>
+<blockquote>"PyTorch 肯定是实现深度学习重要的工具啊，但它不是深度学习本身，它解决的问题是如何更方便地把数学公式和模型的结构转换成程序。"<span class="src">—— 第24集《如何入门深度学习——不要死磕 PyTorch 和数学》· 转写校正版</span></blockquote>
+<blockquote>"更合理的路径就应该是先去理解机器学习的基本的思想……遇到了一些需要补充数学知识的，就现场去做补充。"<span class="src">—— 第24集《如何入门深度学习——不要死磕 PyTorch 和数学》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>全篇为 ASR 转写（无字幕轨道，48 段），术语已校正："pythorch/排 Y 套/PYT 套式"→PyTorch、"Modeldule/Nn.model"→nn.Module、"Data loader"→DataLoader、"0~90 个数字"→0~9（十个）数字、"linearrelu"→Linear、ReLU、"自动寻求导"→自动求导（autograd）、"点击内积"→点积（内积）、"iron 架构"→RNN 架构、"记忆学习"→机器学习。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（ASR 无标点长句、分段极少，但术语误识基本被校正稿修复，读来连贯）</p>
+</div>
+<h3 id="m7">模块 7 · 注意力与 Transformer <span class="modrange">（第25-33集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>结丹：注意力是金丹，Transformer 是丹炉。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第25集</span> <b>注意力机制：大模型前夜的最后一块拼图</b> <span class="pill">BV13UGu6yErd</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>动机：seq2seq 把整句压成固定长度上下文向量（如 128/256 维），句子一长（乃至一部小说）信息损失严重；LSTM/GRU 只是缓解。类比人工翻译——不是先把原文背下来再凭记忆写，而是把原文放在手边边译边查。</li>
+<li>核心改动：解码每一步不再只参考编码器最后一个隐藏态，而是对编码器全部隐藏态 H1…HN 按不同权重参考；输入序列的编码结果始终不变，变的是每个解码时间步算出的注意力权重与上下文向量（C3 ≠ C4），即"动态上下文向量"。</li>
+<li>计算三步：①打分：用当前解码隐藏态 S_t 与每个编码器隐藏态做点积（相关性分数，可正可负、和不固定，需维度相同）②Softmax 归一化：把分数转成非负、和为 1 的注意力权重 ③加权求和得到动态上下文 C_t，再与解码器状态 S_t 拼接、做线性+非线性变换，最后经线性层与 Softmax 输出下一个 token 的概率。</li>
+<li>实算示例（i love deep learning → 我喜欢深度学习）：解码到 S3 时打分显示最关注 deep（权重 0.78），得 C3 → 输出"深度"；到 S4 时最关注 learning → 输出"学习"；再下一步输出 &lt;EOS&gt;。</li>
+<li>*软对齐（soft alignment）**：不像统计机器翻译那样硬性规定 cat↔猫 一一对应，而是允许多个输入位置以不同权重同时参与；权重分配不是人为指定，而是为降低翻译误差由反向传播+梯度下降学出来的（可视化：译"下面"与 under 最相关、"猫"与 cat 最相关，即便"猫"在译文中位于末尾而原文在中间）。</li>
+<li>QKV 抽象：本质是可学习的信息检索——Q = 解码器状态 S_t（当前诉求）→ 与 K（编码器隐藏态，接受查询匹配）算分数 → Softmax 得权重 → 对 V（同样来自编码器隐藏态）加权求和。通用公式 Attention = Softmax(Q·Kᵀ/√d)·V（除以根号 d 为缩放点积，保数值稳定）。K 与 V 数值同源但作用不同，靠各自的可学习权重矩阵 W_K/W_V 做线性变换区分。</li>
+<li>对照实验（用 and 拼接子句拉长句子，其余不变，仅解码器多约三行运算、参数增约 4.6%）：单子句两者均 100%；双子句无 attention 40.4%、有 attention 100%；三子句无 attention 几乎为 0、有 attention 97.5%。消融实验还证明：有了 attention 后，源句是否倒序输入结果一样（位置不再重要），而纯 seq2seq 倒序与否差别很大。</li>
+<li>局限与通往 Transformer：attention 没有改动循环结构，仍需按时间步推进、训练慢。但 QKV 形式并不规定三者来源——若让 Q、K、V 都来自同一个序列（每个位置既发起查询、也接受匹配、也提供内容），就是自注意力 Self-Attention；此时各位置互不依赖，可一次性并行计算、吃满 GPU，2017 年《Attention Is All You Need》正是去掉 RNN 循环、只保留 attention，故名。</li>
+</ol>
+<blockquote>"我们改的是信息的传递的方式……现在呢我要把你前面的都动态算算，看看我当前这一步要最关心谁。但我们没有动它的循环结构。"<span class="src">—— 第25集《注意力机制：大模型前夜的最后一块拼图》· 转写校正版</span></blockquote>
+<blockquote>"attention 本质上就是一个可学习的信息检索机制……Q 就是表达当前的诉求，K 呢看看哪些位置我应该最关注你里面的谁，V 就是把对应的最有用的信息给取出来。"<span class="src">—— 第25集《注意力机制：大模型前夜的最后一块拼图》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语：LRP→NLP、多处 "RN"→RNN、"sequence to secrets"→sequence to sequence、"点击"→点积（dot product）、"surface/so Max"→Softmax、"K 有 KV/KKV"→Q、K、V、"KO"→Q、"tension all you need"→Attention Is All You Need、"除以一下根号的"→除以根号 d（缩放点积）。</li>
+<li>存疑保留：示例权重 0.7/0.1 与 0.07/0.06/0.78 两处数值不一致未强行统一；"ADD"按语境作英文 and；"ZERZ"疑为 the。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（讲解层次清晰、数值与实验数据完整，校正记录逐条标注含存疑项，是理解 attention→Transformer 过渡的关键一集）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第26集</span> <b>Transformer 前置概念复习</b> <span class="pill">BV1r93S6zEM8</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>定位：Transformer 是"集大成者"，复用 embedding / attention / 残差连接 / 归一化 / FFN / Softmax-Linear 等已知组件并重新组合；零基础半小时入门是骗局，但掌握本集 12 个基础概念后，半小时理解 Transformer 不成问题。</li>
+<li>标量/向量/矩阵/张量：逐次升维（标量 → 向量 → 矩阵 → 三维张量 → 四维…），PyTorch 中统一用 tensor 表示；Transformer 中一个 token 是向量、一句话是矩阵、多句话是三维张量（加 batch 维）。</li>
+<li>三种常见运算：①张量加法（形状必须完全相同，逐位置相加，形状不变）②等长向量点积（逐位相乘再累加，结果是标量）③矩阵乘法（(M×P)·(P×N) = M×N，第一个矩阵的行与第二个矩阵的列做点积）。不满足条件时用转置（M×D → D×M）。</li>
+<li>Embedding：把离散符号经神经网络训练成低维稠密的语义空间，语义近的词在空间中更近（king − man + woman ≈ queen）。</li>
+<li>Encoder-Decoder 与 seq2seq：encoder 负责理解输入序列生成中间隐藏态，decoder 利用它和自己上一步输出预测下一个 token；seq2seq 是该思想的实现，且不要求输入输出等长、不要求位置一一对应。</li>
+<li>Attention：让解码器在每个生成时刻重新关注编码器全部隐藏态，按需分配权重，大幅提升长序列性能。</li>
+<li>Softmax：把任意一组实数归一化成全正、和为 1 的分布，既可表达注意力权重，也可表达下一个 token 的概率。</li>
+<li>线性变换：本质即线性回归，用可学习权重矩阵对输入做缩放/旋转/组合/升降维；Transformer 用不同的线性变换从同一输入得到 W_Q、W_K、W_V 三个矩阵，进而得到 QKV。</li>
+<li>激活函数：纯线性变换堆叠再多也等价于一次线性变换，必须在两层线性之间加入非线性转折；Transformer 常用 ReLU 或 GELU。</li>
+<li>FFN（前馈神经网络，MLP 即典型 FFN）：先升维 → 非线性激活 → 再降维回原维度，为每个 token 提炼更丰富特征。</li>
+<li>残差连接：保留原始信息 + 为反向传播提供更短路径，是深层网络（含 Transformer）可训练的关键，Transformer 内部几乎每个子层连接处都有。</li>
+<li>归一化：让数值稳定；此前 CV 等场景多用 BatchNorm（对一批样本中同一特征维做归一，如"卧室数量"），而 NLP/Transformer 用 LayerNorm（对单个样本自身各特征维做归一，因为不同句子的同位置 token 之间并无共性，同一 token 向量内部各维之间才需要统一尺度）。</li>
+</ol>
+<blockquote>"如果说我们对接下来介绍的 12 个概念都已经非常清楚了，那么半小时理解 Transformer 几乎不成什么问题。"<span class="src">—— 第26集《Transformer 前置概念复习》· 转写校正版</span></blockquote>
+<blockquote>"层归一化是 transformer 中反而用的更多的，它呢对每个特征维度进行独立的归一化，让同一个样本不同的位置的数值的尺度保持稳定。"<span class="src">—— 第26集《Transformer 前置概念复习》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语校正："P 归一化"→批归一化（Batch Normalization）、"RELOSE"→ReLU、"JUSU"→GELU（存疑但按上下文最可能）、"WQW 呃 WKWV"→W_Q、W_K、W_V、"soft max liner"→Softmax Linear、"PYTORCH"→PyTorch、"简转成了"→转换成。</li>
+<li>数学口误已标注：转置示例原文"M×D 变 D×N 相乘得 M×N"按转置逻辑应为 M×D → D×M，相乘得 M×M，正文已纠正并标存疑。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（本集为复习串讲，逻辑清晰、公式表述准确，仅少量英文术语与一处矩阵维度口误需修）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第27集</span> <b>Transformer 第一课：整体架构</b> <span class="pill">BV1eru36jEzL</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>历史与定位：2017 年 Google《Attention Is All You Need》提出 Transformer，起初仍解决 seq2seq 问题（机器翻译），创新点是 Self-Attention，能处理更长序列并支持 GPU 并行，成为 BERT/GPT/T5 及今日大模型的基础，并外溢到 CV、语音、多模态。</li>
+<li>整体数据流（仍是 Encoder-Decoder）：Inputs → Input Embedding + Positional Encoding 相加 → Encoder 栈（论文默认 N=6 层）产出供 Decoder 读取的表示（即 K、V）→ Decoder 结合 Encoder 表示与已生成的目标前缀产生隐藏表示（即 Q）→ 线性层映射到词表大小得到 logits → Softmax 成概率 → 采样/贪心得下一个 token → 拼回目标前缀循环，直到 &lt;EOS&gt;。</li>
+<li>位置编码的必要性：不再像 RNN 按序推进后，"狗咬人/人咬狗"会变得一样；因此在 Embedding 上加上 Position Encoding 向量再进 Encoder（架构图中该加号有实际含义，非装饰）。</li>
+<li>Self-Attention：每个 token 用自己的 Query 去匹配序列中所有 K，得到权重后对 V 加权求和，每个位置的输出都融合了全句信息；各位置互不依赖 → 可整体矩阵化一次算完 → 可并行。公式为 Softmax(Q·Kᵀ/√d_k)·V，√d_k 是保数值稳定的缩放系数。</li>
+<li>Multi-Head Attention：用多组不同参数并行地做多次注意力，每个头是一种观察序列的角度（类比 CNN 的多个卷积核各提一类特征），最后拼接融合；只是对注意力的强化，非新机制。</li>
+<li>Add &amp; Norm：Add = 残差连接，Norm = LayerNorm（公式 X + F(X) 后再归一化）；因堆叠 N 层后参数量大、原信息易丢失、各层输出分布漂移，故每个子层后都要接一次，纯为训练稳定。Encoder 中每层 2 次、Decoder 中每层 3 次。</li>
+<li>FFN：Self-Attention 只决定"关注哪些位置、读多少信息"，还需加工成有表达力的特征——先升维（论文中 512 → 2048）→ 非线性激活 → 再降回原维度（512），输入输出维度不变。Encoder 的核心两部件即 Self-Attention（token 间交换信息）+ FFN（加工成隐藏表示）。</li>
+<li>Decoder 的三种注意力对比：编码器 Self-Attention（QKV 全来自自己，看全句，无掩码）；掩码自注意力 / 因果掩码（QKV 仍来自自己，但每个位置只能看到自己及之前的 token，防止 Teacher Forcing 下偷看未来答案）；Cross-Attention（Q 来自 Decoder 掩码注意力的输出，K、V 来自 Encoder，无掩码）。三者计算形式相同，只是 QKV 来源与是否对未来做限制不同，代码里可写成同一个函数传不同参数。</li>
+<li>掩码与并行的关系：正因为训练是一次性把整句并行算完（不像 RNN 先算 I 再算 love），才必须用因果掩码遮住未来位置——预测"爱"时只能看自己，预测第 4 个时才能看到前 4 个。</li>
+<li>常见误解澄清：Transformer 的"并行"指训练时（以及编码时）可并行；推理（自回归生成）仍是一个 token 一个 token 串行吐出，这就是聊天机器人逐字输出的原因。</li>
+<li>变与不变：不变的是 seq2seq 的 Encoder-Decoder 架构与数据流、以及 attention"根据当前需求查询已知信息"的通用思想；变的是各种 attention 的信息来源（自注意力/掩码自注意力/交叉注意力）。两大收益：①不同位置间信息传递路径显著缩短，长距离依赖能力变强 ②摆脱循环依赖可用 GPU 并行；代价是参数量大幅上升。</li>
+</ol>
+<blockquote>"能并行的是指的是训练能并行了，编码的过程能并行了……但是在推理的时候还是串行的，它还是一个 token 一个 token 的预测的。"<span class="src">—— 第27集《Transformer 第一课：整体架构》· 转写校正版</span></blockquote>
+<blockquote>"理解 Transformer 的关键呢，就是理解序列中的信息是如何通过自注意力直接流动的。"<span class="src">—— 第27集《Transformer 第一课：整体架构》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语：多处 "RN"→RNN、"bot g p t t5"→BERT、GPT、T5、"NRP/arr p"→NLP、"soft max/solve max"→Softmax、"multi hi/Attention had"→Multi-Head / Attention Head、"at and norm/ANOMM"→Add &amp; Norm、"NX"→N×、"因果严马"→因果掩码、"kill"→K 或 Q（按语境，Decoder 掩码注意力输出作 Q）、"logic"→logits、"此表"→词表、"层规异化"→层归一化、"记忆翻译"→机器翻译。</li>
+<li>存疑并已按语境改：原文"sequence to sequence 是四层"改为"单层"；"除上一个它"按 Self-Attention 公式补为除以 √d_k 缩放系数。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（长句口语但结构分明，术语误识较多而已被逐条校正；是后续各集的总纲）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第28集</span> <b>Transformer 注意力究竟在做什么</b> <span class="pill">BV1Jbby6AECt</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>Attention 的定义：为序列中每个 token 生成新的上下文表示的方法——Embedding 后每个向量只含自身语义（+位置），Attention 计算不同位置间的匹配关系，按匹配程度读取并汇总，使每个 token 的向量都融合了全句相关信息。例：it 在 "it was too tired" 中指 animal，改为 "it was too wide" 则指 street，说明词义必须由上下文决定。</li>
+<li>与 seq2seq attention 的异同：两者任务与四步流程相同（理解输入序列 → 理解已生成的输出 → 用当前输出去输入里按需读取 → 融合后预测下一个 token）；差别在于"理解序列"的方式——seq2seq 用 RNN 逐步生成隐藏态，只做一次 attention；Transformer 把"理解"本身也交给 attention，所以要用多次（编码器自注意力、解码器掩码自注意力、交叉注意力）。</li>
+<li>三类注意力的信息来源：编码器自注意力 QKV 全来自自己（看全句、无掩码）；掩码自注意力 QKV 也来自自己，但要遮住未生成的未来部分（防止 Teacher Forcing 下偷看答案造成信息泄露）；交叉注意力 Q 来自解码器（掩码注意力输出的上下文表示），K、V 来自编码器。三者数学形式完全相同，代码里可写成同一个函数传不同 QKV。</li>
+<li>Q/K/V 的角色类比：Q 描述"我更新自身时最想查什么"；K 相当于论文的摘要，供别人快速判断是否相关；V 是匹配后要被读取的完整内容。K 与 V 配套来自同一处，是因为"先按摘要算权重、再按权重取内容"。</li>
+<li>计算过程（以 I love deep learning 中 learning 为例）：输入矩阵 X（4×512）分别乘可学习的 W_Q/W_K/W_V 得 Q/K/V → q·Kᵀ 点积得匹配分数 → 除以 √d_k 缩放（否则 Softmax 输入量纲过大、分布过于集中、梯度过小无法训练）→ Softmax 归一化成权重（示例 I 10%、love 20%、deep 45%、learning 25%）→ 按权重对 V 加权求和，得到 learning 的新表示。整句可一次矩阵化并行完成，注意力权重矩阵 A 的第 i 行第 j 列 = 第 i 个位置对第 j 个位置分配的权重。</li>
+<li>掩码的实现：用一个下三角矩阵 Mask 加到注意力分数上（只保留自己及之前的位置），使训练时与推理时行为一致——推理时看不到未来，训练时虽有答案也不让看；被遮住的内容仅用于算损失。</li>
+<li>编解码流程串讲：Encoder 只编码一次且并行，输出供所有解码步复用（作 K、V）；Decoder 从 BOS 起逐步生成——掩码自注意力得到当前上下文表示作 Q → 交叉注意力用 Encoder 的 K、V → 线性层映射到词表得 logits → Softmax 得概率 → 取"我""喜欢""深度"…直到 EOS。训练时因 Teacher Forcing 有完整答案，这些步可一次性并行，这是 Transformer 远快于 seq2seq 的原因。</li>
+<li>*KV Cache 与 Prompt Cache（工程要点）：Encoder 的 K、V 只算一次即可被交叉注意力反复使用，可缓存；解码器掩码自注意力中，已生成前缀的 K、V 不再变化，只需把新 token 的 K、V append 进矩阵，前面 999 个不必重算。没有 Q Cache**：Q 只服务于当前位置的一次查询，下一位置会产生全新的 Q_{t+1}，旧的 Q 不再被使用，缓存无意义。Prompt Cache 是跨请求复用——Agent 开发中应保持系统提示词、工具定义、公共上下文在前且稳定、把变化内容放后面，前缀越稳定可复用范围越大、成本越低。</li>
+</ol>
+<blockquote>"Attention 是一种为每个 token 生成新上下文表示的方法……让每个 token 里面呢都包含了整个句子其他 token 的相关信息。"<span class="src">—— 第28集《Transformer 注意力究竟在做什么》· 转写校正版</span></blockquote>
+<blockquote>"Query 呢只服务于当前位置的一次查询，而 K 和 V 呢会持续作为历史信息被查询，所以说呢 K 和 V 要缓存，Query 没必要。"<span class="src">—— 第28集《Transformer 注意力究竟在做什么》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语："kv catch/prompt catch/kill catch"→KV Cache / Prompt Cache / Q Cache、"点击"→点积、"SMAX/soft max"→Softmax、"盐/马自注意力/掩码字注意力"→掩码自注意力、"预测下一个 transformer"→预测下一个 token、"A 证"→Agent、"straight"→street、"to wide"→too wide、"根根号下 DK"→√d_k。</li>
+<li>英文例句 it was too tired / too wide 已按原意修正，避免了指代举例的歧义。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（推理链条完整、数值示例具体，KV Cache 部分与工程实践强相关，校正记录覆盖了绝大部分误识）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第29集</span> <b>Multi-Head Attention：多个角度提取特征</b> <span class="pill">BV1yH8r6PEzB</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>架构图标的是 Multi-Head Attention，上集讲的 Self-Attention 只是其中的一个头：论文中把同一套运算用八套独立的 QKV 投影矩阵（W_Q/W_K/W_V）做八遍，从八个不同角度投影提取语义，再把结果拼接（Concat）。</li>
+<li>为什么要多头：单头只有一套投影，所有关系被挤在同一个表示空间；多头相当于多套投影，可分别关注不同层面的关系——同一个 it，某个头最关注 animal（指代关系）、某个头最关注 was（英语语法）、某个头最关注 tired（语义/状态）。注意：这些"看指代/看语法/看语义"只是便于人类理解的比喻，模型实际学到什么由训练决定，未必每个头都有人类可解释的含义（与 CNN 卷积核"有的提纹理、有的提颜色"同理）。</li>
+<li>与 CNN 的类比：同一份输入用多套参数提取多组特征再组合——CNN 一层用多个卷积核各提一类特征，多头注意力用多个 head 各学一种模式。</li>
+<li>*维度切分（关键，写代码必知）：多头并非让计算量翻八倍，而是把 d_model 表示空间切分给各头——d_model=512、8 个头时，每个 head 的维度变为 64（512/8），各头独立算注意力（16 个 token 时是 16×64），最后拼接回 N×512 再经 W_O 线性映射。变的是每个 token 的表示维度，不是序列长度**；注意力权重矩阵始终为 N×N（N 为序列长度）。张量形状上表现为把 head 维挪到前面（batch, seq, 512 → batch, head, seq, 64），运算后再融合还原。</li>
+<li>为什么拼接后还要 W_O：拼接只是把八段信息排在各自维度区间，段与段之间的关系并未融合；再过一层线性变换，才能让每个输出维度同时组合所有 head 的信息，实现真正的融合。</li>
+<li>一句话总结：多头 = 同一序列被映射到多个表示子空间分别建立注意力关系，再 Concat 恢复维度 + W_O 融合，从多个角度看句子以理解得更准确；逻辑与单头一致，只是投影参数由一套变多套、每头维度除以头数。</li>
+</ol>
+<blockquote>"一个 head 只能有一套投影，所有的关系都被挤在一个空间中，而多个 head 呢就相当于多套投影，就是从不同的角度给它做投影。"<span class="src">—— 第29集《Multi-Head Attention：多个角度提取特征》· 转写校正版</span></blockquote>
+<blockquote>"它变的是 64 维表示，而不是变的序列的长度……大家要知道我们改变的不是序列的长度，而是表达一个 token 它的维度。"<span class="src">—— 第29集《Multi-Head Attention：多个角度提取特征》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>符号/术语统一："wq wk 和 WV"→W_Q、W_K、W_V、"ATTENSION"→Attention、"做点击"→做点积、"soft max"→Softmax、"multi heat"→Multi-Head、"每 I 呢/每个 had"→每个 head、"W 的运算"→W_O 的运算、"CONCAT"→Concat、"首错代码"→手搓代码。</li>
+<li>重要数字修正："16 句话"→16 个 token（矩阵 N×64 中的 N 是 token 数而非句子数）；英文例句 straight→street。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（短小精悍，维度变换讲得清楚，是手写 Multi-Head 代码前必看的一集）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第30集</span> <b>位置编码：让注意力理解 Token 在序列中的位置</b> <span class="pill">BV1Go8s6KEd2</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>为什么需要位置编码：RNN 靠逐步传递天然带顺序（但慢、串行）；Transformer 把整句组成矩阵一次算出任意两 token 间的关系（快、并行），代价是丢掉了先后顺序——dog bites man 与 man bites dog 的 token 完全相同，不加工就无法区分。因此必须在第一次 Attention 之前补上位置信息。</li>
+<li>实现方式（原论文）：Embedding 向量 + 位置编码向量直接相加（维度相同），合成结果作为输入 X；由于 QKV 都由 X 投影得到，位置信息便暗含在 QKV 中。用加法而非拼接，是为了保持 d_model 维度不变（拼接会翻倍，导致后续所有矩阵运算参数量与计算量上涨），便于与后续模块衔接。</li>
+<li>为什么不能直接用 0、1、2、3… 当位置：Transformer 内部只做点积和矩阵乘法，不做减法，无法像人一样用 6−3 感知距离。也不能用"每位都填位置编号"的常量向量：模式过于单薄，且序列变长后数值（如 3 万）会远超 Embedding 数值范围（0.3、2.1），相加后语义被淹没；归一化则需预设最大长度，不灵活。</li>
+<li>正弦/余弦位置编码：PE(pos, 2i) = sin(pos / 10000^(2i/d_model))，PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))。d_model=512 时 512 维两两分组共 256 组，i 为组号；分母 10000^(2i/d) 随 i 增大而增大（1、10、100…），即不同维度以不同频率变化——靠前的维度变化快（能区分相邻位置但远处会周期重复），靠后的维度变化慢（近处几乎相同、远处才有差别）。</li>
+<li>直觉类比：像钟表的时针/分针/秒针，快慢搭配即可同时分辨"近处"与"远处"的位置。更关键的性质：位置 pos 与 pos+k 两个编码做点积，结果只与相对距离 k 和 d_model 有关、与绝对位置无关（pos=3 与 pos=6 的点积，和 pos=10 与 pos=13 的点积相同）——正契合 Transformer 只做点积的运算方式。</li>
+<li>*RoPE（Rotary Position Embedding，旋转位置编码）：现代大模型几乎都用它。原论文的绝对位置编码与 Embedding 相加，导致位置与语义混合后再投影，点积不再只反映位置，需要模型自己学；RoPE 不生成额外位置向量，只对 Q 和 K 做旋转（相邻两维组成二维向量，乘正弦/余弦旋转矩阵，位置越靠后旋转角度越大），不对 V 旋转——因为 Q·K 才是用来算 token 间关系的，V 只是按权重被取值。Q、K 同时旋转后，绝对旋转量在点积中相互抵消，分数中只剩相对距离**，无需模型学习、不增加参数、保持原维度，训练更简单。</li>
+</ol>
+<blockquote>"在整个 Transformer 的过程中呢，它其实是没有减法的，它都是不停的在做点积……它并不是用人的思维在进行工作。"<span class="src">—— 第30集《位置编码：让注意力理解 Token 在序列中的位置》· 转写校正版</span></blockquote>
+<blockquote>"RoPE 只对 Q 和 K 做旋转，对 V 是不做的……Q 和 K 在做点积的时候，共同的绝对旋转就会被抵消掉，剩下的只是它俩相对差距了。"<span class="src">—— 第30集《位置编码：让注意力理解 Token 在序列中的位置》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>公式乱码已按标准论文还原：10000^(2i/d_model)、sin(pos/...)、cos(pos/...)，并把"1 万的 2×8 的零次方""一分之 sin sin3"等口播残句修正为规范表达；"pose/POS"→pos、"DEMODEL/d model"→d_model、"点击"→点积、"OPE"→RoPE、"ada norm"→Add &amp; Norm、"KO 和 K"→Q 和 K。</li>
+<li>经典例句修正："dog best man / Best dog"→dog bites man / man bites dog；"ARP"按语境判为 RNN 并标注存疑。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（数学推导部分口播较乱，但校正稿已按论文公式逐项还原，可读性良好）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第31集</span> <b>手搓 Mini Transformer 前要知道的编码器工作流程</b> <span class="pill">BV1hu4o6mEfh</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>输入形态：自然语言序列经 Embedding（512 维/token）+ 位置编码（同为 512 维）相加，得到始终贯穿全流程的基础矩阵 N×d_model（N = token 数 = 行数，d_model = 512 = 列数；行列含义：每行一个 token，每列一个特征维度）。此时每个 token 只知道"自己是什么 + 在第几个位置"，尚不知其他 token。</li>
+<li>Encoder 的两大核心部件 + 两个稳定件：多头自注意力（token 间互相交换信息）→ Add &amp; Norm → FFN（对 token 自身做加工、提炼特征）→ Add &amp; Norm；架构图 N× 表示堆叠，论文为 6 层，每层有独立的 Attention 与 FFN 参数。</li>
+<li>自注意力/多头：QKV 全部来自自身，故称"自"注意力；论文把 512 维拆成 8 个头、每头 64 维，各头独立计算后 Concat 拼接，再经一次线性变换回到 512 维——输入输出维度不变（仍 N×d_model），变的是数值内容（it 的向量由只含自身与位置，变为融合了 animal、tired 等信息）。</li>
+<li>残差连接的意义（与打高尔夫类比）：子层学的不是全新表示，而是"对输入的修正量"；把原输入直接绕过子层相加，则当参数已训练到位时，子层只需把输出压到接近 0 即可实现恒等映射——而"学出 0"比"学出恒等映射"容易得多，反向传播更顺畅、深层训练更稳定。</li>
+<li>层归一化：对每个 token 向量的 512 个特征维度横向做归一化（不跨 token 交换信息），使层间数值分布稳定；顺序上原论文为 Post-Norm（先 Add 后 Norm），现代大模型普遍改 Pre-Norm（先 Norm 再进子层再 Add），深层训练更稳定（本集代码仍按原论文 Post-Norm 实现）。</li>
+<li>FFN 结构与维度：FFN(x) = ReLU(x·W1 + b1)·W2 + b2，即"升维线性 → 非线性激活 → 降维线性"三步；d_ff = 4 × d_model（512 → 2048 → 512），先放大到更高维学更丰富特征、再降回来以控制参数量。参数量上 FFN 比同层注意力更大；它在token 内部做变换、不在 token 间传递信息，故所有位置共用一套参数。现代大模型激活函数多用 GELU / SwiGLU 取代 ReLU。</li>
+<li>一层 Encoder 的四条公式（写代码的骨架）：①多头自注意力得 A ②残差 X + A ③层归一化 ④FFN 后再 Add &amp; Norm（X + F）。要点：中间只有两处维度变化（多头时 512→8×64→512；FFN 时 512→2048→512），每层的输出永远是 N×d_model，这也是写代码时最容易迷惑的地方。</li>
+<li>多层堆叠：上一层输出直接作下一层输入，每层用各自独立的参数反复重算 token 间关系并重组表示；形状始终不变（进 N×d_model，出 N×d_model），只是融合得越来越好。最终 Encoder 输出不是固定长度的压缩向量（不像 seq2seq 的上下文向量），而是一整排与输入等长的表示；经两个线性变换即得供 Decoder 使用的 K 和 V（Q 来自 Decoder 自己）。手搓代码时可把 d_model 调小（如 64）以便本地快速运行。</li>
+</ol>
+<blockquote>"Encoder 的核心呢，并不是来压缩一个固定长度的向量，它一点都不固定，它其实是不断的更新同一份的序列的表示。"<span class="src">—— 第31集《手搓 Mini Transformer 前要知道的编码器工作流程》· 转写校正版</span></blockquote>
+<blockquote>"你进去的时候是什么样，出来的时候还是什么样……中间只有两处会做维度的变换，对于每一层的输出，它都是 N×d_model，这个是不变的。"<span class="src">—— 第31集《手搓 Mini Transformer 前要知道的编码器工作流程》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>符号与术语：N×512/N×d_model/d_model 统一、"六八个 64 维"→八个 64 维（8×64=512）、"DFF 乘上 24"→d_ff 乘上 4（512×4=2048）、"做规划/层规一化"→层归一化（Layer Norm）、"POSTNM/PRENE"→Post-Norm / Pre-Norm、"relo re 录"→ReLU、"JU 和 ZUU"→GELU 和 SwiGLU、"表 X 撇"→X'、"U 加 F"→X 加 F。</li>
+<li>重要概念修正：原稿"所谓交叉就是 K 来自 decoder 自己，而他的 KV……"表述颠倒，已按 Cross-Attention 定义改为 Q 来自 Decoder、K 和 V 来自 Encoder。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（维度变换讲得非常具体，配合四条公式与两处维度变化，是手写 Encoder 代码前的直接依据）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第32集</span> <b>Transformer 解码器工作流程</b> <span class="pill">BV1tZ416LEtQ</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>编码器输出：整个源序列一次并行处理完，得到 H（S×d_model），供解码器反复参考；解码器推理时则从 BOS 起逐 token 生成（打字机效果），每生成一个 token 矩阵就多一行，最终为 T×d_model（S 与 T 不必相等，列数 d_model 恒定）。</li>
+<li>Decoder 三大部件的差异化：Embedding、位置编码、Add &amp; Norm、FFN 与编码器完全相同可复用；最大区别是两个注意力——掩码多头自注意力（Masked Multi-Head Attention）+ 多头交叉注意力（Cross-Attention），外加最后的线性层 + Softmax。</li>
+<li>掩码自注意力：本质仍是自注意力（QKV 全部来自已生成序列自己），区别只在训练时把"未来位置"遮住——因为 Teacher Forcing 一次给了完整答案，不遮就会直接看到答案（信息泄露/作弊）。实现上在 Q·Kᵀ 分数矩阵上加 −∞ 掩码（Softmax(−∞)=0，权重即置零），只保留下三角；推理时本来就没有未来 token，但为与训练保持一致仍保留该结构。</li>
+<li>交叉注意力：Q 来自 Decoder（掩码注意力 + Add &amp; Norm 后的表示 Z_t，即"我已经翻译到哪了、想查什么"），K、V 来自 Encoder 的 H 经 Decoder 自己的 W_K/W_V 投影得到（K 如摘要、V 如全文）。计算逻辑与自注意力完全一致，只是 QKV 来源不同——故代码里三种注意力可复用同一个函数。</li>
+<li>为什么预测只取"最新一行"：掩码自注意力之后，最新 token 的向量已融合整个已生成序列的信息，再经交叉注意力参考原文，就足以预测下一个 token；训练时则把整个矩阵一次送进去并行算完（Teacher Forcing），训练一次完成、推理要跑 T 次。</li>
+<li>输出头：FFN（512→2048→512 升维再降维）→ 线性层把 d_model 维向量映射到词表大小（如 10 万维）得到 logits（未归一化的打分，不是概率、不是权重）→ Softmax 转成和为 1 的概率分布。</li>
+<li>解码策略三件套：temperature（调 logits 尺度，值越小分布越尖锐/确定性强，编程场景常设 0；越大越平缓、多样性高，适合故事生成）top-k（只保留概率最高的 k 个，其余置零）top-p（按概率从高到低累加到 p 如 0.85 为止，候选数动态）；三者可组合：先用 temperature 调分布，再用 top-k/top-p 缩候选，最后采样或取最大（贪心）。Softmax 只负责给出分布，具体选谁是解码策略的事。</li>
+<li>训练 vs 推理对照：训练——整句已知、一次矩阵运算、T×T 分数矩阵加因果掩码、输出一次全拿到、步数 1；推理——每步只知道前缀、只算最新一个 Q（1×d_model）、从 KV Cache 取历史 KV 并 append 自己的 KV、每步一次预测、步数 = 目标 token 数。</li>
+<li>Batch 与 Padding：实际训练再加一维 B（batch） 组成三维张量；同批句子长度不一，用 padding 补齐到最长，并额外加 Padding 掩码把 PAD 位置权重置零（区别于因果掩码——因果掩码防偷看未来，Padding 掩码让填充位不参与运算）。</li>
+<li>Decoder 一句话总结：用掩码自注意力理解已生成内容 → 用交叉注意力融合编码器（原文）信息 → FFN 提纯 → 多层堆叠（shape 不变，靠残差+归一化防梯度消失/参数爆炸）→ 线性层映射词表得 logits → Softmax 得概率 → 按策略选 token → 拼回序列继续，直到生成 EOS。</li>
+</ol>
+<blockquote>"训练的时候我既然全都有了，我干嘛要一行一行的算呢……矩阵运算实际上是向量运算的并行操作。"<span class="src">—— 第32集《Transformer 解码器工作流程》· 转写校正版</span></blockquote>
+<blockquote>"Padding 掩码……其实就是把如果是塞进来 PAD 这种值呢，也对于在训练的时候让他给忽略掉；刚才我们讲的那个掩码叫因果掩码，而这个叫 Padding 掩码。"<span class="src">—— 第32集《Transformer 解码器工作流程》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语/符号："and and norm/at norm"→Add &amp; Norm、"must/野马"→掩码（Mask）、"soft mass/soft backs/SMAX"→Softmax、"KO 跟 K 做点击"→Q 和 K 做点积、"WKWV"→W_K/W_V、"ZT"→Z_t、"logic/LOGIES"→logits、"tep top top k"→top-k、"contact at"→Concat、"panning/判定掩码"→padding / Padding 掩码、"参差连接"→残差连接、"层规异化"→层归一化、"sheep 是不变的"→shape 是不变的、"A 证"→Agent。</li>
+<li>英文例句 "the animal didn't cross the street, because it was too tired" 已补全，掩码示例（第 9 行"太"遮住后两字）逻辑清晰。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（训练/推理对照与解码策略部分信息密度高，校正记录完整，可直接指导 Mini Transformer 的 Decoder 实现）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第33集</span> <b>一小时彻底掌握 Transformer</b> <span class="pill">BV15oYo6TEH1</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>目标与简化约定：从零手写一个 Mini Transformer 英译中翻译器（不在工程级实现上纠缠）。简化点：每次只训练一个句子（不做 batch、不需要 padding 与 padding mask，避免高维张量运算）；用循环 + 简单矩阵乘法实现，纯 CPU 可跑；核心创新（位置编码、注意力、多头、编解码器）手写，Layer Norm / 线性层 / Embedding 表等直接用 PyTorch API。记号：源（英语）长度 S，目标（中文）长度 T，模型统一维度 D = d_model。</li>
+<li>超参数（本地可跑的小规模）：d_model = 32（论文 512）、heads = 2（论文 8）、d_ff = 64（论文 2048）、编解码各堆叠 2 层（论文 6 层）、max length = 32（位置编码表支持的最大 token 数）。环境：Python + PyTorch，可用 UV / conda 管理，示例在 Jupyter Notebook 中跑；固定随机种子（Python + PyTorch）并限制单线程以保证可复现。</li>
+<li>数据处理：训练对为 (英语, 中文) 元组，空格分词；英/中各自去重排序建词表 vocabulary并编号得 token id（id 只是索引，不代表语义，语义在 Embedding 表里）；特殊 token 至少含 BOS/EOS（本例无 PAD、无 UNK）；中文序列头部加 BOS、尾部加 EOS，训练时整体错开移位构造 decoder 输入与监督标签（输入去掉尾部 EOS，标签去掉头部 BOS），即 Teacher Forcing。</li>
+<li>位置编码实现：构造 (max_length × d_model) 的矩阵，把 d_model 分成 D/2 组（故 d_model 须为偶数），偶数维用 sin、奇数维用 cos，角度分母 10000^(2i/D) 随组号增大而变化频率变慢（靠前的组像秒针转得快、靠后的像时针转得慢，组合起来才能定位）；因位置表与输入无关、算完不变，用 register_buffer 注册使其不参与梯度更新；前向传播即逐位置与 Embedding 结果逐元素相加。</li>
+<li>Embedding 缩放：论文中 Embedding 结果先乘 √D 再与位置编码相加——放大语义信息的量纲，避免位置信息与语义同等量级而牺牲语义。</li>
+<li>Attention 函数：`scores = Q·Kᵀ / √d_k`（d_k = d_model / heads，本例 32/2 = 16）→ 可选地加因果掩码（用下三角矩阵，把未来位置填 −∞，因为 Softmax(−∞) = 0，权重归零即"看不到后面"）→ Softmax 得权重 → 与 V 相乘得新表示。掩码是可选参数，编码器自注意力不用，解码器必须显式传入。</li>
+<li>单头 → 多头：单头用三个线性投影矩阵 W_Q/W_K/W_V 把输入投影成 Q/K/V（不是按维度顺序切分，而是靠投影学到的子空间），代入 attention 函数；多头即初始化若干（2 个）独立的单头，各自算完把结果 `torch.cat` 拼接后再做一次可学习的线性投影 W_O 融合（因为拆分不是顺序切分，拼接也不能顺序拼回去）。</li>
+<li>FFN：`nn.Sequential(Linear(D, d_ff), ReLU(), Linear(d_ff, D))`，本例 32 → 64 → 32；对每一行（每个 token）独立做，所有位置共用同一套参数。</li>
+<li>Encoder 层与堆叠（Post-Norm，遵从原论文）：多头自注意力（Q=K=V=X，不传掩码）→ 残差 X + A → Layer Norm → FFN → 残差 X + F → Layer Norm。注意两层 LayerNorm 必须分别实例化（参数不同，不能共用）；堆叠层用 `ModuleList` 装 N 个 Encoder 层，前一层输出作下一层输入。</li>
+<li>Decoder 层与堆叠：①掩码多头自注意力（QKV 来自已生成的中文，显式传因果掩码）→ Add &amp; Norm ②交叉注意力（Q 来自解码器自身，K、V 来自 encoder output，经自己的投影矩阵得到，不加掩码）→ Add &amp; Norm ③FFN → Add &amp; Norm；共用三次独立的 LayerNorm；堆叠时每层都要把 encoder output 一并传入。</li>
+<li>模型骨架（MiniTransformer）：src/tgt 两张 Embedding + 位置编码表、Encoder 栈、Decoder 栈、以及 output projection 线性层（把 decoder 的 d_model 维隐藏表示投影到中文词表大小，得到每个词的得分 logits，之后由 Softmax/temperature/top-k/top-p 等策略决定 next token）；`encode()` 与 `decode()` 两个方法 + `forward()` 串起。</li>
+<li>训练与推理：交叉熵损失 + 优化器（model.parameters()，register_buffer 的位置表不会被取出）→ 每轮随机打散 8 个句子、训练 100 轮 → 输入用原文，decoder 输入去掉尾部 EOS、标签去掉头部 BOS → 清零梯度、反向传播、更新参数、记录并绘制损失曲线（约 15 轮后就很准，损失降到约 0.001）。推理：`model.eval()` + 清梯度 → 从 BOS 起循环（最多 16 步）→ 每步把当前 prefix 与 encoder output 送入 decode 得 logits → 贪心取最大 → 若命中 EOS 停止，否则追加进 prefix → 最后去掉 BOS、把 id 转回中文。示例：BOS 后预测"桌子"的概率约 99%。</li>
+<li>与工程级实现的差距（明确说明的简化）：数据量与超参数极小；单句训练、无 padding mask；未向量化、跑在 CPU 上（真实实现所有维度都要再加一个 batch 维 B）；解码时每步重算历史 KV，未使用 KV Cache；配套资料里有带批处理的完整版与逐步验证的 Notebook。</li>
+</ol>
+<blockquote>"我们对于 transformer 的实践呢做了一下简化……每次训练的时候只训练一个句子，而不是训练一个 batch，这样呢我们既不需要做 padding mask 了。"<span class="src">—— 第33集《一小时彻底掌握 Transformer》· 转写校正版</span></blockquote>
+<blockquote>"这个 mask 的值呢就都是负无穷……根据 Softmax 函数，加上负无穷之后它的权重值就是零了，乘上 V 呢自然就拿不到任何相关信息了。"<span class="src">—— 第33集《一小时彻底掌握 Transformer》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>API/术语统一：PYTORCH→PyTorch、register 点 buffer→register_buffer、torch.tensor、nn.Module、model.train/eval/parameters、d_model / d_ff / max length / D/2 组、Softmax、Post-Norm、因果掩码、ReLU、logits、Layer Norm、padding mask、Multi-Head Attention、词表/张量/词向量、next token、EOS、Miniconda/Anaconda、Jupyter Notebook、pairs、去重、MPS。</li>
+<li>概念校正："kill"→Q（交叉注意力中 Q 来自解码器自身）；"磁向量/词向磁向量表"→词向量；整体技术叙述与公式逻辑与原稿一致，未做内容改写。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（本集最长、代码讲解最完整，术语与 API 名误识极多但校正稿逐条还原，逻辑顺序与架构图一一对应，可作为手写 Transformer 的逐行说明书）</p>
+</div>
+<h3 id="m8">模块 8 · 大模型与 GPT <span class="modrange">（第34-36集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>元婴：丹碎婴生，一法通万法。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第34集</span> <b>为什么是 Decoder-Only 的 GPT 赢了</b> <span class="pill">BV16yhd6BEdf</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>三条分支：Transformer（2017）原为机器翻译设计，之后衍生出三个架构——GPT（decoder-only）：只用解码器，无编码器故也无交叉注意力，比原版 decoder 更简单；BERT（encoder-only）：只用编码器，双向；T5（encoder-decoder）：与原始 Transformer 最接近。</li>
+<li>共同贡献——预训练+微调范式：此前每个任务都从 0 到 1 单独训练（分类找分类标注、问答找问答标注）；GPT/BERT 先在海量无标注互联网文本上自监督预训练，学会词法、语法、语义与句间关系，再用少量标注数据配一个任务头做微调（参数调整量相对预训练极少），即可得到分类/问答等模型。</li>
+<li>GPT-1（2018.6，OpenAI，晚于 Transformer 约一年）：两阶段——无标注文本上不断预测下一个 token 做预训练（只用左侧上下文，因果自注意力），再有标注任务数据上微调，迁移到文本分类、问答、自然语言推断；率先提出"先学通用语言规律、再迁移到具体任务"的范式。</li>
+<li>BERT（Google，晚 GPT-1 几个月）：既然训练时左右文本都知道，就同时利用左右两侧预测被遮住的词——随机选约 15% 的 token 做遮挡（MLM），其中 80% 替换为 [MASK]、10% 换成随机词、10% 保持不变（防止模型依赖 mask 这个字符）。核心贡献：证明同一个预训练 encoder 一次预训练即可作为多种理解类任务（分类、实体识别、阅读理解）的共同底座，只需换不同任务头微调；当时在各类评测榜遥遥领先，极大推广了预训练+微调范式。局限：双向编码不擅长开放式生成。</li>
+<li>T5（2019，Google，完整 encoder-decoder）：最大贡献是把分类、翻译、摘要、问答等所有 NLP 任务统一成"文本进、文本出"——在输入前加任务前缀（如 `translate English to German: ...`）即可；相比 BERT 仍需为每个任务设计不同任务头与不同数据格式，T5 统一了训练方式与数据格式（但不同任务仍要各自微调）。此外论文做了大规模消融实验，并清洗构建了大语料库 C4，至今仍被广泛使用。这一"用输入文本表达任务"的思路直接影响了 prompt engineering 与指令微调。</li>
+<li>GPT-2：坚持 decoder-only + 因果自注意力自回归生成，不做任何任务微调，靠上下文（提示）告诉模型做什么，即零样本任务迁移（摘要写 "TL;DR:"、翻译写 "ENGLISH: … FRENCH:"、问答写 "Q: … A:"）。两个关键选择：坚持 decoder-only；继续扩大规模（参数 1.5B，约 BERT 最大模型的 4.4 倍）。当时效果一般，不如 T5。</li>
+<li>*Scaling Law（2020，OpenAI）**：系统研究参数量、数据量、训练时长与损失的关系——当其他条件不构成瓶颈时，任意增加其中一项，损失都会按稳定的幂律趋势下降，不会轻易过拟合。意义在于给了投资人与企业家确定性（加钱就有确定收益、还能预估收益量），直接催生 GPT-3。</li>
+<li>GPT-3（175B）：延续零样本路线，并系统对比 zero-shot / one-shot / few-shot（均不更新参数），展示了上下文学习（In-Context Learning）——模型从上下文的示例里识别任务模式与输出格式。与微调对比：微调把适配能力写进参数（切换任务需重新训练、成本高）；上下文学习把适配放进输入（切任务只改描述与示例，成本低、可快速验证）。这正是 prompt engineering 的由来（2024 年底—2025 年甚至出现"提示词工程师"岗位）。</li>
+<li>2022 年底基于 GPT-3.5 的 ChatGPT 让自然语言成为调用模型能力的入口；今天 Agent 开发中的 context engineering（上下文工程） 也是同一思路的延伸（把工具、历史、错误反馈放进上下文再让模型决定下一步）。</li>
+<li>Decoder-only 胜出的四个原因：①训练样本极易构造——任意连续文本右移一位即得 teacher forcing 标签，N 个 token 产出 N−1 个训练信号；BERT/T5 是"填空式"预训练目标，不擅长开放式生成，且训练目标与生成目标不一致 ②用上下文切换任务，不需微调、不需换任务头，规模变大后描述与 few-shot 就能识别任务 ③结构最简单便于扩展：无编码器、无交叉注意力，省下的参数可堆更多层，KV Cache 与缓存管理策略也更容易复用（工程红利）④训练目标统一（永远只是预测下一个 token）+ 任务表达统一 + 结构统一，与 Scaling Law 相互促进。今天 LLaMA、通义千问、DeepSeek、Kimi、GLM 等主流模型基本都是 decoder-only。</li>
+<li>观念转变：能力不再全部写进参数，而是可以通过输入激发，即所谓能力涌现；模型在预训练中积累能力，通过上下文切换完成不同任务。</li>
+</ol>
+<blockquote>"对于一个无论你在互联网上哪里面获取来的数据，只要是连续的文本，把它右移一位，就能构造出一个 teacher forcing 的训练标签集来。"<span class="src">—— 第34集《为什么是 Decoder-Only 的 GPT 赢了》· 转写校正版</span></blockquote>
+<blockquote>"你只要加钱就行，不会过拟合的……这就是大名鼎鼎的 Scaling Law。"<span class="src">—— 第34集《为什么是 Decoder-Only 的 GPT 赢了》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>模型名与术语：JPT/JP2/JPG3/ZGT3/JPT3.5→GPT/GPT-2/GPT-3/GPT-3.5；bot/波特/博尔特/BT→BERT（含 BERT Large）；Skin law/sting lag→Scaling Law；feel short→few-shot；contest→context（context engineering）；decoder own/or/orn→decoder only；C four→C4；开源制组拉玛→LLaMA；K 米→Kimi；gm→GLM；RN→RNN。</li>
+<li>数字校正并存疑：原文"15B"按 GPT-2 实际规模改为 1.5B（约 15 亿参数）并标注存疑；"20424 年底"→2024 年底。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（发展脉络清楚、年代与参数量具体，校正稿把大量模型名/术语误识逐一还原，是理解"为什么是 GPT"的关键一集）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第35集</span> <b>一小时手搓现代 GPT，学会写古诗</b> <span class="pill">BV1x6a364Efb</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>GPT = decoder-only：只用 Transformer 右侧解码器，因无编码器输入，故没有交叉注意力，只需（掩码）多头自注意力 + FFN，反复堆叠 N× 个 GPT block，最后线性层映射词表得 logits → Softmax → 按策略选 token → 追加回前缀循环，直到 EOS 或最大长度。会手写 Transformer 就能手写 GPT（删掉编码器与交叉注意力即可）。</li>
+<li>本集加入的五项现代大模型改进：①RoPE 旋转位置编码取代输入端的绝对位置编码（位置信息不再与语义相加，而是在算注意力时旋转 Q、K）②Pre-Norm 取代 Post-Norm（先归一化再进子层，深层训练更稳定）③RMS Norm 取代 Layer Norm（不再减均值、只除以均方根并乘可学习系数 γ，减少运算）④SwiGLU 取代 ReLU 的 FFN（门控双分支）⑤线性投影去掉偏置 bias（归一化已能处理偏置，减少冗余参数）。</li>
+<li>RoPE 细节：只对 Q 和 K 旋转、不对 V 旋转（注意力权重由 Q·K 点积决定，旋转后点积含两位置的角度差即相对位置；V 只是按权重被取值，旋转它会污染内容且无收益）。旋转方式：把每头维度（本例 96/6=16）按奇偶两两配对（8 对），第 i 对在位置 pos 的旋转角 α = pos × θ_i，θ_i = base^(−2i/head_dim)（base=10000）；用 sin/cos 旋转矩阵实现，sin/cos 表预算好后存入 register_buffer（不参与梯度）。好处：语义是语义、位置是位置，两者解耦；只旋转 Q/K，运算量也小。</li>
+<li>数据与分词：用开源中华古诗词数据集（Chinese Poem），筛出四句五言且转简体、按正文去重；低频字（出现少于 5 次）统一替换为 `&lt;UNK&gt;` 以缩小词表、便于训练；构建 token↔id 双向映射，特殊字符 BOS / EOS / `&lt;UNK&gt;`。最终词表约 3502，每首诗正文 20 字 + 4 个标点 = 24 字符，加 BOS/EOS 后长度 26（训练输入去掉尾部 EOS，标签去掉头部 BOS，错位一位即 teacher forcing）。</li>
+<li>超参数：d_model = 96、heads = 6（每头 head_dim = 16）、d_ff = 256、GPT block 堆叠 4 层、max_length = 32、RoPE base = 10000、Dropout &lt; 10%；环境 Python 3.12 + PyTorch + matplotlib（UV 管理并锁定版本），可用 CUDA / MPS / CPU。</li>
+<li>关键实现要点：Embedding 用 `nn.Embedding(vocab, d_model)`，初始化标准差设 0.02（避免初始值过大）并接 `nn.Dropout`；多头时为提速把 QKV 用一次线性投影到 3×d_model 再切分（bias=False）；维度变换 B,L,d_model → reshape → (B, L, h, d_h) → transpose 成 (B, h, L, d_h) → 对 Q/K 做 RoPE → attention → transpose 回来 → contiguous → reshape 回 d_model → 再经 W_O 融合；score = Q·Kᵀ/√d_h，用右上三角 −∞ 掩码实现因果掩码（Softmax(−∞)=0）。</li>
+<li>SwiGLU FFN：up 分支做线性升维（d_model→d_ff）、gate 分支做线性升维后过 SwiGLU 激活，两者按位相乘，再由 down 分支降回 d_model；相当于"信息分支 + 门控分支"，比 ReLU（负值被截断、单通路）保留更多信息、理解更充分。</li>
+<li>RMS Norm 实现：`x / sqrt(mean(x²) + ε) * γ`，γ 为可学习的 `nn.Parameter`（初始化全 1），ε 防除零。</li>
+<li>GPT block 连接（Pre-Norm）：x → RMS Norm → 多头自注意力 → Dropout → 残差相加 → RMS Norm → SwiGLU FFN → Dropout → 残差相加；N 层堆叠后，最后再补一次 RMS Norm 再输出。</li>
+<li>输出头与权重共享：96 维隐藏表示经线性层投影到词表大小（3502）得 logits（训练时不手动 Softmax，交给交叉熵损失；采样时再处理）；因为输入输出是同一套中文词表，输出投影层可复用 Embedding 参数表省参数（而 mini Transformer 英译中因词表不同不能共享）。</li>
+<li>训练：自监督（右移一位作标签）+ 因果掩码 + Teacher Forcing；批量训练（一次把整首诗的矩阵送进去，与上集 mini Transformer 的逐句循环不同）；防过拟合组合拳——Dropout、AdamW（含 weight decay）、Early Stopping、Label Smoothing（评估时不启用 Label Smoothing 与 Dropout，切 `model.eval()` 并 `no_grad`）。实际结果：损失从 5.3 降到 4.6267，第 18 轮已最优、第 28 轮早停（最多设 1000 轮）；d_model 从 64 提到 96 后效果明显改善。</li>
+<li>推理/采样：从 BOS（+可选首字 prompt）起逐步生成；策略用 top-k（只在前 k 个候选中采样）、temperature（调分布随机性）、并加重复惩罚（与前一个字相同则人工降权，减少连续重复）；遇到 EOS 或达到 max_length 停止。示例：不给提示生成"春雨不入谷，花音难入门"；给首字"春"/"月"即按该字开头，格式工整（四句五言、标点位置正确），虽平仄押韵一般，属"赛博诗人"。本例未使用 KV Cache，每追加一个字符都重算全部（诗短，开销可接受）。</li>
+</ol>
+<blockquote>"它虽然叫 decoder only，但它比 transformer decoder 还要简单……而 V 呢是在权重确认之后才提供内容，它就应该提供最原始的内容，不要对它进行旋转。"<span class="src">—— 第35集《一小时手搓现代 GPT，学会写古诗》· 转写校正版</span></blockquote>
+<blockquote>"训练的时候能够同时监督多个位置……你有 26 个词，我 25 个监督标签就行了；但是生成的时候后面的还没有存在呢，就只能一次生成一个字符。"<span class="src">—— 第35集《一小时手搓现代 GPT，学会写古诗》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>术语/API：gt/GBT→GPT、d model→d_model、had dem→head_dim、层规划→层归一化、PRENE→Pre-Norm、RELOON→ReLU、salute/SWISS 指录→SwiGLU、r m s norm→RMS Norm、因果严马→因果掩码、ROPE 相关（贝斯→base、θ_i、α）按旋转位置编码语境修正、contest→context、招 pot/drop out→Dropout、权重筛选→权重衰减（weight decay）、label smooth thing→Label Smoothing、ADAMW→AdamW、NN 点 model→nn.Module、N 点 embedding→nn.Embedding、N 点 PARMETER→nn.Parameter、touch 点 square→torch.square、KDA→CUDA、git 层→gate 层、chinese portrait→Chinese Poem（中华古诗词数据集）。</li>
+<li>数字与逻辑一致：每头维度 96/6=16、RoPE 配对 8 对；θ_2 = 10000^(−2×2/16) = 0.1，pos=3 时 α=0.3 弧度。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好（本集最长且代码量最大，术语误识极多但校正稿逐条还原，公式/维度/训练结果数据完整，可作为现代 GPT 实现的完整参考）</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第36集</span> <b>深度学习课程内容串联 &amp; 学习路径总结</b> <span class="pill">BV1dhp56oERL</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>课程主线串联：基础概念与训练关键（激活函数、损失函数、反向传播、梯度下降与优化器）→ 训练稳定性与泛化技巧（学习率调度、参数初始化、归一化、正则化）→ CNN（CV）→ NLP（文本表示 → RNN → LSTM/GRU → seq2seq → 注意力）→ Transformer（自注意力、并行原理、编解码器协作、BERT/T5/GPT 三大实现、预训练/指令微调/偏好优化）→ 学习路径建议。核心观点：不要上来就学 Transformer，前面每块都是它的前置。</li>
+<li>深度学习 vs 机器学习：深度学习是机器学习的分支，都追求对新数据的泛化；区别在于机器学习用人工设计的、人能理解的结构化特征（表格数据），深度学习把特征提取也交给模型一起训练，因而能处理图像/音视频/文本等非结构化数据，代价是网络多层、结构复杂、训练成本高。</li>
+<li>训练四步闭环：前向传播 → 与真实标签比对用损失函数算误差 → 按链式法则反向传播（把误差责任分到每一层，PyTorch 自动完成）→ 梯度下降沿负梯度更新参数 → 循环至收敛。激活函数（ReLU / sigmoid / tanh / GELU / SwiGLU，给网络注入非线性，否则多层线性叠加等价一层）损失函数（回归用均方差、分类用交叉熵）反向传播（只算梯度不更新参数）梯度下降与优化器（SGD / mini-batch SGD → 动量 → 自适应学习率 AdaGrad/RMSProp → Adam → AdamW，后者修正了 Adam 中权重衰减未从梯度更新中独立出来的问题）。</li>
+<li>稳定性三件套：学习率调度（阶梯递减 step decay、余弦退火、配合 Warm up 先升温再退火，类比跑步先热身再提速最后减速）参数初始化（不能全同值→对称性问题；尺度太小→梯度消失、太大→梯度爆炸；sigmoid/tanh 用 Xavier，ReLU/Leaky ReLU/SELU 用 Kaiming/He 初始化（何凯明），偏置通常置 0）归一化（BatchNorm 用于图像、LayerNorm 用于 NLP，每层操作后都跟一次，解决特征分布差异过大）。</li>
+<li>防过拟合：L1（惩罚绝对值，鼓励稀疏、筛选特征，机器学习常用）L2（惩罚平方，抑制大权重但不置零，深度学习更常用）权重衰减（更新时给权重乘衰减系数，像加弹簧）Dropout（随机关闭神经元，防止依赖特定特征组合）Early Stopping（验证集连续 N 轮无改善即停）。</li>
+<li>CNN 适用图像的三条先验：局部性（相邻像素相关性更大）、参数共享（同一卷积核全图扫描）、平移等变性（左右上下翻转仍是同一物体）+ 层次组合；流程为 卷积 → 非线性激活 → 池化下采样 → 残差块堆叠多层 → 全局平均池化 → 全连接分类；浅层学边缘方向、中层学纹理局部、深层学"眼睛/耳朵"等语义。</li>
+<li>NLP 演进复习：one-hot（高维稀疏、正交无语义）→ Embedding/word2vec（分布式假设，把离散 token id 映射为可训练稠密向量，语义相近则距离近）→ RNN（隐藏态逐 token 传递，参数共享、可处理不定长，但串行、长程遗忘）→ LSTM/GRU（门控选择性记忆/遗忘，缓解不根治）→ seq2seq（编码器出上下文向量、解码器自回归生成，解决输入输出不等长）→ 注意力（解码每步对编码器全部隐藏态算分数→Softmax→加权求和，得到动态上下文）→ Transformer 自注意力（每个位置访问全部位置、可并行、加因果掩码）。</li>
+<li>Transformer 架构复习：输入 Embedding + 位置编码相加 → 编码器堆叠（自注意力 → 残差+归一化 → FFN；输出维度不变，作为 K、V）→ 解码器堆叠（掩码自注意力 → 交叉注意力：Q 来自解码器、KV 来自编码器 → FFN）→ 线性层映射词表得 logits → Softmax 得概率 → 逐 token 生成至 EOS。</li>
+<li>三大实现：BERT（Encoder-only，双向编码，擅长表示学习与分类、不擅长生成）GPT（Decoder-only，自回归逐词生成，适合续写与对话）T5（标准 encoder-decoder，把任务统一为 text-to-text）；BERT 与 GPT 开启预训练时代。</li>
+<li>大模型训练三阶段：预训练（大规模语料学通用知识与语言规律，产出基座模型）→ 指令微调 / SFT（问答、总结、翻译、代码等有标注数据上微调，学会遵从指令与格式，产出指令模型）→ 后训练 / 偏好对齐（RLHF、DPO，对齐人类偏好、安全规则与拒答行为，使模型更好用、更安全、更稳定）。</li>
+<li>学习路径：Python 基础语法（AI 时代仍需编程）→ 机器学习（虽应用变少，但损失/梯度下降/优化器/特征/训练评估/泛化等根基都在此，且问题更简单易懂；最小集约 10 小时：样本/特征/标签、监督与无监督、训练/验证/测试集划分、线性回归与逻辑回归、均方差与交叉熵、梯度下降、过拟合与泛化）→ 深度学习（本系列课程）→ CV / NLP → 再分两支：大模型开发（预训练/指令微调/后训练，对学历履历要求高）或 Agent 开发（更接近普通开发，为后续课程方向）。</li>
+<li>两个常见困惑的答案：数学——肯定要用，但不必先把高数/线代/概率统计啃完（用到的不到高数线代的 1/10），应边学边补（矩阵运算、概率、链式法则等用到哪学到哪）；PyTorch——API 海量学不完，只需理解核心模块与最关键的 API，其余交给 AI 生成，不必死磕语法。</li>
+<li>推荐公开课：CS224N（NLP 与深度学习基础：向量、序列模型、Transformer）CS324（大模型原理与风险）CS336（从工程实践从零高效训练语言模型，需前两者基础，学完本课程再看会很高效）以及 Karpathy（卡帕西）的 nanoGPT（理论都不懂也能一步步引导手写 GPT，本课程的 GPT 实现则假设已懂理论）。</li>
+</ol>
+<blockquote>"深度学习是让模型自己学出特征来，并且利用它们进行预测，这是和机器学习最大的区别。"<span class="src">—— 第36集《深度学习课程内容串联 &amp; 学习路径总结》· 转写校正版</span></blockquote>
+<blockquote>"其实我们一定会用到数学，但其实里面用到了数学，不及我们整个高数线代的 1/10 的内容，所以就是边学边补，用到什么就去学什么就行了。"<span class="src">—— 第36集《深度学习课程内容串联 &amp; 学习路径总结》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>本集为本轮新校正。主要修正：LLP/LRP/ALP/LP→NLP；RN/RNSL→RNN / RNN cell；"Bot t5"/"BTT5"/"波特"/"bot"→BERT、T5 / BERT；JPT/gt/GBT→GPT；"易货"→异或；"基换函数"→激活函数；RELOON/RELO→ReLU、SIGMMOID→sigmoid、tan h→tanh、J 录/人 JU→GELU、SLU→SwiGLU、SUJIU→SELU；"病情计算"→并行计算；r m s problem→RMSProp、ADAM→Adam、ADAMMW/item w→AdamW；"权重筛筛检/筛减"→权重衰减；drop pot/jp pot→Dropout、early stopping→Early Stopping；ZIV→Xavier、凯明→Kaiming（He）初始化；"磁表"→词表、logic→logits；"所有的灯"→所有的 token；SSFT→SFT、test to test→text-to-text；"A 证/AH 的开发"→Agent 的开发；cs2 224N/cs324/cs336→CS224N/CS324/CS336；"卡巴西 NANO G p t"→卡帕西（Andrej Karpathy）实现的 nanoGPT；"高数现代"→高数线代；"偏执"→偏置；"我们的规划"→归一化。</li>
+<li>存疑保留："只有选择一个合适的 T 维度"（疑似"合适的尺度"）、"这一个我对 deep 要的信息是最多的"、"尤其但是如果呢"、"如果说耽误呃"，均按原样保留并记入校正记录。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中（平台自动字幕，术语与英文模型名误识密集，如 LLP/RN/Bot t5/SLU/RMS problem 等；经本轮校正后可读，作为全课程串联总结完整度高）</p>
+</div>
+<h2 id="cross">4. 交叉核对表</h2>
+<div class="card"><table><tr><th>模块</th><th>关键概念</th><th>常见误解 / 口径校正</th><th>与修仙路线的接口</th></tr>
+<tr><td>感知机与异或</td><td>单层线性不可分</td><td>单层感知机无法解决异或——这正是需要「多层 + 非线性激活」的根本原因</td><td>「模型能力的边界由假设空间决定」这一思想贯穿 AI 安全</td></tr>
+<tr><td>激活函数</td><td>sigmoid/ReLU/GELU/SwiGLU</td><td>激活函数不是为了「更像生物」，而是为了注入非线性；没有它多层等价于单层</td><td>理解对抗样本为何在层间被放大，要看激活函数的导数</td></tr>
+<tr><td>反向传播</td><td>链式法则回传误差</td><td>反向传播是高效计算梯度的方法，不是学习算法本身（学习算法是梯度下降）</td><td>FGSM 等对抗攻击复用同一条梯度通路，只是方向用于「骗」而非「学」</td></tr>
+<tr><td>归一化</td><td>BatchNorm vs LayerNorm</td><td>BatchNorm 跨样本统计，LayerNorm 跨特征统计；Transformer 用 LayerNorm 因为序列长度可变</td><td>训练稳定性直接影响模型对扰动的鲁棒性</td></tr>
+<tr><td>CNN 与残差</td><td>局部感受野 + 捷径</td><td>残差连接解决的是「深度带来的梯度消失」，后被 Transformer 原样借鉴</td><td>CV 与 NLP 在此合流，是理解多模态模型的前提</td></tr>
+<tr><td>Embedding</td><td>词 → 向量</td><td>Embedding 是「可学习的查表」，语义相似度体现为向量距离</td><td>越狱攻击中的「同义改写」正是在 Embedding 空间里绕开关键词过滤</td></tr>
+<tr><td>注意力 Q/K/V</td><td>加权求和</td><td>注意力的本质是软性查表：相似度决定从 Value 里取多少</td><td>Prompt 注入之所以有效，就是恶意指令劫持了注意力权重的分配</td></tr>
+<tr><td>架构选型</td><td>Encoder / Decoder / Encoder-Decoder</td><td>判断用 Encoder-only，续写用 Decoder-only，转换用 Encoder-Decoder</td><td>不同架构的攻击面不同：Decoder-only 的续写天性使其更易被提示词劫持</td></tr>
+</table></div>
+<h2 id="link">5. 落到修仙路线（跨课连接）</h2>
+<div class="card">
+<div class="tip"><b>→《Python 30天》</b><br>PyTorch 的模型要继承 nn.Module、数据集要实现迭代器协议，全部是 Python 面向对象与生成器的实战。</div>
+<div class="tip"><b>→《机器学习》</b><br>损失函数、梯度下降、过拟合与正则化在本课原样复现；差别只是「线性模型」换成了「神经网络」，参数量从几个涨到数十亿。</div>
+<div class="tip"><b>→《数据结构与算法》</b><br>计算图的执行顺序本质是拓扑排序；注意力的 Q·K^T 是矩阵运算，「稠密 vs 稀疏」的取舍与邻接矩阵/邻接表同构。</div>
+<div class="tip"><b>→ 修仙路线（元婴期）</b><br>本课前 33 集炼的 Transformer 金丹，正是元婴期拆解大模型的入口：理解了 Q/K/V，才懂为什么恶意 Prompt 能劫持注意力分布。</div>
+</div>
+<h2 id="quiz">6. 读后自测 10 题</h2>
+<div class="card">
+<details><summary>Q1. 为什么单层感知机无法解决异或问题？多层网络为什么可以？</summary><div class="ans">答：异或不是线性可分的——找不到一条直线把两类分开，而单层感知机的决策边界就是一条直线（线性模型）。多层网络通过隐藏层把输入变换到新的空间，再叠加非线性激活函数，就能构造出非线性决策边界，从而解决异或。</div></details>
+<details><summary>Q2. 激活函数的作用是什么？没有它会怎样？</summary><div class="ans">答：作用是注入非线性。如果没有激活函数，无论堆多少层，最终都等价于一个线性变换（矩阵连乘仍是矩阵），网络表达能力退化为单层线性模型，无法拟合复杂模式。</div></details>
+<details><summary>Q3. 反向传播和梯度下降是一回事吗？</summary><div class="ans">答：不是。反向传播是一种高效计算梯度的算法（利用链式法则从输出层往回逐层算偏导）；梯度下降是利用这些梯度去更新参数的学习算法。前者负责「算」，后者负责「走」。</div></details>
+<details><summary>Q4. BatchNorm 和 LayerNorm 的区别？Transformer 为什么用 LayerNorm？</summary><div class="ans">答：BatchNorm 在一个 batch 内跨样本、对每个特征做归一化；LayerNorm 对单个样本、跨特征做归一化。Transformer 处理变长序列，batch 内样本长度不一且 NLP 任务 batch 统计不稳定，LayerNorm 不依赖 batch 统计量，训练更稳定，因此成为标准选择。</div></details>
+<details><summary>Q5. 注意力机制里 Q、K、V 分别扮演什么角色？为什么要除以 √d_k？</summary><div class="ans">答：Query 是当前位置发出的「查询」，Key 是所有位置提供的「被匹配标识」，Value 是实际要取出的「内容」。用 Q·K^T 算相似度、softmax 归一化后对 V 加权求和。除以 √d_k 是因为维度越大点积的方差越大，会把 softmax 推到梯度极小的饱和区，缩放后能保持梯度健康。</div></details>
+<details><summary>Q6. Multi-Head Attention 为什么要分成多个头？</summary><div class="ans">答：单个注意力只能在一个表示子空间里做加权平均；分成多个头，每个头在不同的投影子空间中并行关注不同方面的信息（如一个头关注语法依赖、另一个关注语义指代），最后拼接起来，模型的表达能力更强。</div></details>
+<details><summary>Q7. 为什么现代大模型主流是 Decoder-Only 架构？</summary><div class="ans">答：Decoder-Only 用自回归（预测下一个 token）统一了理解与生成：预训练任务极其简单（就是续写），数据规模可以无限扩大，且推理时天然支持少样本提示（把任务描述当上下文续写即可）。相比之下 Encoder-Decoder 的训练目标更复杂、 scaling 效率更低。</div></details>
+<details><summary>Q8. 残差连接解决了什么问题？为什么 Transformer 也要用它？</summary><div class="ans">答：残差连接给梯度提供了一条从深层直达浅层的「捷径」，缓解深层网络的梯度消失/退化问题，使训练上百层成为可能。Transformer 堆叠多层注意力和前馈网络，同样面临深度带来的训练困难，因此每个子层都加了残差连接 + LayerNorm。</div></details>
+<details><summary>Q9. 从机器学习课的「梯度下降」到本课，它发生了什么变化？</summary><div class="ans">答：核心思想不变（沿负梯度更新），但规模和工程细节大幅升级：参数量从几个涨到数十亿，优化器从朴素 SGD 演进到 Adam/AdamW（带动量与自适应学习率、解耦权重衰减），并配合学习率调度、梯度裁剪、混合精度等工程手段。</div></details>
+<details><summary>Q10. 为什么说 Transformer 是「金丹」，而不是终点？</summary><div class="ans">答：因为修仙路线的目标是 AI 安全：Transformer 只是让你理解「注意力能被劫持」的原理（金丹），真正的元婴期要把大模型拆开看——分词、嵌入、位置编码、解码策略、对齐与 RLHF——每一处都是可能的攻击面。理解架构只是入场券。</div></details>
+</div>
+<p class="foot">深度学习 · 课程导读 ｜ 基于 36 集转写校正版生成 ｜ 修仙学 AI 路线</p>
+</div></body></html>

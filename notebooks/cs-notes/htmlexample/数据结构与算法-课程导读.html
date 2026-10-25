@@ -1,0 +1,717 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据结构与算法 · 课程导读</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --brand2:#f97316; --ok:#16a34a; --warn:#d97706; --risk:#dc2626;
+    --soft:#eef2ff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.78;font-size:16px;}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;border-radius:18px;padding:30px 30px 26px;box-shadow:0 10px 30px rgba(37,99,235,.18);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:21px;margin:42px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:17px;margin:26px 0 10px;color:var(--brand);}
+  h4{font-size:15px;margin:18px 0 6px;color:#334155;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:#fff7ed;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .risk{background:#fef2f2;border-left:4px solid var(--risk);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  blockquote{margin:14px 0;padding:12px 16px;background:#f8fafc;border-left:3px solid #cbd5e1;
+    border-radius:0 8px 8px 0;color:#334155;font-size:15px;}
+  blockquote .src{display:block;margin-top:6px;color:#94a3b8;font-size:12.5px;border:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  td.c{text-align:center;}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600;}
+  .b-read{background:#dbeafe;color:#1e40af;}
+  .b-skim{background:#fef3c7;color:#92400e;}
+  .b-skip{background:#fee2e2;color:#991b1b;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:13px;background:#eef2ff;color:#3730a3;margin:3px 4px 3px 0;}
+  .toc{columns:2;column-gap:26px;font-size:14.5px;list-style:none;padding-left:0;margin:0;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .toc li{margin:5px 0;break-inside:avoid;}
+  .q{font-weight:600;cursor:pointer;}
+  .ans{color:var(--sub);font-size:14.5px;margin:8px 0 0;}
+  details{margin:12px 0;}
+  details summary{font-weight:600;cursor:pointer;color:var(--ink);}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:52px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;} .toc{columns:1;}}
+  .read-toc{background:linear-gradient(135deg,#f0fdfa,#eef2ff);border:1px solid #99f6e4;
+    border-radius:14px;padding:18px 22px;margin:16px 0;}
+  .read-toc .lab{font-weight:700;color:#0f766e;margin-bottom:8px;font-size:15px;}
+  .ep{border-left:4px solid var(--brand);}
+  .epmeta{margin-bottom:8px;font-size:14px;color:var(--sub);}
+  .epmeta b{font-size:16px;color:var(--ink);}
+  .metaphor{background:#fffbeb;border-left:4px solid var(--brand2);padding:10px 14px;
+    border-radius:8px;margin:10px 0;font-size:14.5px;color:#78350f;}
+  .modhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .modrange{font-size:13px;color:var(--sub);}
+</style></head><body><div class="wrap">
+<header class="hero"><h1>数据结构与算法 · 课程导读</h1><p>《数据结构&amp;算法入门》全 25 集 ｜ 逐集带读 + 宏观框架</p><p><span class="tag">25 集全量带读</span><span class="tag">筑基期·算法筋骨</span><span class="tag">目标：会选型、会算复杂度</span></p></header>
+<div class="card"><p class="lead">如果说 Python 是让你「能写出程序」，这门课是让你「写出<b>好</b>的程序」。25 集的骨架是一条清晰的递进：<b>线性结构 → 树 → 图</b>，每引入一种结构，都在回答两个问题：<b>数据怎么存</b>（结构）、<b>怎么取最快</b>（算法与复杂度）。复杂度（O(1)/O(log n)/O(n)/O(n²)）是这门课唯一的评判尺子。</p></div>
+<h2 id="toc">本篇阅读目录</h2>
+<div class="read-toc"><div class="lab">页内导航（点标题直达）</div><ul class="toc">
+<li><a href="#frame">1. 修仙定位与整体骨架</a></li>
+<li><a href="#modules">2. 模块划分与核心知识点</a></li>
+<li><a href="#eps">3. 逐集带读（全 25 集）</a></li>
+<li><a href="#cross">4. 交叉核对表</a></li>
+<li><a href="#link">5. 落到修仙路线（跨课连接）</a></li>
+<li><a href="#quiz">6. 读后自测 8 题</a></li>
+</ul></div>
+<h2 id="frame">1. 修仙定位与整体骨架</h2>
+<div class="card"><h4>修仙阶段定位</h4><div class="tip"><b>筑基期 · 算法筋骨（内力的经脉）</b></div><p>修仙路线把筑基期定义为「扎马步 + 练内力」。Python 课给了内力（会写），本课给的是&lt;b&gt;经脉走向&lt;/b&gt;（写得好）：哈希表为什么 O(1)、BST 为什么会退化成链表、Dijkstra 与 Floyd 各自的适用面。这些都是判断「AI 系统哪里会成为性能瓶颈」的底层直觉。</p></div>
+<div class="card"><svg viewBox="0 0 918 388" width="100%" role="img" aria-label="课程模块划分图">
+<rect x="0" y="0" width="918" height="388" fill="#ffffff" rx="10"/>
+<text x="24" y="30" font-size="13" font-weight="700" fill="#1f2430" font-family="sans-serif">模块划分（按集数顺序，箭头为主线依赖）</text>
+<rect x="24" y="46" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">绪论</text>
+<text x="36" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">第1集</text>
+<rect x="322" y="46" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">线性结构</text>
+<text x="334" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">第2-5集</text>
+<rect x="620" y="46" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">哈希表</text>
+<text x="632" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">第6集</text>
+<rect x="24" y="152" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">树基础与遍历</text>
+<text x="36" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">第7-8集</text>
+<rect x="322" y="152" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">BST 与堆</text>
+<text x="334" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">第9-11集</text>
+<rect x="620" y="152" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">高级树结构</text>
+<text x="632" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">第12-17集</text>
+<rect x="24" y="258" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">图基础</text>
+<text x="36" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">第18-20集</text>
+<rect x="322" y="258" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">图算法</text>
+<text x="334" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">第21-25集</text>
+<path d="M 296 77 L 318 77" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 77 L 616 77" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 108 C 756 134 160 122 160 148" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 296 183 L 318 183" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 183 L 616 183" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 214 C 756 240 160 228 160 254" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 296 289 L 318 289" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/></marker></defs>
+</svg></div>
+<h2 id="modules">2. 模块划分与核心知识点</h2>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 1 · 绪论</h3><span class="modrange">第1集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>明道：先知道为何而学，再学怎么学。</div>
+<h4>核心知识点</h4><ul>
+<li>数据结构与算法是计算机专业最重要的课，考研 408 四大专业课之一，众多自命题院校只考这一门</li>
+<li>数据结构决定数据怎么存，算法决定怎么处理；二者共同服务于「更高效地解决问题」</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 2 · 线性结构</h3><span class="modrange">第2-5集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>四象：数组为基、链表为变、栈管后进、队列管先进。</div>
+<h4>核心知识点</h4><ul>
+<li>数组：连续内存、随机访问 O(1)，但插入删除要搬移 O(n)</li>
+<li>链表：非连续、靠指针串联，插入删除 O(1)，但查找 O(n)</li>
+<li>栈：只在尾部操作的 List，LIFO，用于函数调用栈、括号匹配、表达式求值</li>
+<li>队列：FIFO，用于广度优先遍历、任务排队、缓冲区</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 3 · 哈希表</h3><span class="modrange">第6集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>瞬息符：以名为引，一念即达。</div>
+<h4>核心知识点</h4><ul>
+<li>哈希函数把键映射到数组下标，理想情况查找/插入 O(1)</li>
+<li>哈希冲突的两大解法：链地址法与开放寻址法</li>
+<li>Java HashMap 与 Python dict 的底层都是哈希表——这是「为什么 dict 这么快」的答案</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 4 · 树基础与遍历</h3><span class="modrange">第7-8集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>分枝：一干生万枝，遍历即巡山。</div>
+<h4>核心知识点</h4><ul>
+<li>树的基本概念：根、度、深度、高度、叶子、子树</li>
+<li>二叉树的代码实现（递归定义天然匹配树结构）</li>
+<li>前序/中序/后序/层序遍历——递归思想的第一课，也是后续所有树算法的基础</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 5 · BST 与堆</h3><span class="modrange">第9-11集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>权衡：BST 以序换速，堆以极值为尊。</div>
+<h4>核心知识点</h4><ul>
+<li>二叉搜索树 BST：左&lt;根&lt;右，查找/插入平均 O(log n)</li>
+<li>BST 的致命问题：有序插入会退化成链表，退化后 O(n)</li>
+<li>堆（大根堆/小根堆）：为取极值而生，插入删除 O(log n)，取极值 O(1)</li>
+<li>堆的经典应用：Top K 问题与优先队列（LeetCode 295）</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 6 · 高级树结构</h3><span class="modrange">第12-17集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>演化：从压缩、补全、自平衡到多路，皆为对抗退化。</div>
+<h4>核心知识点</h4><ul>
+<li>哈夫曼树：带权路径最短，实现高效数据压缩</li>
+<li>字典树 Trie：前缀共享，自动补全与前缀匹配的核心</li>
+<li>AVL 树：严格平衡的二叉搜索树，解决 BST 退化</li>
+<li>红黑树：适度平衡的艺术，用更少的旋转换更好的综合性能，Map 底层常见</li>
+<li>B 树：多路平衡搜索树，为磁盘/大数据设计，降低树高减少 IO</li>
+<li>B+ 树：B 树的变体，数据全在叶子且叶子相连，数据库索引的基石</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 7 · 图基础</h3><span class="modrange">第18-20集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>结网：点线成世界，遍历即寻路。</div>
+<h4>核心知识点</h4><ul>
+<li>图的现实应用：社交网络、地图导航、依赖关系到知识图谱</li>
+<li>基础概念：顶点、边、度（入度/出度）、有向/无向、带权</li>
+<li>图的两种存储：邻接矩阵（适合稠密、判边快）vs 邻接表（适合稀疏、省空间）</li>
+<li>深度优先 DFS 与广度优先 BFS：递归与队列的又一次正面交锋</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 8 · 图算法</h3><span class="modrange">第21-25集</span></div>
+<div class="metaphor"><b>修仙比喻：</b>运筹：最优连接、最短路径、先后次序、关键链路。</div>
+<h4>核心知识点</h4><ul>
+<li>最小生成树 MST：用最小代价连通所有点（Prim / Kruskal）</li>
+<li>Dijkstra：单源最短路径，贪心 + 优先队列，边权不能为负</li>
+<li>Floyd：多源最短路径，三重循环动态规划，O(V³) 但能一次算完所有点对</li>
+<li>拓扑排序：解决依赖先后次序，判环的利器（AOV 网）</li>
+<li>AOE 网与关键路径：决定项目最短工期与哪些活动不能延误</li>
+</ul></div>
+<h2 id="eps">3. 逐集带读（全 25 集）</h2>
+<div class="tip">以下每集卡片均来自该集转写校正版：<b>核心知识点</b>为该集可考核要点，<b>引文</b>摘自校正后的口播原句，<b>红框</b>为口径校正与技术备注。集数顺序即修炼顺序。</div>
+<h3 id="m1">模块 1 · 绪论 <span class="modrange">（第1集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>明道：先知道为何而学，再学怎么学。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第1集</span> <b>数据结构第一课：数据结构和算法有什么用</b> <span class="pill">BV1uqmqBzEmz</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>算法的本质：完成一项任务/解决一个问题的"明确、有限的步骤和流程"，无处不在（查字典、做菜、旅行规划都算）；程序 = 数据结构 + 算法（图灵奖得主观点）。</li>
+<li>低效 vs 高效查字典对比：一页页顺序翻最坏需翻完 2000 页（O(n) 思路）；先按首字母定位范围、再折半（每次翻一半）最坏只需约 11 次——引出"二分法"思想的雏形。</li>
+<li>数据结构定义：按特定顺序组织数据的存储/组织方式，是算法高效运行的前提——没有经过组织的数据，高效算法（如折半查找=二分法、按索引定位=哈希思想）都用不上。</li>
+<li>现实应用映射：共同好友/社交网络→图（graph）；浏览器前进后退→栈；通讯录按首字母快速搜索→字典树（trie）；地图导航两点最近路径→图；猜你喜欢→哈希表；任务队列→队列。说明 DS&amp;A 并非"屠龙之术"而是日常写代码的基石。</li>
+<li>课程主线：围绕数据的"增删改查"四种操作展开；学习策略为"学一个数据结构→用它解决一个真实问题"，先不做 ADT/大 O 的纯理论铺垫。</li>
+</ol>
+<blockquote>"程序就是数据结构加上算法。"<span class="src">—— 第1集《数据结构第一课：数据结构和算法有什么用》· 转写校正版</span></blockquote>
+<blockquote>"数据结构是特意设计的数据的存储和组织方式，就是为了让某些算法能够运行。"<span class="src">—— 第1集《数据结构第一课：数据结构和算法有什么用》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>UP 主将"共同好友"归于"图查询"，但实际求共同好友通常基于两个好友集合（哈希集合）取交集，图只负责建模社交关系；属于简化表述，勿混淆"用图建模"与"用集合求交集"。</li>
+<li>数组索引为何从 0 开始在首集即埋下伏笔（addr = base + i×size：从 0 只需一次乘法+一次加法；从 1 需额外一次减法），为性能牺牲可读性——该点将在第 2 集展开。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。平台字幕轨，校正记录清晰，口误（如"屠杀"→"字典树"、"ATD"→"ADT"）已修正，语义连贯。</p>
+</div>
+<h3 id="m2">模块 2 · 线性结构 <span class="modrange">（第2-5集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>四象：数组为基、链表为变、栈管后进、队列管先进。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第2集</span> <b>数组：内存世界的原住民</b> <span class="pill">BV1utqHBNE5o</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>数组定义：一块连续的内存空间，存放一组相同类型的数据；"连续存储 + 同类型（步长 size 一致）"是其高性能的根基。</li>
+<li>随机访问 vs 顺序访问：随机访问=指哪儿打哪儿，给出下标即直接定位（O(1)）；顺序访问（链表）需从头数，O(n）。数组凭"连续+同 size"支持随机访问。</li>
+<li>寻址公式：addr = base + i × size；CPU 只需一次乘法 + 一次加法即可算出任意元素地址。这是 O(1) 读取的硬件依据。</li>
+<li>硬件加速：基于"局部性原理"，CPU 的 prefetch 会按 cache line（一般 64 字节，int 可预取 A0~A15）把附近数据预读到高速缓存，数组不仅算法层 O(1)，物理执行也远快于链表。</li>
+<li>时间复杂度/大 O：衡量"操作步数随数据规模的增长趋势"而非绝对时间；简化三原则——只保留最高项、忽略常数系数、默认讨论最坏情况。常见级别：O(1) 常数级、O(n) 线性级、O(n²) 平方级（应尽量避免）、O(log n)。</li>
+<li>数组的偏科：读 O(1)、写 O(1)；但在中间/头部插入、删除需搬移元素保持连续，复杂度 O(n)。仅末尾插入删除才是 O(1)。</li>
+<li>动态数组：为解决固定长度痛点引入动态扩缩容——存满时申请 capacity×2 的新空间、复制旧数据（C++ 乘 2，Java 默认 ×1.5）；单次扩容代价高但均摊后 PUSH_BACK 仍为 O(1)；乘二是兼顾"内存浪费"与"扩容频率"的保守策略。</li>
+</ol>
+<blockquote>"数组其实是一块连续的内存空间，用于存放一组相同类型的数据。"<span class="src">—— 第2集《数组：内存世界的原住民》· 转写校正版</span></blockquote>
+<blockquote>"随机访问就是我指哪儿打哪儿，你告诉我第五个是什么，我张嘴就来。"<span class="src">—— 第2集《数组：内存世界的原住民》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>"数组插入删除 O(n)"指中间/头部；若仅在末尾 append，则是 O(1)（均摊）。勿把"数组慢"绝对化。</li>
+<li>局部性原理、cache line、prefetch 属操作系统/体系结构知识，UP 主用来解释"数组为何不仅算法快、硬件也快"，拓展正确但不在纯 DS&amp;A 范围内。</li>
+<li>索引从 0 的硬件理由（少一次减法）属历史设计取舍，现代语言可读性已更重要，但该解释契合本系列"理解底层"的基调。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录详尽，修正了 sizeof/ malloc/ cache line/ prefetch/ next/ O(n)/ O(log n) 等术语，代码与复杂度记号规范。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第3集</span> <b>重要程度仅次于数组的数据结构——链表</b> <span class="pill">BV1riq6B6E7V</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>链表定义：由一组零散（不要求连续）的内存块组成，每个节点含"数据本身 + 指向下一节点地址的指针"；内存离散，可充分利用碎片空间（对比数组需一整段连续内存）。</li>
+<li>生活类比：藏宝图——节点 = 奖励（数据）+ 下一处线索（next 指针），顺藤摸瓜找到末尾。</li>
+<li>代码实现：结构体 `node { data; node* next; }`；`create_node` 用 malloc 申请单节点空间、next 置 NULL；理解结构体与指针是学懂链表的关键，也是后续哈希表/树/图的基础。</li>
+<li>插入 O(1)：先 `new-&gt;next = B-&gt;next`（指向 C），再 `B-&gt;next = new`；无需搬移 B/C 之后的节点。两步改指针即完成。</li>
+<li>删除 O(1)：`current-&gt;next = current-&gt;next-&gt;next`（跨过待删节点），再 free 释放；需先判断 next 非空。</li>
+<li>链表的软肋：无下标直接访问，找第 k 个必须从头遍历 next 链，O(n)——这正是其牺牲随机访问换来的代价。</li>
+<li>变体：双向链表（加 prev 指针，可前后遍历，代价是多耗一个指针内存）；循环链表（尾节点 next 指向 head，用于轮询调度/约瑟夫问题，遍历须防死循环）。</li>
+<li>数组 vs 链表对比：内存结构（连续/cache 友好 vs 离散/指针连接）、访问（随机 O(1) vs 遍历 O(n)）、插入删除（搬移 O(n) vs 改指针 O(1)）、空间（紧凑 vs 多指针但能吃碎片）；选型——读多改少用数组，增删多读少用链表。两者互补，是栈/队列的实现基础。</li>
+</ol>
+<blockquote>"数组要求存储的数据在内存中的连续存储，我们可以称之为内存中的原住民；那么链表它在内存中是分散在各处的，我们可以称之为内存的散居游民。"<span class="src">—— 第3集《重要程度仅次于数组的数据结构——链表》· 转写校正版</span></blockquote>
+<blockquote>"链表牺牲了随机访问这个特性来换取了动态性。"<span class="src">—— 第3集《重要程度仅次于数组的数据结构——链表》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>链表"插入/删除 O(1)"的前提是"已经拿到待操作节点的指针"；若还需先查找位置，整体复杂度退化为 O(n)。UP 主默认已定位，初学者易误以为任意插入删除都 O(1)。</li>
+<li>双向链表的 prev 指针在"已知节点想访问前驱"时很方便，但每个节点多一个指针字段，空间开销上升。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了 next/ NULL/ prev/ 遍历/ O(1)/ O(n) 等术语；少数口误（"武警""他杠"）无把握未改但标注存疑，不影响理解。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第4集</span> <b>栈：只在尾部操作的 List</b> <span class="pill">BV1q9BEBkEbU</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>栈定义：操作受限的线性表，只允许在同一端（栈顶）进行插入和删除；LIFO（后进先出）。生活类比：一摞盘子只能从顶部放/取。</li>
+<li>核心操作均为 O(1)：push（入栈，放到栈顶）、pop（出栈，返回并移除栈顶）、peek（只看栈顶不删除）、is_empty、size；约定空栈 top=-1（数组实现时 top 是索引，size=top+1）。</li>
+<li>实现选型：日常多用数组实现——省空间、cache 友好、无需申请/释放节点；因只在栈顶操作，数组的插入删除也是 O(1)；定长问题用动态数组，均摊后仍为 O(1)。链表实现较少用（额外节点开销）。</li>
+<li>应用一·括号匹配：左括号入栈；遇右括号则 pop 栈顶比对是否匹配；扫描完栈必须为空（左括号多出或右括号多余均不匹配）。</li>
+<li>应用二·表达式求值（两步都用到栈）：①中缀转后缀（逆波兰）——用"符号栈"调整顺序，规则：数字直接输出；左括号入栈；右括号连续弹出至左括号（左括号丢弃不输出）；遇运算符则只要栈顶运算符优先级≥自己就不断弹出，再入栈；最后清空栈。②后缀求值——用"操作数栈"：遇数字入栈，遇运算符弹两个数计算（先弹出者作 B、后弹出者作 A，执行 A-B / A/B，顺序错则结果错），结果入栈，栈顶即为答案。</li>
+<li>其他应用：DFS / 回溯（最深处先处理、逐层回退）、函数嵌套调用（栈帧）、浏览器前进后退、撤销操作（Ctrl+Z）；栈可理解为"历史记录的管理者"。</li>
+</ol>
+<blockquote>"栈是一种操作受限的线性表，它的受限在哪啊，就只能对尾部进行插入和删除。"<span class="src">—— 第4集《栈：只在尾部操作的 List》· 转写校正版</span></blockquote>
+<blockquote>"栈呢是先进去的要最后被处理，最后进去的反而就是先要处理。"<span class="src">—— 第4集《栈：只在尾部操作的 List》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>减法/除法必须注意弹出顺序：先弹出的给 B、后弹出的给 A，做 A-B / A÷B；顺序颠倒结果错误。</li>
+<li>中缀转后缀所用算法即经典"调度场算法（shunting-yard）"，UP 主未点名，仅讲规则。</li>
+<li>pop 在 C 中返回布尔表示成功/失败（无异常机制），真实值通过出参指针带回，属 C 语言实现技巧。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。平台字幕轨，大量"站/占/战/债→栈"已系统校正；peek、栈帧、rear、top=-1 等术语与约定已规范；"E盘→一摞盘"等 ASR 错误已修。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第5集</span> <b>队列：四大线性数据结构的最后一环</b> <span class="pill">BV15QvzB9EGy</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>队列定义：双端操作（队尾入队、队头出队）的受限线性表，FIFO（先进先出）；类比食堂打饭/地铁安检，体现公平。操作 push/出队/peek/is_empty/size 均为 O(1)。</li>
+<li>实现选型：直觉上双端删除该用链表，但实际多数用数组（cache 友好、读取快）。纯数组出队需搬移 O(n)，故引入"循环数组"。</li>
+<li>循环数组（环形缓冲）：物理仍是连续数组，逻辑首尾相接；用 front（队头有效元素下标）、rear（下一个待插入空位下标）、capacity 三量描述；移动统一用取模 (rear+1)%capacity；出队只改 front 指针、不搬数据（逻辑删除、物理保留待覆盖）。</li>
+<li>空/满歧义与留空法：front==rear 既可能空也可能满 → 牺牲一个空间（容量为 N 最多存 N-1 个）：满条件 (rear+1)%capacity==front，空条件 front==rear。留空法利于并发（避免锁住头尾）。</li>
+<li>链表实现队列：无限容量、头尾为真指针、无锁友好；适用场景——并发编程/操作系统内核（进程线程数不可预判、扩容"Stop the world"抖动不可接受）、大对象传递（如 PCB）。日常开发数组更常见。</li>
+<li>变体：双端队列 deque（头尾都支持入/出队，Java/Python 默认即 deque；滑窗最大值题）、优先队列（按优先级出队，底层用堆而非数组/链表，最短路径题常用）。</li>
+<li>应用：BFS / 层次遍历（广度优先，如地图导航、三度好友）、消息队列（Kafka 削峰填谷/解耦）、操作系统调度。</li>
+<li>栈 vs 队列：逻辑 LIFO vs FIFO；入/出位置（栈都在栈顶=尾，队列尾入头出）；核心思想——回溯/撤销/DFS 想栈，缓冲/公平/先到先得/BFS 想队列。</li>
+</ol>
+<blockquote>"队列是一个和栈特别相似的数据结构，区别就是对于进出元素的处理顺序是不同的。"<span class="src">—— 第5集《队列：四大线性数据结构的最后一环》· 转写校正版</span></blockquote>
+<blockquote>"留空法：牺牲一个空间，rear 的下一个位置等于 front 就表示满了。"<span class="src">—— 第5集《队列：四大线性数据结构的最后一环》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>容量为 N 的循环队列用留空法最多只能存 N-1 个元素；判断满/空靠两个不同公式，这是环形队列的通用技巧。</li>
+<li>优先队列底层是堆（后续第 10-15 集讲），不是数组/链表，勿误以为队列变体都用线性结构实现。</li>
+<li>原文"一层一层的遍历…就叫深度优先"与后文广度优先语境矛盾，疑为口误/转写错乱，保留原样，正确应为"广度优先/层次遍历用队列"。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"对头→队头/rear/PCB/Kafka/削峰填谷"等术语；个别口误（"就叫深度优先"）存疑已标注。</p>
+</div>
+<h3 id="m3">模块 3 · 哈希表 <span class="modrange">（第6集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>瞬息符：以名为引，一念即达。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第6集</span> <b>哈希表：Java HashMap、Python Dict 底层都是它</b> <span class="pill">BV1dai5BWEpU</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>哈希表作用：基于"键 key"而非"位置/下标"的快速查找。数组擅长按下标 O(1)，但按 key 查找需遍历退化 O(n)；哈希表用 key 经数学运算直接定位。</li>
+<li>结构：底层仍是数组（称 bucket 桶）；通过哈希函数 hash(key) 算出下标再 % capacity 落桶；典型"空间换时间"。</li>
+<li>简单哈希函数：字符串转数字 `hash = hash*31 + c`（乘质数 31 降低冲突概率），最后 % capacity 得 index。</li>
+<li>哈希冲突（鸽巢原理）：不同 key 算得同 index；解法——开放寻址法（找下一空位/再哈希）、拉链法（每个桶挂链表，头插 O(1)）。</li>
+<li>拉链法结构：节点 Entry{key, value, next}；HashTable{buckets: Entry* 数组}。put：算 index→遍历桶内链表，key 已存在则更新 value，否则头插新节点；get：算 index→遍历链表比对 key 返回 value；平均 O(1)（前提哈希函数好、冲突少）。</li>
+<li>应用：缓存（KV）、去重（Set 底层即哈希）、两数之和（LeetCode 第一题）——暴力 O(n²)，哈希表存"值→下标"，遍历时查 target-当前值 是否在表中，降至 O(n)（空间换时间）。</li>
+<li>冲突恶化与防护：负载因子 &gt;0.75 触发扩容（翻倍，所有元素重新 hash 搬家，链表变短）；恶意 Hash DoS 攻击故意构造同 index 值打爆内存；Java HashMap 当单桶链表长度 &gt;8 转红黑树，查询恢复 O(log n)。</li>
+<li>复杂度：插入/删除/查找 平均 O(1)，最坏 O(n)（全冲突成链表）；Java 用红黑树兜底最坏 O(log n)。</li>
+</ol>
+<blockquote>"哈希表就是利用一个键 key，根据这个关键值直接定位它的其他值的一个数据结构。"<span class="src">—— 第6集《哈希表：Java HashMap、Python Dict 底层都是它》· 转写校正版</span></blockquote>
+<blockquote>"哈希表无论是插入删除还是查找，平均都是 O(1)——这是一个典型的空间换时间的操作。"<span class="src">—— 第6集《哈希表：Java HashMap、Python Dict 底层都是它》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>哈希表 O(1) 是"平均/均摊"情况，依赖哈希函数分布均匀；最坏（全冲突）退化为 O(n)，Java8 起用红黑树兜底变 O(log n)。勿把"哈希表 O(1)"绝对化。</li>
+<li>拉链法"头插 O(1)"是教学简化；Java8 之后实际为尾插（便于转红黑树）。UP 主头插说法属经典教材表述。</li>
+<li>负载因子阈值 0.75 是 Java HashMap 默认值，其他语言/实现可能不同。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"哈哈希→哈希/buckets/Hash DoS/next/学习树了"等；"well去找"存疑保留，不影响主干理解。</p>
+</div>
+<h3 id="m4">模块 4 · 树基础与遍历 <span class="modrange">（第7-8集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>分枝：一干生万枝，遍历即巡山。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第7集</span> <b>树的基础概念和代码实现</b> <span class="pill">BV1uKv9BQEEU</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>树定义：N 个节点的有限集合；N=0 为空树，N&gt;0 有唯一根节点 root，其余分为互不相交的子树（递归定义），天然适配分治与递归。</li>
+<li>核心概念：根节点、边、叶子节点（无子树）；亲缘关系——父节点、孩子节点、兄弟节点、祖先节点、后代节点（仿家谱）。</li>
+<li>度（degree）：节点的分叉数；树的度 = 所有节点度的最大值（不是求和）。二叉树即度 ≤ 2。</li>
+<li>层 / 深度 / 高度：层横向（根为第 1 层）；深度从上往下数（"井多深"，根=1 往下递增）；高度从下往上数（"楼多高"，叶子=1 根最高）。注意不同教材起始值有 1（国内常见）或 0（按边计数，国外教材）的差异。</li>
+<li>树形态：多叉树（任意子节点，如文件系统）、二叉树（binary tree，度≤2，本课程重点，除 B+ 树外都讲二叉树）。</li>
+<li>四种特殊二叉树：①完美二叉树（除叶子外度均为 2，全满）；②完全二叉树（按层连续、只能缺右节点，堆用此结构）；③完满二叉树（每个节点要么 0 要么 2 个子节点，无"独生子女"，如哈夫曼树）；④平衡二叉树（任意节点左右高度差 ≤ 1，防退化为链表，如 AVL/红黑树）。</li>
+<li>存储一·数组（顺序存储）：根 index=0，左孩子 2i+1，右孩子 2i+2，父节点 (i-1)/2 取整；定位/求父子均 O(1)，但仅适合完美/完全二叉树，普通二叉树大量空位浪费空间。</li>
+<li>存储二·链表（链式存储）：TreeNode{value, left, right} 指针；所有树通用，日常最常用。</li>
+<li>数组存储树适用于堆、优先队列、堆排序等场景。</li>
+</ol>
+<blockquote>"树是以有 N 个节点的有限集合……当 N 大于零的时候，它一定有一个特殊的根节点。"<span class="src">—— 第7集《树的基础概念和代码实现》· 转写校正版</span></blockquote>
+<blockquote>"树的度其实是它们最大的……分叉的最大值，不是加起来的值。"<span class="src">—— 第7集《树的基础概念和代码实现》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>完美 / 完全 / 完满 三种二叉树名字极像易混：完美=全满；完全=按层连续可缺右；完满=无独生子女（0 或 2）。</li>
+<li>深度/高度/层的起始值（1 还是 0）教材歧义大，做题时以题目说明为准。</li>
+<li>数组存树仅适合完全/完美二叉树，否则空间利用率低，这是其局限。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"数→树/subtree/parent/TreeNode/setRoot/2i+1"等术语与公式；"站在地面"中"站"为站立义，正确保留。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第8集</span> <b>树的遍历：递归思想之始</b> <span class="pill">BV1L4qTBBERS</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>遍历定义：把树中所有节点访问一遍，不重复不遗漏。</li>
+<li>深度优先 DFS（递归 / 栈）：三种顺序按"根节点出现的位置"划分——</li>
+<li>前序：根→左→右（如目录复制，先办事）</li>
+<li>中序：左→根→右（如排序、BST 有序输出）</li>
+<li>后序：左→右→根（如目录删除，先删底层再删根）</li>
+<li>递归实现极简：`preorder(root){ if(root==NULL) return; print(root); preorder(left); preorder(right); }`，仅改变 print 所在行；依赖操作系统函数调用栈（栈帧）。</li>
+<li>非递归：自己用栈模拟（记住上次访问节点），避免递归层级过深导致调用栈溢出；这种写法称"迭代"。</li>
+<li>广度优先 BFS（队列 / 层序遍历）：根入队，出队时把左右孩子按"先左后右"入队，FIFO 保证按层从左到右；用队列实现。</li>
+<li>应用：DFS→回溯/走迷宫/数独/八皇后/文件系统/编译器解析（前中后序区别）；BFS→最短路径/地图导航/游戏寻路/社交好友推荐（广播）。</li>
+<li>复杂度：四种遍历均 O(n)（每节点访问一次）；递归有函数调用开销、易栈溢出，迭代（for/while）开销小、可用堆内存撑到数 GB。</li>
+</ol>
+<blockquote>"所谓的前中后序，都是指的是根节点在什么时期被出现：根节点在第一就叫前序，在中间叫中序，在最后叫后序。"<span class="src">—— 第8集《树的遍历：递归思想之始》· 转写校正版</span></blockquote>
+<blockquote>"深度优先就用栈来模拟（后进先出），广度优先 BFS 就是用队列来模拟。"<span class="src">—— 第8集《树的遍历：递归思想之始》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>前/中/后序仅仅改变"访问根"的时机，三行代码互换位置即可，是递归最经典的入门范式。</li>
+<li>非递归 DFS 用栈、BFS 用队列是通用套路；无序树搜索需遍历全部节点，效率 O(n)。</li>
+<li>递归层级过深会栈溢出（调用栈仅几 MB），改自己维护的栈（堆内存）可到几 GB。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录系统，修正了"调用栈/栈帧/帧/TreeNode/BFS/遍历"等；"站在地面"保留为站立义，无误。</p>
+</div>
+<h3 id="m5">模块 5 · BST 与堆 <span class="modrange">（第9-11集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>权衡：BST 以序换速，堆以极值为尊。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第9集</span> <b>BST：二分法、递归的巧妙运用</b> <span class="pill">BV1ErrgB8EsX</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>BST 动机：无序数组/链表查找 O(n)；有序数据可用二分查找 O(log n)（0~100 最多 7 次，10 亿最多 30 次）。但数组插入删除 O(n)、链表查找 O(n)。BST 兼顾三者均约 O(log n)。</li>
+<li>二分查找：left/right 双游标，mid=(left+right)/2 向下取整；target&lt;mid 则 right=mid-1（查左半），target&gt;mid 则 left=mid+1（查右半）；每次减半 → O(log n)。复杂度小技巧：循环内"每次除二"即 log n，仅 I++ 是 n。</li>
+<li>BST 定义（性质）：对任意节点，左子树所有值 &lt; 根，右子树所有值 &gt; 根；任意子树都成立。</li>
+<li>查找：从根比较，小走左、大走右，递归（或迭代）；遇空则无；平衡时 O(log n)。</li>
+<li>插入（递归"老板思维"）：比当前小交左子树、大交右子树，遇空则创建新节点返回；返回"新子树根"重连父指针。新节点必插在叶子。</li>
+<li>删除（三种情况）：①叶子节点→直接删（返回空）；②只有一个孩子→孩子顶上（无左返回右，无右返回左）；③左右都有→用"右子树最小节点"（successor，一路向左）或"左子树最大节点"（predecessor，一路向右）顶替被删节点的值，再删那个替身（实际只改值、节点不变，返回自身）。</li>
+<li>BST 特性：中序遍历得到升序序列（即有序数组）。</li>
+<li>复杂度：查找/插入/删除 平均 O(log n)；前提是"大体平衡"，退化（如插入有序成链）则 O(n)。引出下一集"堆"——只关心极值/前 k 大更轻量。</li>
+</ol>
+<blockquote>"对于任意节点，它的左子树所有节点的值都比根节点要小，它的右子树所有节点都比根节点要大——这就叫二叉搜索树。"<span class="src">—— 第9集《BST：二分法、递归的巧妙运用》· 转写校正版</span></blockquote>
+<blockquote>"对 BST 做中序遍历，得到的就是一个有序的数组。"<span class="src">—— 第9集《BST：二分法、递归的巧妙运用》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>BST 高效前提是"平衡"；若依次插入有序数据会退化为链表，查找退化 O(n)——这正是后续 AVL/红黑树要解决的问题。</li>
+<li>删除"左右都有"用 successor / predecessor 顶替是标准做法，理解"只改值、返回自身"即可。</li>
+<li>二分查找 O(log n) 判定：循环里每次"除二"就是 log n；仅在循环外除二无效。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"subtree/根节点/BST(原 BSD)/栈帧"等；二分查找中 left/right 方向口误（"找前半段"应为"找后半段"）已标注存疑并修正。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第10集</span> <b>为极值而生的堆，解决Top K与优先队列难题</b> <span class="pill">BV1nK69BJECt</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>堆定义：为极值而生的完全二叉树；两大特性——①结构：完全二叉树（除最后一层满，最后一层只能缺右不能缺左）；②有序：根 ≥ 所有孩子为大根堆（max heap），根 ≤ 所有孩子为小根堆（min heap）。堆是"弱序"（只父子有序、兄弟无序），区别于 BST 的强序。</li>
+<li>存储：完全二叉树用数组最省空间；映射关系 parent=(i-1)/2（1-based 时为 i/2），左孩子 2i+1，右孩子 2i+2；0-based 与 1-based 皆可（业界有 1-based 省去 ±1 的实践）。</li>
+<li>核心操作：上浮（插入尾部后不断与 parent 交换至满足堆序，O(log n)）、下沉（删顶后尾部补根、与左右孩子中较大/较小者交换下沉，O(log n)）。</li>
+<li>插入：放数组末尾 → 上浮；删除堆顶：取堆顶 → 尾部元素补到根部 → 下沉。</li>
+<li>建堆：逐个插入 O(n log n)；更优"批量下沉"——从最后一个非叶子节点 (N/2-1) 倒序执行下沉，复杂度 O(n)（越往上节点数指数级减少，快速收敛）。</li>
+<li>堆排序（4 步，原地省空间）：①建大顶堆；②堆顶与末尾互换（最大值归位）；③size-1 后下沉恢复堆；④循环直至有序。</li>
+<li>应用：优先队列（操作系统任务调度、VIP）、Top K 问题（维护大小为 K 的堆，热搜/榜单）、图算法加速（最短路径）、求中位数（接第 11 集）、哈夫曼树构建。</li>
+<li>堆 vs BST：堆为找极值（查极值 O(1)，查任意非极值 O(n) 无意义）；BST 查任意值 O(log n)；堆弱序、BST 强序。</li>
+<li>复杂度：插入/删除 O(log n)，建堆 O(n)，取堆顶 O(1)。</li>
+</ol>
+<blockquote>"堆是一种为极值而生的数据结构。"<span class="src">—— 第10集《为极值而生的堆，解决Top K与优先队列难题》· 转写校正版</span></blockquote>
+<blockquote>"堆的有序性其实是一个弱的有序性——父子之间有序，但是兄弟之间无序。"<span class="src">—— 第10集《为极值而生的堆，解决Top K与优先队列难题》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>建堆"批量下沉"是 O(n) 而非 O(n log n)，这是经典结论（节点数指数级减少）；初学者易误以为建堆是 O(n log n)。</li>
+<li>堆只保证堆顶是极值，查非极值需遍历 O(n)；不要误以为堆能像 BST 查任意值。</li>
+<li>大/小根堆只约束"根与孩子"的关系，左右孩子之间无大小要求。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"max heap/mini heap、大根堆/小根堆、heapify、largest、B+树、0-based、break"等术语；个别 parent 下标计算表述含混处存疑但标注，不影响主干。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第11集</span> <b>堆的应用——LeetCode295</b> <span class="pill">BV1of6dBDEMB</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>问题：LeetCode 295「数据流中的中位数」。中位数=排序取中间（奇数取中间一个，偶数取中间两平均）；比平均数抗极值（姚明+潘长江均值无代表意义）。</li>
+<li>双堆解法：大顶堆存较小一半（取其最大）、小顶堆存较大一半（取其最小）；中位数 = 两堆顶平均（偶数）或较多一侧的堆顶（奇数）。</li>
+<li>平衡约定：左（大顶堆，存小数）数量 ≥ 右（小顶堆，存大数），最多多 1。</li>
+<li>插入步骤（关键，非按个数交替）：①新数先入大顶堆；②把大顶堆堆顶（左侧最大）踢到小顶堆；③若发现小顶堆数量 &gt; 大顶堆，把小顶堆堆顶（右侧最小）弹回大顶堆，维持平衡。</li>
+<li>取中位数：左 &gt; 右 → 返回大顶堆顶；相等 → 两堆顶平均（仅 peek 不弹出）。</li>
+<li>实现技巧：用同一套堆代码，小顶堆可由"存入时乘 -1"得到（复用大顶堆算法）。</li>
+<li>复杂度：每次 add O(log n)，findMedian O(1)。</li>
+<li>代表题：LeetCode 295（堆的经典 medium/hard 应用，双堆模板）。</li>
+</ol>
+<blockquote>"这两个堆各自存一半的数据，其中大顶堆存较小的一半数，小顶堆存较大的一半数。"<span class="src">—— 第11集《堆的应用——LeetCode295》· 转写校正版</span></blockquote>
+<blockquote>"中位数就是两个堆顶的平均数，或者是其中哪一个（奇数时较多的堆的堆顶）。"<span class="src">—— 第11集《堆的应用——LeetCode295》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>双堆法核心不是"第 1 个放左、第 2 个放右"交替插，而是"先入左再踢最大到右、再平衡"，否则数据会放错半区。</li>
+<li>"大顶堆放小数、小顶堆放大数"是反直觉但必要的设计，保证两堆顶恰好是中位数候选。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"LeetCode/peekMax/10、27、13、49、35/10、13、27"等数字与术语；内容短（集数少、仅 246 段），聚焦一题，信息密度高。</p>
+</div>
+<h3 id="m6">模块 6 · 高级树结构 <span class="modrange">（第12-17集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>演化：从压缩、补全、自平衡到多路，皆为对抗退化。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第12集</span> <b>哈夫曼树：如何实现高效数据压缩</b> <span class="pill">BV1Tmr1BVEA3</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>动机：数据压缩。定长编码（每字符固定位，如 A=000）简单但浪费；变长编码让高频字符短编码、低频长编码，总长度↓。</li>
+<li>哈夫曼树 = WPL（带权路径长度 = Σ权重×编码长度）最小的二叉树，即"最优二叉树"；权重越大（出现频率越高）越靠近根（编码越短），权重越小越远离根。</li>
+<li>哈夫曼编码：左路径标 0、右标 1，根到叶子路径上的 0/1 序列即编码；所有字符都在叶子节点，具备"前缀特性"（无任何编码是另一编码的前缀）→ 解码无歧义、无需分隔符。</li>
+<li>构造（贪心策略）：①初始每个字符为单节点森林（权重=频次）；②每次取权重最小的两节点合并为新父节点（权重=二者之和），放回森林；③重复至剩一棵树。每次取两个最小 → 用小顶堆（优先队列）实现，复杂度 O(n log n)。</li>
+<li>关键细节：合并后的新节点权重可能变大，必须放回森林重新比较（不能只在剩余里取最小），否则得不到最优 WPL。</li>
+<li>应用：哈夫曼编码（无损压缩）；LeetCode 1167「连接棒材的最小费用」——每次连最短两根、费用=长度和，总费用=所有非叶子节点权重和=WPL，本质是哈夫曼树。</li>
+<li>特性：哈夫曼树是满二叉树（只有度 0 和度 2 的节点）；构造算法属贪心（每步局部最优，与动态规划"全局最优"相对）。</li>
+<li>复杂度：构建 O(n log n)（优先队列）。</li>
+</ol>
+<blockquote>"哈夫曼树的核心思想是：权重越大（出现频率越高）就让它离根节点越近，权重越小离根越远，使总 WPL 最小。"<span class="src">—— 第12集《哈夫曼树：如何实现高效数据压缩》· 转写校正版</span></blockquote>
+<blockquote>"所有字符编码都在叶子节点，保证无任何编码是另一个编码的前缀——解码无需分隔符。"<span class="src">—— 第12集《哈夫曼树：如何实现高效数据压缩》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>"前缀特性/前缀码"是哈夫曼编码可无歧义解码的关键；非叶子节点不承载字符，这是二叉树法保证无前缀冲突的本质。</li>
+<li>哈夫曼树是满二叉树（无度为 1 节点）；构造用贪心 + 小顶堆，注意"放回重比较"细节。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"哈夫曼树/权重/父节点/13、14/29/27/取最小的"等；"冒号"为举例语气词存疑保留，不影响理解。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第13集</span> <b>大厂面试必问：如何设计自动补全功能？——字典树</b> <span class="pill">BV11frSBnEeu</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>字典树 Trie 定义：多叉树（非二叉），每个节点代表一个字符；利用公共前缀共享路径（相同前缀单词共享分支）；属空间换时间。得名自 retrieval 中间部分 "Trie"。</li>
+<li>节点结构：①children 指针数组（如小写字母 26 个，下标 index = 字符 - 'a'，即 c-'A' 实为减 65 映射）；②is_end 标记（从根到此路径构成完整单词时为 true）。</li>
+<li>插入：从根遍历字符，子节点存在则下移、不存在则新建链接；词尾置 is_end=true。</li>
+<li>查找两种：查单词（路径存在且末尾 is_end==true）；查前缀（路径存在即可，无需 is_end）。易错点：前缀存在 ≠ 单词存在（如 Trie 有 apple，查 app 能找到节点但 is_end=false，不能算有 app 单词）。</li>
+<li>实战 LeetCode 820「单词的压缩编码」：若单词 A 是 B 的后缀则不必单独编码；把单词反转→变前缀问题→建 Trie→只统计叶子节点（深度+1，+1 是 # 结束符），总和即最短编码串长。</li>
+<li>对比哈希表：单单词查询哈希表 O(1) 更快；但前缀查询哈希表不支持（只能全量匹配），字典树前缀查询 O(L)；字典树空间更大（26 叉大量空指针）。日常仍优先哈希表，仅频繁前缀查询才用 Trie。</li>
+<li>应用：自动补全、拼写检查、最长前缀匹配；空间优化可用压缩字典树；字符集大（如中文）可在节点内用红黑树/哈希表替代数组。</li>
+<li>复杂度：插入/查找/前缀查询 均 O(L)（L=单词长度，与字典大小无关）。</li>
+</ol>
+<blockquote>"字典树本质上是一个 N 叉树，利用公共前缀做复用，用空间换时间，效率基本是 O(L)。"<span class="src">—— 第13集《大厂面试必问：如何设计自动补全功能？——字典树》· 转写校正版</span></blockquote>
+<blockquote>"字典树特别擅长的场景就是各种各样自动补全、拼写检查、最长前缀匹配。"<span class="src">—— 第13集《大厂面试必问：如何设计自动补全功能？——字典树》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>前缀存在 ≠ 单词存在，必须查 is_end；这是字典树最易错的点，刷题常考。</li>
+<li>哈希表 O(1) 但只能精确匹配，不支持前缀批量查询；需要"以某前缀开头"的联想才用 Trie。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"字典树/ASCII/retrieval/time#/前缀树/O(L)/平衡树"等；"加1bell"举例语气词存疑保留，不影响理解。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第14集</span> <b>AVL树：平衡的二叉搜索树，解决 BST 退化问题</b> <span class="pill">BV1exk4BBE1Y</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>AVL 动机：BST 插入有序数据会退化为链表，查询 O(n)；AVL 是自平衡 BST，保证查询稳定 O(log n)。</li>
+<li>AVL 定义：首先得是 BST；且任意节点 左子树高度 − 右子树高度的绝对值 ≤ 1（平衡因子 BF）。一旦某节点 |BF|&gt;1 即失衡，需旋转修复。</li>
+<li>旋转核心原则：旋转须保持中序遍历（有序序列）不变——BST 中序即排序结果，旋转后仍须能做排序。</li>
+<li>四种旋转：</li>
+<li>LL 型（左左，左子树太高）→ 右旋（提中间节点上去）</li>
+<li>RR 型（右右，右子树太高）→ 左旋</li>
+<li>LR 型（左右）→ 先左旋左孩子，再右旋根（化为 LL 再右旋）</li>
+<li>RL 型（右左）→ 先右旋右孩子，再左旋根（化为 RR 再左旋）</li>
+<li>口诀：LL 右旋、RR 左旋；带拐弯的 LR/RL 先转一步化成 LL/RR 再处理。</li>
+<li>插入：同 BST 找空位插入，再自底向上检查高度/平衡，失衡则旋转；删除更复杂（考研/面试一般只要求模拟画出旋转步骤，不考代码）。</li>
+<li>适用：读多写少场景；维持绝对平衡需频繁旋转有代价，且额外存高度信息。</li>
+<li>引出：AVL 太"较真"（高度差须 ≤1）旋转频繁 → 工程界更多用旋转更少的红黑树。</li>
+</ol>
+<blockquote>"AVL 树是一种自平衡的二叉搜索树，在树中任意节点的左子树和右子树的高度的差值都小于等于一。"<span class="src">—— 第14集《AVL树：平衡的二叉搜索树，解决 BST 退化问题》· 转写校正版</span></blockquote>
+<blockquote>"无论怎么旋转，中序遍历顺序不能变（旋转之后还要能做排序，不然他就不是 BST 了）。"<span class="src">—— 第14集《AVL树：平衡的二叉搜索树，解决 BST 退化问题》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>AVL 旋转不必死背公式，抓住"维持中序遍历不变"这一核心即可推导四种旋转结果。</li>
+<li>AVL 适合读多写少；插入/删除频繁旋转代价大，这是它被红黑树在工程界取代的原因。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"AVL树/LL型/LR型/中序遍历/BST/死记硬背/临近考试"等；"应用也非常多"存疑但标注，不影响主干。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第15集</span> <b>红黑树：适度平衡的艺术，哈希表、Map 底层都是它</b> <span class="pill">BV1vsk4BuEWk</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>红黑树定位：BST 的变种，引入颜色位（红/黑），相对平衡（最长路径 &lt; 最短路径的 2 倍），旋转次数远少于 AVL，工程界最广泛应用。</li>
+<li>五大性质（口诀"根叶黑、不红红、黑路同"）：①每节点非红即黑；②根节点黑；③所有叶子（NIL 空节点）黑；④不能有连续两个红节点（红节点的孩子不能是红）；⑤任一节点到其所有后代叶子路径上黑色节点数量相同（黑高一致 / 黑路同）。这五条保证"最长路径 &lt; 最短路径 2 倍"，避免退化。</li>
+<li>插入默认染红：插黑必破坏黑高（黑路同）必调；插红多数情况不需修，仅当父也是红（"双红"）才修复——目标"消除双红"。</li>
+<li>插入修复看叔叔节点：叔叔红 → 仅变色（父、叔变黑，祖父 GP 变红），可能向上递归；叔叔黑 → 先旋转再变色（对应 LL/LR/RR/RL 四种，与 AVL 旋转同理）。</li>
+<li>与 AVL 对比：平衡度 AVL 极严（差≤1）查询略快（AVL≈1.44·log n，红黑≈2·log n）；插入删除 AVL 旋转多较慢；红黑树旋转少更快、极通用，适合写频繁。</li>
+<li>应用：C++ STL map/set、Java HashMap（单桶链表长度 &gt;8 转红黑树）、Linux 内核调度/内存管理、Nginx 定时器。一句话：放弃绝对平衡换取更高效动态修改能力，是工程性价比最高的 BST。</li>
+<li>复杂度：查找/插入/删除 O(log n)。</li>
+</ol>
+<blockquote>"红黑树通过放弃了绝对平衡，来换取了更高效的动态的修改能力，是工程上性价比最高的二叉搜索树。"<span class="src">—— 第15集《红黑树：适度平衡的艺术，哈希表、Map 底层都是它》· 转写校正版</span></blockquote>
+<blockquote>"核心三性质：根叶黑、不红红、黑路同（任一节点到叶子路径上的黑色节点数相同）。"<span class="src">—— 第15集《红黑树：适度平衡的艺术，哈希表、Map 底层都是它》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>红黑树靠"黑路同（黑高一致）"而非高度差来保证平衡，这是与 AVL 的本质区别。</li>
+<li>插入默认染红是为了不破坏黑高；出现"双红"才修复，看叔叔颜色决定"仅变色"还是"先旋转再变色"。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。校正记录清晰，修正了"根叶黑/不红红/黑路同/黑高/父节点/uncle/HashMap/LL型/NIL空节点"等；GP 为代码变量名保留未改。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第16集</span> <b>B-Tree：为大数据而生的多路平衡搜索树</b> <span class="pill">BV1PxzzBjEjj</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>动机：二叉树"瘦高"，数据量大时树高 → 每次访问节点可能引发磁盘 IO（读磁盘 ~10ms vs 内存 ~100ns，慢约 10 万倍）。多叉树让树"变矮变胖"：一个节点内放多个有序数据（连续存放，一次读入多数据+享内存/cache 加速）→ 大幅减少 IO。本质是与物理世界（磁盘）的妥协。</li>
+<li>B 树定义：多路、自平衡的查找树，通过控制树高减少 IO；特征——①节点内 K 有序（可用数组+节点内二分）；②所有叶子节点在同一层（控高+平衡）。</li>
+<li>阶（order）：最多 M 个子节点 = M 阶；每节点最多 M-1 个 K；根至少 2 子节点（≥1 个 K）；非根节点至少 ⌈M/2⌉ 个子节点、至少 ⌈M/2⌉-1 个 K（半满，避免空间浪费与树过高）。</li>
+<li>查找：从根比较，小往左/中往中间分支/大往右；树高 = log_M(N)，节点内二分 = log_2(M)，相乘抵消 → 整体 O(log n)。百万级数据、100 叉仅 3 层（最多 3 次 IO）。</li>
+<li>插入：①有空位直接插；②节点满（K 超 M-1）→ 分裂：中间 K 上提至父节点、左右各半；③父也满 → 递归向上分裂，树高 +1。</li>
+<li>删除：叶子删除，删后 ≥ 下限直接删；下溢出（&lt;下限）：先看兄弟能否借（借时父节点下移、兄弟最小/最大上移保持有序），兄弟都不够 → 与兄弟+父节点合并，递归向上；非叶子节点删除转为叶子操作（用左子树最大或右子树最小顶替再删）。</li>
+<li>不足（引出 B+树）：①数据散布在所有节点，范围查询慢（需中序回溯）；②内部节点也存 data，索引密度低、扇区利用率低、树高不够极致。</li>
+<li>复杂度：查找/插入/删除 O(log n)（实际 log_M N）。</li>
+</ol>
+<blockquote>"B 树的核心思想就是把高瘦的二叉树变成了矮胖的 B 树，用胖的节点来换取（减少）磁盘 IO——用空间换时间。"<span class="src">—— 第16集《B-Tree：为大数据而生的多路平衡搜索树》· 转写校正版</span></blockquote>
+<blockquote>"B 树是一种多路（且自平衡）的查找树，通过控制树的高度来减少对磁盘的 IO 次数。"<span class="src">—— 第16集《B-Tree：为大数据而生的多路平衡搜索树》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>B 树节点"半满"规则（⌈M/2⌉ 子节点）是为控高与空间利用，不是随意规定。</li>
+<li>B 树范围查询不友好（数据散布+需回溯），这是 B+ 树改进的核心动机，勿把 B 树当数据库索引主流。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕/校正已系统规范化"B树/M/2/父节点/页空间/平衡"等；大量"B数→B树"修正，主干清晰。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第17集</span> <b>B+树：数据库索引基石</b> <span class="pill">BV1JFzCBSENY</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>定位：对 B 树的拓展，工程上最常用——数据库索引基石。</li>
+<li>B 树痛点：①索引密度低（内部节点既存 K 又存 data，能存的 K 少，树高不够极致）；②范围查询慢（数据散布，需逐次中序回溯）。</li>
+<li>B+ 树优化：①非叶子节点只存 K（索引/路标），不存 data；所有 K+data 都在叶子节点 → 节点变小、每磁盘页载更多节点、树更矮；②所有叶子节点用链表（指针）串起来 → 高效范围查询/顺序全表扫描。</li>
+<li>规则（M 阶）：内部节点分叉最多 M、最少 ⌈M/2⌉；内部节点 K 数 = 分叉数-1；叶子节点 K 最少 ⌈M/2⌉-1、最多 M-1。</li>
+<li>与 B 树异同：同——多路平衡、所有叶子同层、节点有序、插入删除需维持特性；异——B+树非叶子只存 K（瘦身）、数据绝对在叶子；B 树 K 全树唯一，B+树 K 会重复（父节点只是路标、叶子也有）；B 树节点间只连 parent，B+树叶子间有链表。</li>
+<li>查找：从根二分下到叶子；即使内部找到 K 也要继续下到叶子取真实 data（路径稳定，不会忽快忽慢）。范围查询：定位起点后沿叶子链表顺序走直到超界，免回溯。</li>
+<li>插入/删除：总在叶子插入（满了分裂，中间 K 复制到父节点，非上移）；删除可能下溢出，向兄弟借或合并，需维护叶子链表；比 B 树简单（数据只在叶子）。</li>
+<li>优势：更矮、索引分离、查询稳定、范围查询快、对磁盘友好；应用于关系型/非关系型数据库（含 MongoDB）、文件系统。</li>
+<li>复杂度：查找/插入/删除 O(log n)。</li>
+</ol>
+<blockquote>"B+ 树是一个工程的智慧，相对于 B 树进一步优化：非叶子节点只存 K，叶子节点用链表连起来。"<span class="src">—— 第17集《B+树：数据库索引基石》· 转写校正版</span></blockquote>
+<blockquote>"B+ 树查询比较稳定（路径长度肯定都在叶子节点），范围查询比较快，对磁盘更友好。"<span class="src">—— 第17集《B+树：数据库索引基石》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>B+ 树 K 在内部与叶子间会冗余（路标），B 树 K 唯一——勿混淆"重复 K"与"B 树唯一 K"。</li>
+<li>范围查询是 B+ 树最大优势，靠叶子链表顺序遍历避免回溯；这是它取代 B 树做数据库索引的原因。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。本集为 B 站无字幕、本地 ASR 转写，长句错乱较多（"B加数/分列/柚子树/负节点/更顺了"等），校正记录已大幅修正"B+树/分裂/右子树/父节点/关系型数据库/MongoDB/M/2"等术语，主干可读但口语残留略多；是 25 集中转写质量偏弱的一集。</p>
+</div>
+<h3 id="m7">模块 7 · 图基础 <span class="modrange">（第18-20集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>结网：点线成世界，遍历即寻路。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第18集</span> <b>图 1：图的现实应用与基础概念</b> <span class="pill">BV1k8zDBGE7H</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>动机：图是"万物互联"的数据结构，比想象常见——社交网络好友、地图最短路径、任务调度、Web 页面关系、AI 知识连接、网络布线/路由广播（最小生成树降本）。</li>
+<li>定义：由顶点（vertex）集合与边（edge）集合组成；G 代表 graph；表达多对多关系（线性结构 1对1、树 1对多、图 多对多）。</li>
+<li>无向图 vs 有向图：边有无方向；无向 AB=BA（微信好友/握手），有向 AB≠BA（微博关注/网页链接）。</li>
+<li>度 degree：无向图中连接该顶点的边数；有向图分入度（指向本顶点的边数）、出度（本顶点指出去的边数），总度=入度+出度。</li>
+<li>权重：边上的代价/强度（距离、带宽、延迟、亲密度）；带权图称"网"。</li>
+<li>路径与环：路径=顶点序列；简单路径=无重复顶点；起点终点相同的路径=环。</li>
+<li>连通性：顶点间有路径则连通；能经一条路径遍历所有节点=连通图；有向图中任意两点可互达=强连通。</li>
+<li>预告：后续讲图的存储（邻接矩阵/邻接表）、遍历（BFS/DFS）、最小生成树、最短路径、关键路径。</li>
+</ol>
+<blockquote>"图是由若干个顶点及其把这些顶点连接起来的边组成的集合，最核心的是表达多对多的关系。"<span class="src">—— 第18集《图 1：图的现实应用与基础概念》· 转写校正版</span></blockquote>
+<blockquote>"线性结构是一对一，树是一对多，到了图我们就可以理解为多对多的关系了。"<span class="src">—— 第18集《图 1：图的现实应用与基础概念》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>有向图必须区分入度与出度，初学者常把"度"直接套用到有向图。</li>
+<li>"网"=带权图，是正式术语；带权图的最短路径/最小生成树才体现权重意义。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕/校正已规范"最小生成树/degree/出度/邻接矩阵/邻接表/环"等；"J代表graph"中 J 疑为 G 存疑保留，不影响理解。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第19集</span> <b>图的存储：邻接矩阵与邻接表</b> <span class="pill">BV19LzeBmE5G</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>动机：图比线性/树复杂（多对多，任意两顶点可能关联），有稀疏图与稠密图，需权衡——空间（存边）、时间（判两点是否相连）、遍历效率（找某点所有邻居）。</li>
+<li>邻接矩阵：用 N×N 二维数组 graph 表示顶点连接；有边 graph[i][j]=1（带权"网"存权重），无边=0 或 ∞；对角线（i==j）初始化为 0。优点：查边 O(1)、出度看行、入度看列，极快。缺点：空间 O(V²)，稀疏图浪费大；适合稠密图。无向图对称（graph[i][j]=graph[j][i]=1），可只存半三角省空间。</li>
+<li>邻接表：数组+链表结合；每顶点建单链表存其所有邻居，常用头插法（插入快，顺序与输入相反）。空间 O(V+E)（无向图每条边存两次 → O(V+2E)）。优点：省空间，适合稀疏图；链表长度即度（无向图）。缺点：判边/找邻居比矩阵慢（需遍历链表）；有向图入度难求。适用：稀疏图、需频繁增删点边关系。</li>
+<li>其他：有向图求入度难可用十字链表；无向图可用邻接多重表。</li>
+<li>总结：无绝对好坏，看图规模与最常见操作选。邻接矩阵 O(V²) 查边快；邻接表 O(V+E) 省空间。</li>
+</ol>
+<blockquote>"邻接矩阵是用二维数组实现的，特别适合稠密的图，查边比较快，但是特别浪费空间；邻接表用链表和数组存储，适合稀疏的图，比较省空间。"<span class="src">—— 第19集《图的存储：邻接矩阵与邻接表》· 转写校正版</span></blockquote>
+<blockquote>"选择数据结构要根据图的规模，还有最常见的操作类型来决定。"<span class="src">—— 第19集《图的存储：邻接矩阵与邻接表》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>邻接矩阵空间 O(V²)、邻接表 O(V+E)；稠密图用矩阵、稀疏图用邻接表是基本选型原则。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。本集为 B 站无字幕、本地 ASR 转写，错乱较多（"连接矩阵/165535/I=G/临临接"等），校正记录已大幅修正"邻接矩阵/graph[i][j]/65535/firstEdge/O(V+E)/邻接表"等术语，主干可读但口语残留略多；是 25 集中偏弱的一集。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第20集</span> <b>图的遍历：深度优先与广度优先</b> <span class="pill">BV1Py6GBVEQa</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>遍历定义：从某顶点出发，按某种思路访问所有顶点且各一次。</li>
+<li>难点与技巧：图可能有环（兜圈子）、可能非连通（只访问到连通分量）→ 需 visited 数组（标记是否访问，初始化 0、访问置 1）避免重复/死循环。</li>
+<li>DFS（深度优先）：一条路走到底、撞墙回溯；用栈（或函数递归的隐式栈）。递归写法简洁（利用调用栈），仅节点极深才自造栈。代码：标记访问→遍历邻居→未访问则递归；非连通图靠外层 for 循环所有顶点保证全部访问。邻接矩阵下复杂度 O(V²)。</li>
+<li>BFS（广度优先）：水波纹一层层扩散；显式用队列。入队时机=发现未访问邻居立即入队并标记；出队时处理该节点再处理其邻居。BFS 保证无权图最短路径（迷宫/地图最优解）；DFS 能走全但不保证最短。</li>
+<li>应用：DFS→全排列/所有路径、拓扑排序、判环、连通性检测；BFS→无权图最短路径、迷宫、几度好友、爬虫、垃圾回收。</li>
+<li>时间复杂度：两者相同（与存储方式相关）。</li>
+<li>附：算法三大思想——分治（DFS/BFS/建堆本质都是分治）、贪心（哈夫曼/Prim）、动态规划；掌握基础数据结构+遍历+三思想，刷 LeetCode 不会毫无思路。</li>
+</ol>
+<blockquote>"深度优先就像走迷宫一条路走到黑撞到南墙才回头；广度优先就像水波纹扩散一层层来。"<span class="src">—— 第20集《图的遍历：深度优先与广度优先》· 转写校正版</span></blockquote>
+<blockquote>"广度优先能保证在无权图中肯定能找到最短的（路径）；深度优先能保证走全但不能保证最短。"<span class="src">—— 第20集《图的遍历：深度优先与广度优先》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>visited 数组是图遍历防环/防重复的关键，DFS 递归必须有它否则死循环。</li>
+<li>BFS 最短路径仅对"无权图"（每步代价相同）成立；带权最短路径需 Dijkstra 等（后续第 22-23 集）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕轨，系统校正"遍历/栈/队列/连通/邻接点/LeetCode/分治/小根堆"等，主干清晰。</p>
+</div>
+<h3 id="m8">模块 8 · 图算法 <span class="modrange">（第21-25集）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>运筹：最优连接、最短路径、先后次序、关键链路。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第21集</span> <b>最小生成树 (MST)</b> <span class="pill">BV1qrzXBkEmD</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>最小生成树定义：①生成树=含所有 V 个顶点、恰 V-1 条边、无环、连通；②最小=边权之和最小。应用：N 城市铺电缆连通且总成本最低。图论中"连通且无环"即树。</li>
+<li>Prim 算法（逐顶点加，贪心）：从任意顶点出发，每次把"离当前生成树集合最近"的顶点拉入伙；维护 lowcast 数组（各顶点到树的最小距离）和 parent 数组；更新新顶点邻居距离→再找最小→循环 V-1 次。适合稠密图（复杂度与边无关、只看顶点数，朴素 O(V²)）。</li>
+<li>Kruskal 算法（逐边加，贪心）：所有边按权重升序排序，依次加边；加前用并查集（find parent）判环——两顶点根不同则可加、相同则丢；直至加入 V-1 条边或所有顶点连通。适合稀疏图（与边相关，O(E log E) 排序主导）。</li>
+<li>并查集：每顶点初始 parent=自己（自己为根/leader）；加边时找两顶点根，不同则合并（一集合根设成另一集合根），相同则成环丢弃；可路径压缩优化查询。</li>
+<li>对比：两者都是贪心；Prim 逐顶点（适合稠密），Kruskal 逐边（适合稀疏）；最小生成树权值唯一但形态可能多种。</li>
+</ol>
+<blockquote>"最小生成树：含所有顶点、用 V-1 条边连接且无环、边权之和最小。"<span class="src">—— 第21集《最小生成树 (MST)》· 转写校正版</span></blockquote>
+<blockquote>"Prim 每次把离当前生成树最近的顶点拉入伙；Kruskal 每次挑最小的边加入，用并查集判断是否成环——两者都是贪心的经典应用。"<span class="src">—— 第21集《最小生成树 (MST)》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>生成树必须无环且连通、恰 V-1 条边；最小生成树总权值和唯一，但选边方案可能多种（"最小生成树可能不止一种，但最终的和肯定一样"）。</li>
+<li>Kruskal 靠并查集判环是核心技巧；Prim 靠 lowcast 维护最近距离，注意 lowcast[j]==0 表示已入树。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕轨，校正"lowcast/Prim/Kruskal/连通/上溯/逐边加/无向连通"等；lowcast 为教材变量名保留，主干清晰。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第22集</span> <b>单源最短路径：迪杰斯特拉 (Dijkstra)</b> <span class="pill">BV1i56kB5E8Q</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>单源最短路径定义：从一个起点到图中所有其他顶点的最短路径（不限于终点）；与 MST 不同，不要求经过所有顶点。前提：所有边权必须为正值，不支持负权边。</li>
+<li>贪心 + 松弛（relaxation）：每轮在未确认（visited=false）顶点中选 dist 最小的"锁死"它（一旦选定即认为最优、不回头），再以其为跳板对邻居做松弛——若"经该点到达邻居"比原 dist 更近，则更新 dist 与 prev。</li>
+<li>三个数组：dist（起点到各点当前最短距离，初值 ∞）、prev（前序节点，初值 -1/无）、visited（该点是否已确认）；初态设起点 dist=0、prev 不设。</li>
+<li>时间复杂度 O(V²)（两层对顶点嵌套循环，朴素实现，无 log 操作）；可用优先队列优化降为 O(E log V)，但代码更复杂。考研 408 多考推演过程/画过程图，不考代码实现。</li>
+<li>与 BFS 关联：可理解为"带权图的水波纹扩散"，每次锁定离波心最近的点再外拨；BFS 只适用无权图，Dijkstra 适用正权图。</li>
+</ol>
+<blockquote>"迪杰斯特拉每次都在未确定的节点中选离起点最近的，一旦选定就认为最优了，不回头。"<span class="src">—— 第22集《单源最短路径：迪杰斯特拉 (Dijkstra)》· 转写校正版</span></blockquote>
+<blockquote>"迪杰斯特拉就是一种典型的贪心：每一步都做当前看起来最优的解，不考虑长期规划；只要权值是正的，选了就一定是最近的。"<span class="src">—— 第22集《单源最短路径：迪杰斯特拉 (Dijkstra)》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>不支持负权边的理论根因：贪心正确性依赖"已选 u 的 dist[u] 必小于任意未选 v 的 dist[v]"（因再加一段正值只更大）；若存在负权绕路可能更近，则失效需换算法（见第 23 集 Floyd）。</li>
+<li>"松弛"是算法术语，指用新路径尝试更新更短距离；演示中 0→1→4 路径距离为 4+8=12（原文曾误写邻值，已校正为 4+8）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕轨，校正大量术语（DISS→dist、PRE→prev、OA方→O(V²)、父权→负权、有全图/带权的途中→带权图、广度优先便利→遍历、跌斯拉→迪杰斯特拉），主干清晰。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第23集</span> <b>多源最短路径：弗洛伊德 (Floyd)</b> <span class="pill">BV1j66pBdEL5</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>多源最短路径定义：求图中任意两个顶点之间的最短路径（不限定起点）；且支持负权边（但不能有负权回路）。</li>
+<li>动态规划 + 最优子结构：维护距离矩阵 d[i][j]（初值直接相连为权、不相连为 ∞），逐步引入中间点 k，状态转移 d[i][j] = min(d[i][j], d[i][k] + d[k][j])；并用前驱矩阵 P 还原路径。</li>
+<li>三重循环：最外层枚举 k（每顶点当一次中转站），内层遍历所有 (i,j)；时间复杂度 O(V³)，空间复杂度 O(V²)（两个矩阵）。代码极简。</li>
+<li>与 Dijkstra 关系：可理解为"用动态规划并行解决每个顶点的单源最短路径"；两者局部更新都基于松弛原理。</li>
+<li>对比：Dijkstra 单源、贪心、O(V²)（堆优化 O(E log V)）、不支持负权、实现略难；Floyd 多源、动态规划、O(V³)、支持负权、代码最简单。</li>
+</ol>
+<blockquote>"弗洛伊德可理解为用动态规划的思想，并行解决每一个迪杰斯特拉问题。"<span class="src">—— 第23集《多源最短路径：弗洛伊德 (Floyd)》· 转写校正版</span></blockquote>
+<blockquote>"如果我们是最优解，那么包含的子路径肯定也是最优的——这就是最优子结构。"<span class="src">—— 第23集《多源最短路径：弗洛伊德 (Floyd)》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>Floyd 支持负权边但不支持负权回路（负环使距离无限变小，最短路径无意义）；考研重点是状态转移方程而非代码。</li>
+<li>演示数值：3 经 0 到 2 = d[3][0]+d[0][2] = 5+6=11；再经 1 的路径 3+0+1+2 = 10 更短（原文"3012"已校正为 3+0+1+2）。复杂度记号 O(V²)/O(V³)/O(E log V) 均已规范。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕轨，校正术语统一（迪杰斯拉克/杰斯拉克→迪杰斯特拉）、矩阵代号（DIG→d[i][j]、DIK→d[i][k]、DKG→d[k][j]、DIGPP→d[i][j] 矩阵）、复杂度记号（OV方→O(V²)、V³ 等），主干清晰。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第24集</span> <b>拓扑排序 (Topological Sort)</b> <span class="pill">BV1GE6bBNENv</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>定义：针对有向无环图 (DAG) 的线性排序，要求每条有向边 U→V 在结果中 U 必在 V 之前；本质是解决"先做什么后做什么"的依赖顺序问题。</li>
+<li>应用场景：计算机任务调度（A 先于 B）、C 语言编译（include 模块先编译）、课程表安排（先 C 再数据结构）、数据流水线（上游产数下游用）。</li>
+<li>算法 (Kahn)：统计各顶点入度；入度为 0 的顶点入栈；循环出栈、打印、删边（其邻接点入度 -1）、入度变 0 再入栈；出栈顺序即拓扑序。结果可能不止一种（取决于入栈顺序/实现）。</li>
+<li>判环：若处理完的顶点数 count &lt; 总顶点数 V，说明存在环（循环依赖，无法拓扑排序）；count == V 则无环。</li>
+<li>复杂度：时间 O(V+E)（每顶点最多入/出栈一次 = O(V)，每条边最多处理一次 = O(E)，均摊而非嵌套）；空间 O(V)（入度数组 + 栈）。邻接表用 next 指针串起同一顶点的多条边。</li>
+</ol>
+<blockquote>"拓扑排序本质是解决先做什么后做什么的依赖顺序问题。"<span class="src">—— 第24集《拓扑排序 (Topological Sort)》· 转写校正版</span></blockquote>
+<blockquote>"只要处理的顶点数量等于总顶点数，就说明没有环；小于的话就肯定有环——拓扑排序处理不了带环的场景。"<span class="src">—— 第24集《拓扑排序 (Topological Sort)》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>拓扑排序只在 DAG 上有效；"入度为 0 先处理"是关键，用栈或队列均可，结果不唯一（如 V1/V2 顺序可变）。</li>
+<li>复杂度 O(V+E) 易误记为 O(V²)：因外层每顶点一次、内层每条边一次，是均摊而非双层嵌套。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕轨，校正术语（临界点→邻接点、入站/出战→入栈/出栈、贝塔→data、加加top→++top、nest→next、连接表→邻接表），主干清晰。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第25集</span> <b>AOE网与关键路径 (Critical Path)</b> <span class="pill">BV1NLffBWEkC</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>AOE 网 (Activity On Edge)：用有向无环图表示工程，顶点=事件/里程碑，边=活动（任务），边权=活动持续时间；总工期 = 图中最长路径长度（因活动可并发，取最长链决定完工时间）。</li>
+<li>事件时间：VE（顶点最早发生）= 前驱活动都完成的最早时刻，正向拓扑序 + 取 max；VL（顶点最晚发生）= 不耽误工期的最晚时刻，逆向拓扑序 + 取 min；起点与终点 VE==VL。</li>
+<li>活动时间：E（边最早开始）= 该边起点 VE；L（边最晚开始）= 该边终点 VL − 边权；机动时间（buffer）= L − E。</li>
+<li>关键活动 / 关键路径：机动时间为 0 的活动即关键活动；关键活动首尾相连组成的路径即关键路径。本例关键活动 A3、A5、A7，跨度 8 = 整体工期；关键活动"一分钟都马虎不得"，任一延期必拖整体。</li>
+<li>应用与价值：预估最短工期、识别关键活动、调配资源、识别风险；缩短工期必须压缩关键活动；非关键活动拖延超 buffer 会变成新关键路径。软件项目管理、生产流水线、OS 调度均用此理论。也是图论与基础数据结构全系列的收尾。</li>
+</ol>
+<blockquote>"关键路径上的活动一分钟都马虎不得，只要出问题整体必然延期。"<span class="src">—— 第25集《AOE网与关键路径 (Critical Path)》· 转写校正版</span></blockquote>
+<blockquote>"想缩短整个工期，就必须缩短关键活动的持续时间——关键活动不变，整体完成时间就变不了。"<span class="src">—— 第25集《AOE网与关键路径 (Critical Path)》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>关键路径 = 最长路径（不是最短），工期由最长链决定；VE/VL 用拓扑排序（正/逆向）计算，活动机动时间 = L − E。VE 取 max、VL 取 min 是易错点。</li>
+<li>原文"打鸡蛋和炒菜5分钟最快乐"存疑（疑"最长"），按上下文以"最长路径 5 分钟"理解；"洗盘茄"已校正为"洗碗"，A3A5A七已规范为 A3、A5、A7。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。字幕轨，校正术语（编→边、EARLIST→earliest、洗盘茄→洗碗、DL/delay、没发→无法、A3A5A七→A3、A5、A7），主干清晰。</p>
+</div>
+<h2 id="cross">4. 交叉核对表</h2>
+<div class="card"><table><tr><th>模块</th><th>关键概念</th><th>常见误解 / 口径校正</th><th>与修仙路线的接口</th></tr>
+<tr><td>线性结构</td><td>数组 vs 链表</td><td>「链表插入 O(1)」的前提是已经拿到前驱节点，否则仍要 O(n) 查找</td><td>对应 Python 的 list（数组）与 collections.deque（双端队列）</td></tr>
+<tr><td>哈希表</td><td>哈希函数 + 冲突解决</td><td>O(1) 是均摊期望，不是绝对保证；哈希碰撞攻击可把查询打成 O(n)</td><td>AI 安全视角：碰撞退化本身是一种 DoS 攻击面</td></tr>
+<tr><td>树与遍历</td><td>递归三序 + 层序</td><td>递归不是「算法」，是「把问题交给同样结构的更小问题」的思维方式</td><td>递归是理解 Transformer 中树形/层级结构解析的底层能力</td></tr>
+<tr><td>BST 与退化</td><td>有序插入退化为链表</td><td>这正是 AVL / 红黑树存在的唯一理由：用自平衡保住 O(log n)</td><td>「退化」思想可迁移到模型退化、特征退化等概念</td></tr>
+<tr><td>堆与 Top K</td><td>大根/小根堆</td><td>Top K 不是「排序后取前 K」，而是维护 K 大小堆，把 O(n log n) 降到 O(n log K)</td><td>检索系统、推荐召回的 Top K 取法正是这个套路</td></tr>
+<tr><td>B 树 vs B+ 树</td><td>多路平衡 + 叶子链表</td><td>B+ 树把所有数据放叶子且叶子相连，所以范围查询只需扫链表，这是它成为数据库索引基石的原因</td><td>理解数据库慢查询、索引失效的必备背景</td></tr>
+<tr><td>图算法选型</td><td>Dijkstra / Floyd / 拓扑</td><td>Dijkstra 是单源且边权非负；有负权要 Bellman-Ford；多源全点对才用 Floyd</td><td>依赖解析（如构建系统、任务编排）本质是拓扑排序</td></tr>
+</table></div>
+<h2 id="link">5. 落到修仙路线（跨课连接）</h2>
+<div class="card">
+<div class="tip"><b>→《Python 30天》</b><br>那门课教你「用」list/dict/set，本课告诉你它们「为什么快」。两门课合起来才构成完整的筑基期内力。</div>
+<div class="tip"><b>→《机器学习》</b><br>决策树的分裂、K-Means 的距离计算、PCA 的协方差矩阵，本质都是数组/矩阵上的运算；复杂度直觉决定你能不能处理大规模数据。</div>
+<div class="tip"><b>→《深度学习》</b><br>图的遍历对应计算图的拓扑执行；Transformer 的注意力是矩阵运算，但「稀疏 vs 稠密」的取舍思想和邻接矩阵/邻接表完全一致。</div>
+<div class="tip"><b>→ 修仙路线（元婴期）</b><br>AI 系统的攻击面分析常要画出数据流图与依赖图；拓扑排序、关键路径是分析「攻击链最短耗时」的现成工具。</div>
+</div>
+<h2 id="quiz">6. 读后自测 8 题</h2>
+<div class="card">
+<details><summary>Q1. 数组和链表的核心差异是什么？分别适合什么场景？</summary><div class="ans">答：数组内存连续、支持随机访问 O(1)，但插入/删除需要搬移元素 O(n)，适合「读多写少、频繁按下标访问」；链表靠指针串联、插入/删除 O(1)（已知前驱），但查找必须遍历 O(n)，适合「频繁增删、很少随机查」。</div></details>
+<details><summary>Q2. 为什么哈希表的查找是 O(1)？什么情况下会退化？</summary><div class="ans">答：哈希函数把键直接映射成数组下标，一步定位，所以均摊 O(1)。但当大量键发生哈希冲突时，链地址法会退化成链表（极端可到 O(n)）；恶意构造碰撞还能发起拒绝服务攻击。</div></details>
+<details><summary>Q3. BST 在什么情况下退化为 O(n)？AVL 和红黑树各自怎么应对？</summary><div class="ans">答：按有序序列插入时，BST 每一步都只往一侧长，最终变成一条链表，查找退化到 O(n)。AVL 用严格平衡（任意节点左右子树高度差≤1）+ 旋转维持 O(log n)，但旋转频繁、写操作代价高；红黑树放宽为「适度平衡」（最长路径不超过最短的 2 倍），用更少旋转换取更好的综合写入性能。</div></details>
+<details><summary>Q4. Top K 问题为什么用堆比排序更好？复杂度差多少？</summary><div class="ans">答：先整体排序再取前 K 是 O(n log n)；维护一个大小为 K 的小根堆，遍历时只在比堆顶大时替换，复杂度 O(n log K)。当 n 很大、K 很小时差距是数量级的，且内存只需存 K 个元素。</div></details>
+<details><summary>Q5. B 树和 B+ 树的关键区别是什么？为什么数据库索引偏爱 B+ 树？</summary><div class="ans">答：B 树的每个节点都存数据；B+ 树的数据只存在叶子节点，且叶子节点之间用链表相连。这使得 B+ 树的单次查询更稳定（都要走到叶子）、内部节点能装更多键（树更矮、IO 更少），并且范围查询只需沿叶子链表扫描，非常适合数据库的区间检索。</div></details>
+<details><summary>Q6. 邻接矩阵和邻接表怎么选？</summary><div class="ans">答：稠密图（边数接近 V²）用邻接矩阵，判两点是否相邻 O(1) 且实现简单；稀疏图（边远少于 V²）用邻接表，空间 O(V+E) 而非 O(V²)，遍历邻居也更快。现实中的社交网络、网页链接几乎都是稀疏图，所以用邻接表。</div></details>
+<details><summary>Q7. Dijkstra 和 Floyd 分别解决什么问题？能互换吗？</summary><div class="ans">答：Dijkstra 解决单源最短路径（一个起点到所有点），贪心 + 优先队列，要求边权非负，复杂度约 O(E log V)；Floyd 解决多源最短路径（任意两点之间），动态规划三重循环 O(V³)。只在「起点固定」时用 Dijkstra；需要所有点对距离才用 Floyd。</div></details>
+<details><summary>Q8. 拓扑排序能用来做什么？它如何判断有环？</summary><div class="ans">答：拓扑排序给出满足所有依赖的先后执行顺序，用于任务调度、编译依赖、课程安排。做法是反复取出入度为 0 的节点；如果最终输出的节点数少于总节点数，说明剩下的节点互相依赖，即图中存在环。</div></details>
+</div>
+<p class="foot">数据结构与算法 · 课程导读 ｜ 基于 25 集转写校正版生成 ｜ 修仙学 AI 路线</p>
+</div></body></html>

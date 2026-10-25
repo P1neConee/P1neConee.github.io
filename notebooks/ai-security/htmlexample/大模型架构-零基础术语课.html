@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>零基础术语课 · 看懂"三种架构"需要的最低装备</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --ok:#16a34a; --warn:#d97706; --risk:#dc2626;
+    --soft:#eef2ff; --warm:#fff7ed;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.85;font-size:16px;}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 22px 90px;}
+  header.hero{background:linear-gradient(135deg,#0f766e,#2563eb);
+    color:#fff;border-radius:18px;padding:30px;box-shadow:0 10px 30px rgba(15,118,110,.18);}
+  header.hero h1{margin:0 0 8px;font-size:26px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:20px;margin:44px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:16.5px;margin:26px 0 8px;color:var(--brand);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:var(--warm);border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .risk{background:#fef2f2;border-left:4px solid var(--risk);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .word{font-weight:700;color:#0f766e;}
+  .en{color:#94a3b8;font-size:13.5px;font-weight:400;}
+  blockquote{margin:12px 0;padding:12px 16px;background:#f8fafc;border-left:3px solid #cbd5e1;
+    border-radius:0 8px 8px 0;color:#334155;font-size:15px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  .badge{display:inline-block;font-size:11.5px;padding:1px 8px;border-radius:999px;font-weight:700;white-space:nowrap;}
+  .lv1{background:#dcfce7;color:#166534;}
+  .lv2{background:#dbeafe;color:#1e40af;}
+  .lv3{background:#f1f5f9;color:#64748b;}
+  details{background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin:12px 0;}
+  details summary{cursor:pointer;font-weight:600;color:#334155;font-size:15px;outline:none;}
+  details[open] summary{margin-bottom:8px;color:var(--brand);}
+  .analogy{background:#fffbeb;border:1px dashed #fcd34d;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:15px;}
+  .analogy b{color:#92400e;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;}}
+  .step{display:flex;gap:12px;align-items:flex-start;margin:12px 0;}
+  .num{flex:0 0 26px;height:26px;border-radius:50%;background:#0f766e;color:#fff;
+    font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:4px;}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:52px;}
+  .toc{list-style:none;padding-left:0;margin:0;columns:2;column-gap:26px;font-size:14.5px;}
+  .toc li{margin:5px 0;break-inside:avoid;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .mask{display:inline-grid;grid-template-columns:repeat(4,22px);gap:2px;vertical-align:middle;}
+  .mask i{width:22px;height:22px;border-radius:4px;display:block;}
+  .on{background:#c7d2fe;border:1px solid #818cf8;}
+  .off{background:#f1f5f9;border:1px solid #e2e8f0;}
+  .maskwrap{display:flex;gap:40px;flex-wrap:wrap;margin:10px 0;}
+  .maskitem{font-size:13.5px;color:var(--sub);text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>零基础术语课</h1>
+  <p>看懂《LLM 的 3 种架构》所需要的最低装备——不背定义，只建立画面感</p>
+  <p>
+    <span class="tag">零基础可读</span>
+    <span class="tag">每个词配一个生活类比</span>
+    <span class="tag">标了"可以先跳过"</span>
+  </p>
+</header>
+
+<div class="card">
+  <p class="lead"><b>先说一句让你安心的话：</b>那三篇文章里出现的技术名词，<b>大概只有 8 个是你真正需要的</b>，其余三十多个属于"见了面能打招呼就行，不必深交"。你现在难受，不是因为笨，是因为没人告诉你<b>哪些可以跳过</b>——于是每个词看起来都像必须弄懂，一起压过来就崩了。</p>
+  <p class="lead">这份材料就干两件事：<b>①</b> 用生活里的画面，把 8 个核心词讲清楚；<b>②</b> 明明白白告诉你，剩下哪些现在不用管。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">这份材料怎么用</h3>
+  <ul>
+    <li><b>第 1 节到第 6 节</b>是主干，一路顺着读，大概 20 分钟。<b>不要跳</b>，因为后面依赖前面。</li>
+    <li><b>第 9 节「原文逐句翻译器」</b>是你回头读原文时的对照工具，边读原文边开这个页面。</li>
+    <li><b>第 10 节「术语速查表」</b>不用通读，遇到不认识的词回来查。</li>
+    <li>折叠框（显示"展开"的那种）都是进阶内容，<b>第一次读全部不用展开</b>。</li>
+  </ul>
+  <div class="ok">
+    <b>最低通过标准（读完这份材料你应该能回答的三句话）：</b><br>
+    ① 大模型本质上只会做一件事，是什么？<br>
+    ② "编码器"和"解码器"的区别，用一句话怎么说？<br>
+    ③ 为什么"能看见后面"的模型适合做分类，"看不见后面"的适合写文章？<br>
+    能答上来，那三篇文章你就读得动了。答不上来也没关系，往下读就有了。
+  </div>
+</div>
+
+<h2 id="s1">1. 先建立一个最关键的画面：它只会"接话"</h2>
+<div class="card">
+  <p>所有大模型（ChatGPT、DeepSeek、豆包、千问……）剥到最里面，<b>只做一件事</b>：</p>
+  <p class="lead" style="text-align:center;font-size:18px;color:#0f766e;font-weight:700;margin:20px 0">
+    看着前面已有的文字，猜下一个字（词）是什么。
+  </p>
+  <p>猜完一个字，把它接到后面，再猜下一个。如此循环。你看到的"流畅回答"，就是这几百上千次"猜下一个"接起来的结果。</p>
+
+  <svg viewBox="0 0 860 150" width="100%" role="img" aria-label="模型预测下一个字的示意图">
+    <rect x="0" y="0" width="860" height="150" fill="#ffffff"/>
+    <rect x="30" y="46" width="230" height="52" rx="10" fill="#eef2ff" stroke="#a5b4fc"/>
+    <text x="46" y="70" font-size="13" fill="#5b6472" font-family="sans-serif">已经看到的文字</text>
+    <text x="46" y="90" font-size="17" font-weight="700" fill="#1f2430" font-family="sans-serif">远方有棵苹</text>
+
+    <line x1="268" y1="72" x2="330" y2="72" stroke="#0f766e" stroke-width="2"/>
+    <path d="M330,72 L320,67 L320,77 z" fill="#0f766e"/>
+    <text x="272" y="62" font-size="12" fill="#0f766e" font-family="sans-serif">模型计算</text>
+
+    <rect x="340" y="20" width="190" height="112" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="354" y="40" font-size="12" fill="#5b6472" font-family="sans-serif">各候选词的把握</text>
+
+    <rect x="354" y="50" width="150" height="16" rx="4" fill="#93c5fd"/>
+    <text x="354" y="48" font-size="11.5" fill="#1f2430" font-family="sans-serif">果 92%</text>
+
+    <rect x="354" y="76" width="20" height="16" rx="4" fill="#cbd5e1"/>
+    <text x="380" y="89" font-size="11.5" fill="#5b6472" font-family="sans-serif">树 5%</text>
+
+    <rect x="354" y="102" width="10" height="16" rx="4" fill="#e2e8f0"/>
+    <text x="370" y="115" font-size="11.5" fill="#5b6472" font-family="sans-serif">叶 2%  其他 1%</text>
+
+    <line x1="538" y1="72" x2="596" y2="72" stroke="#0f766e" stroke-width="2"/>
+    <path d="M596,72 L586,67 L586,77 z" fill="#0f766e"/>
+    <text x="540" y="62" font-size="12" fill="#0f766e" font-family="sans-serif">选一个</text>
+
+    <rect x="606" y="46" width="220" height="52" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+    <text x="620" y="70" font-size="13" fill="#5b6472" font-family="sans-serif">接上去，重新来一遍</text>
+    <text x="620" y="90" font-size="17" font-weight="700" fill="#065f46" font-family="sans-serif">远方有棵苹果</text>
+  </svg>
+
+  <div class="analogy">
+    <b>类比：</b>像一个极度熟练的接话王。你说"我今天出门忘带伞，结果"，他立刻接"下大雨了"。他不是提前打好了稿子，而是<b>根据你给的前半句，一个词一个词往下顺</b>。你打断他、改一句，他就从新的地方接着顺。
+  </div>
+
+  <div class="tip">
+    <b>这个画面能解释很多你以后会遇到的现象：</b><br>
+    · 为什么回答是一段段"流"出来的，而不是整段蹦出来 —— 因为是逐个猜的；<br>
+    · 为什么它有时会一本正经胡说 —— 它只保证"接得像"，不保证"接得对"（这就是<b>幻觉</b>）；<br>
+    · 为什么提示词要写清楚 —— 你给的前文越明确，它猜的方向越不会偏。
+  </div>
+</div>
+
+<h2 id="s2">2. 它眼里的文字：不是字，是"编号"和"一串数字"</h2>
+<div class="card">
+  <p>模型不会认字。任何文字进去，都先要过三道加工：</p>
+
+  <div class="step"><div class="num">1</div><div>
+    <h4 style="margin:0 0 4px;color:#0f766e">切成小块：<span class="word">Token</span></h4>
+    <p>模型把句子切成一个个小碎片，每块叫一个 <b>token</b>。中文里通常一个字或两个字的词算一块；英文里常常是半个单词（比如 <code>unhappiness</code> 可能被切成 <code>un</code> + <code>happi</code> + <code>ness</code> 三块）。</p>
+    <p class="lead" style="font-size:15px">为什么要切？因为如果按"整词"记，字典会无限大、永远有没见过的词；切成小块，任何新词都能拼出来。</p>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div>
+    <h4 style="margin:0 0 4px;color:#0f766e">查字典换成编号：<span class="word">词表</span></h4>
+    <p>模型内部有一本固定的"字典"（<b>词表</b>，几万到十几万条），每个 token 对应一个编号。<code>苹果</code> 可能是 30875 号。这一步纯查表，没有智能。</p>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div>
+    <h4 style="margin:0 0 4px;color:#0f766e">编号变成一串数：<span class="word">向量</span> / <span class="word">嵌入</span></h4>
+    <p>编号再被换成一长串数字（比如 4096 个小数），这一串数字就代表这个词的"意思"。这串数字叫<b>向量</b>，这个转换动作叫<b>嵌入</b>（embedding）。</p>
+    <p class="lead" style="font-size:15px">关键在这里：<b>这一串数字不是随便给的，而是训练出来的</b>，所以"意思相近的词，数字串也很接近"。<code>苹果</code> 和 <code>香蕉</code> 的数字串很近，和 <code>螺丝刀</code> 很远。</p>
+  </div></div>
+
+  <div class="analogy">
+    <b>类比：</b>把每个词放进一个巨大的坐标系（不是平面，是几千维的"空间"）。每个词是空间里的一个点。意思相近的词，点挨得近。<br>
+    <b>"维度"</b>就是这串数字的长度。4096 维 = 用 4096 个数字来描述一个词。人脑没法想象 4096 维，但计算机就是靠它区分"苹果"和"螺丝刀"。
+  </div>
+
+  <div class="warn">
+    <b>读到这里你只需要记住：</b>"向量"不是高深概念，就是<b>词的身份证号码，只不过是一串小数，而且相近意思的号码排得近</b>。以后看到"嵌入""embedding""表示""representation"，都是指这件事。
+  </div>
+</div>
+
+<h2 id="s3">3. 核心机制：注意力（Attention）——让每个词"回头问一圈"</h2>
+<div class="card">
+  <p class="lead">这是唯一必须硬啃的概念，也是最值得啃的。啃下它，三篇文章里 90% 的术语都通了。</p>
+
+  <h3>要解决什么问题？</h3>
+  <p>看这句话：<b>"小明把书给了小红，因为她明天要考试。"</b><br>
+  "她"指的是谁？人一眼知道是小红。但模型怎么知道？它得让"她"这个字<b>回头去看一圈上下文</b>，发现"小红"最相关，于是把"小红"的信息"取"过来。这个"回头看一圈并取信息"的动作，就是<b>注意力</b>。</p>
+
+  <h3>怎么做的？用三个人物：Q、K、V</h3>
+  <p>每个字都会生成三样东西：</p>
+  <table>
+    <thead><tr><th>名字</th><th>人话</th><th>类比（图书馆）</th></tr></thead>
+    <tbody>
+      <tr><td><b>Q</b>（Query，查询）</td><td>这个字"想找什么"</td><td>你在检索框里敲的关键词</td></tr>
+      <tr><td><b>K</b>（Key，键）</td><td>别的字"能被什么找到"</td><td>每本书的标题/标签</td></tr>
+      <tr><td><b>V</b>（Value，值）</td><td>别的字"实际携带的内容"</td><td>那本书的正文</td></tr>
+    </tbody>
+  </table>
+  <p>流程就三步：<b>①</b> 拿"她"的 Q，去和每个字的 K 比对，算出一串"相关度"；<b>②</b> 把相关度变成加起来等于 100% 的百分比（这一步叫 <b>softmax</b>）；<b>③</b> 按百分比，把所有字的 V 混合起来，得到"她"的新表示。</p>
+
+  <svg viewBox="0 0 860 220" width="100%" role="img" aria-label="Q K V 注意力流程">
+    <rect x="0" y="0" width="860" height="220" fill="#ffffff"/>
+    <rect x="24" y="60" width="130" height="70" rx="10" fill="#eef2ff" stroke="#a5b4fc"/>
+    <text x="38" y="82" font-size="12" fill="#5b6472" font-family="sans-serif">当前字</text>
+    <text x="38" y="104" font-size="18" font-weight="700" fill="#1f2430" font-family="sans-serif">她</text>
+    <text x="38" y="122" font-size="11.5" fill="#5b6472" font-family="sans-serif">发出 Q：我在找谁？</text>
+
+    <line x1="158" y1="95" x2="196" y2="95" stroke="#94a3b8" stroke-width="1.6"/>
+    <path d="M196,95 L187,90 L187,100 z" fill="#94a3b8"/>
+
+    <text x="208" y="34" font-size="12" fill="#5b6472" font-family="sans-serif">和每个字的 K 比对，得出相关度</text>
+    <rect x="208" y="46" width="290" height="22" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="216" y="62" font-size="12" fill="#1f2430" font-family="sans-serif">小红</text>
+    <rect x="272" y="50" width="150" height="14" rx="3" fill="#0f766e"/>
+    <text x="430" y="62" font-size="12" fill="#065f46" font-family="sans-serif">0.71</text>
+
+    <rect x="208" y="76" width="290" height="22" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="216" y="92" font-size="12" fill="#1f2430" font-family="sans-serif">小明</text>
+    <rect x="272" y="80" width="30" height="14" rx="3" fill="#93c5fd"/>
+    <text x="310" y="92" font-size="12" fill="#5b6472" font-family="sans-serif">0.14</text>
+
+    <rect x="208" y="106" width="290" height="22" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="216" y="122" font-size="12" fill="#1f2430" font-family="sans-serif">书</text>
+    <rect x="272" y="110" width="14" height="14" rx="3" fill="#cbd5e1"/>
+    <text x="294" y="122" font-size="12" fill="#5b6472" font-family="sans-serif">0.07</text>
+
+    <rect x="208" y="136" width="290" height="22" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="216" y="152" font-size="12" fill="#1f2430" font-family="sans-serif">考 试 明 天 要</text>
+    <rect x="272" y="140" width="22" height="14" rx="3" fill="#e2e8f0"/>
+    <text x="302" y="152" font-size="12" fill="#5b6472" font-family="sans-serif">0.08</text>
+
+    <text x="208" y="180" font-size="12" fill="#9a3412" font-family="sans-serif">→ 经 softmax 归一化，加起来正好 100%</text>
+
+    <line x1="506" y1="95" x2="548" y2="95" stroke="#0f766e" stroke-width="2"/>
+    <path d="M548,95 L539,90 L539,100 z" fill="#0f766e"/>
+    <text x="510" y="86" font-size="11.5" fill="#0f766e" font-family="sans-serif">按比例取 V</text>
+
+    <rect x="558" y="60" width="270" height="70" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+    <text x="572" y="82" font-size="12" fill="#5b6472" font-family="sans-serif">"她"的新表示</text>
+    <text x="572" y="104" font-size="13.5" font-weight="700" fill="#065f46" font-family="sans-serif">≈ 71% 的小红 + 14% 的小明</text>
+    <text x="572" y="122" font-size="11.5" fill="#5b6472" font-family="sans-serif">从此"她"身上带上了"小红"的信息</text>
+  </svg>
+
+  <div class="analogy">
+    <b>类比：</b>会议室里，轮到你发言前，你先扫一眼全场：谁跟我这个话题最相关？然后你<b>主要听那个人的观点</b>（71%），剩下的人随口带一点（14%、8%……）。听完之后，你的发言就融合了全场的相关信息——这就是"注意力"。
+  </div>
+
+  <h3>两个附带的词，遇见了不用慌</h3>
+  <table>
+    <thead><tr><th>词</th><th>一句话</th></tr></thead>
+    <tbody>
+      <tr><td><b>自注意力</b>（Self-Attention）</td><td>Q、K、V 都来自同一句话内部——"自己人之间互相看"。上面那个例子就是自注意力。</td></tr>
+      <tr><td><b>多头</b>（Multi-Head）</td><td>同时开好几场小组会，每场关注不同的关系（这场管语法、那场管指代、另一场管语气），最后汇总。所以是"多头"。</td></tr>
+      <tr><td><b>点积</b>（Dot Product）</td><td>算 Q 和 K 有多像的数学操作。<b>你不用会算，知道"算相似度"就够了。</b></td></tr>
+      <tr><td><b>softmax</b></td><td>把一堆分数变成"加起来等于 100%"的百分比。它是个函数名，不是概念。</td></tr>
+    </tbody>
+  </table>
+
+  <details>
+    <summary>进阶（第一次读请跳过）：注意力公式长什么样</summary>
+    <p><code>Attention(Q,K,V) = softmax(QKᵀ / √d) · V</code></p>
+    <p>读法：Q 和 K 相乘（算相似度，得到一张"谁该看谁"的分数表）→ 除以 √d（防止数字太大导致 softmax 失真）→ softmax 变成百分比 → 乘以 V（按比例取内容）。</p>
+    <p>就这么多。这个公式你在原文里不会看到，看到了也不用管。</p>
+  </details>
+</div>
+
+<h2 id="s4">4. 掩码（Mask）：为什么必须捂住"未来"</h2>
+<div class="card">
+  <p class="lead">这是区分三种架构的<b>唯一开关</b>。理解它，三种架构就自然分开了。</p>
+
+  <h3>先想一个矛盾</h3>
+  <p>模型在训练时，任务是"看着前文猜下一个字"。如果训练时它<b>能看见后面的答案</b>，它会怎么办？——直接抄。抄完考试满分，但什么也没学会。</p>
+  <p>所以要人为地把"后面的位置"遮起来。这个动作就是<b>掩码</b>（mask），专门遮未来的那种叫 <b>causal mask</b>（因果掩码，"因"在"果"之前，不能倒着看）。</p>
+
+  <h3>怎么遮：把分数设为负无穷</h3>
+  <p>还记得上一节那张"相关度分数表"吗？对于第 5 个字，它跟第 6、7、8 个字的分数，直接改成 <b>负无穷</b>。经过 softmax 之后，负无穷变成 <b>0%</b>——等于"完全看不见"。</p>
+
+  <div class="card" style="background:#fbfcfe;margin:14px 0">
+    <p style="margin:0 0 6px;font-size:14.5px"><b>画成矩阵就是这样</b>（4 个字为例，蓝格=能看见，灰格=被遮住）：</p>
+    <div class="maskwrap">
+      <div class="maskitem">
+        <div class="mask">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+        </div>
+        <div style="margin-top:8px"><b>双向</b>（不遮）<br>能看前后 → 编码器 / BERT</div>
+      </div>
+      <div class="maskitem">
+        <div class="mask">
+          <i class="on"></i><i class="off"></i><i class="off"></i><i class="off"></i>
+          <i class="on"></i><i class="on"></i><i class="off"></i><i class="off"></i>
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="off"></i>
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+        </div>
+        <div style="margin-top:8px"><b>因果掩码</b>（遮右上）<br>只看前文 → 解码器 / GPT</div>
+      </div>
+    </div>
+    <p style="margin:8px 0 0;font-size:14px;color:#5b6472">原文说的"上三角区域被遮住"，就是这个灰三角。念的时候想：<b>右上角是"未来"，被涂灰了。</b></p>
+  </div>
+
+  <div class="analogy">
+    <b>类比：</b>做填空题，但答案就印在题目右边。为了让你真学，老师在右边盖了一张纸。你只能看左边已经出现的部分往下填。<b>盖纸 = 掩码。</b>盖着纸做题的模型，就长成了"一步一步往前写"的本事。
+  </div>
+
+  <div class="warn">
+    <b>记住这一句，第 5 节就通了：</b>编码器和解码器的代码几乎一模一样，<b>唯一的大区别是"加不加这张盖纸"</b>。
+  </div>
+</div>
+
+<h2 id="s5">5. 编码器与解码器：只差一张"盖纸"</h2>
+<div class="card">
+  <div class="grid2">
+    <div class="card" style="margin:0;background:#f8fafc">
+      <h3 style="margin-top:0">编码器 <span class="en">Encoder</span></h3>
+      <p><b>不盖纸。</b>每个字都能看见全句，包括后面的。</p>
+      <p><b>它的产物是什么？</b>一串向量——<b>不是文字</b>。它只负责"把整句读懂、压成一组带上下文信息的数字"。</p>
+      <p><b>所以它天生不适合直接写文章</b>，适合"读完给个判断"。</p>
+    </div>
+    <div class="card" style="margin:0;background:#f8fafc">
+      <h3 style="margin-top:0">解码器 <span class="en">Decoder</span></h3>
+      <p><b>盖纸。</b>每个位置只能看见自己及之前的字。</p>
+      <p><b>它的产物是什么？</b>下一个字的概率（92% 是"果"……）。选一个接上去，再来一遍。</p>
+      <p><b>所以它天生就是"续写机器"</b>，适合生成。</p>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <b>一个更贴切的类比：</b><br>
+    · <b>编码器 = 阅读理解考生</b>。可以先通读全文，再答"这篇文章的中心思想是？"——答案是一句判断。<br>
+    · <b>解码器 = 即兴演讲者</b>。只能顺着已经说出口的话往下讲，不能跳回去改开头。所以它必须"边想边说"，说错也只能后面圆回来。
+  </div>
+
+  <div class="tip">
+    <b>这里能顺手解释一个你以后一定疑惑的现象：</b>为什么 AI 写着写着会跑偏、或者在很长的回答里前后矛盾？<br>
+    因为它<b>不是说完了再检查</b>，而是边说边定，说过的话已经"钉"在前面了。这也是为什么写长文档时，"先给它大纲、让它分段写"比"一次让它写一万字"稳得多。
+  </div>
+</div>
+
+<h2 id="s6">6. 自回归：那个被反复提到的词，其实很简单</h2>
+<div class="card">
+  <p class="lead"><b>自回归</b>（autoregressive）= <b>把自己刚才的输出，当成下一步的输入</b>。说白了就是"一边吐一边吃回去"。</p>
+  <p>刚才生成的"果"，接到"远方有棵苹"后面变成"远方有棵苹果"，再拿这一整串去猜下一个字。循环。所以"自回归"和"一个一个 token 往外吐"是同一件事的两种说法。</p>
+
+  <div class="risk">
+    <b>原文里有一句关键判断，你现在能看懂了：</b><br>
+    <blockquote style="margin:8px 0">"encoder-only 类型的 LLM 不像 decoder-only 和 encoder-decoder 那些有<b>自回归</b>。"</blockquote>
+    <b>翻译成人话：</b>BERT（编码器）是<b>一次把整句读完、一次给出结论</b>，不会一个字一个字往外吐；GPT（解码器）才是边吐边接。<br>
+    这就解释了为什么 BERT 写不了文章、只能做判断——<b>它没有"往外吐"这个动作</b>。
+  </div>
+
+  <details>
+    <summary>进阶（可跳过）：为什么"没有自回归"还能输出分类结果？</summary>
+    <p>编码器读完会在句首放一个特殊占位符（BERT 里叫 <code>[CLS]</code>），把这个位置的向量接到一个小的分类层上，直接输出"正面/负面"。一次前向计算就出结果，不需要逐字生成。所以它不是不能输出，而是<b>输出的是"判断"，不是"文字"</b>。</p>
+  </details>
+</div>
+
+<h2 id="s7">7. 训练那点事：预训练、微调、对齐（三个词，五分钟）</h2>
+<div class="card">
+  <p class="lead">原文里会蹦出"预训练""微调"，不解释会卡住。它们其实是一条流水线上的三道工序。</p>
+
+  <div class="step"><div class="num">1</div><div>
+    <h3 style="margin:0 0 4px">预训练 <span class="en">Pre-training</span></h3>
+    <p>喂给它海量文本（整个互联网级别的量，这部分原料叫<b>语料</b>），任务只有一个：<b>猜下一个字</b>。猜错就调整内部参数，猜对就强化。反复几万亿次。</p>
+    <p><b>结果：</b>它学会了语法、常识、世界知识、"话该怎么接"——但还不会听指令。</p>
+    <p class="lead" style="font-size:15px">顺便：<b>参数</b>（7B、70B 那个 B 是 billion，十亿）就是这些可调整的数字总量。"参数越大"约等于"脑容量越大"，但不等于"越好用"。</p>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div>
+    <h3 style="margin:0 0 4px">微调 <span class="en">Fine-tuning / SFT</span></h3>
+    <p>用几万到几十万条"人写的问答示范"再训一遍，教它<b>听懂指令</b>：看到"帮我总结"就总结，而不是顺着往下编。</p>
+    <p><b>结果：</b>从"接话王"变成"助手"。</p>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div>
+    <h3 style="margin:0 0 4px">对齐 <span class="en">RLHF / 人类反馈</span></h3>
+    <p>让人给它的多个回答排序（哪个更好），用这些偏好继续调。教它"说人话、别乱说、别有害"。</p>
+    <p><b>结果：</b>从"助手"变成"你愿意聊的那个助手"。</p>
+  </div></div>
+
+  <div class="tip">
+    <b>为什么这三步对你重要？</b>因为它解释了你写提示词时的一个基本事实：<b>你面对的模型，骨子里仍是那个"猜下一个字"的机器</b>，只是被教过怎么听话。所以"把话说清楚、给出格式范例、把要求写在它开始写之前"永远有效——你是在帮一个接话王把方向对准。
+  </div>
+
+  <details>
+    <summary>进阶（可跳过）：BERT 的两个预训练任务，为什么和 GPT 不一样</summary>
+    <p>BERT 不能"猜下一个字"（它没有掩码，会作弊），所以换了个玩法：<b>完形填空</b>——随机挖掉 15% 的词，让它根据左右文填回来（这个任务叫 <b>MLM</b>）。因为要填中间的空，它必须<b>同时看左右两边</b>，这就是"双向"的由来。</p>
+    <p>另外还有个任务叫 <b>NSP</b>：给两个句子，判断后一句是不是真的接在前一句后面。后来的 RoBERTa 发现这个任务没什么用，就把它去掉了。</p>
+    <p><span style="color:#b45309">提醒：</span>你读的知乎那篇把 NSP 描述成"打乱语序让模型找正确顺序"，这个说法其实指的是另一个任务（句子排序，ALBERT 用的）。但它后面举的例子是对的，按例子理解就行。</p>
+  </details>
+</div>
+
+<h2 id="s8">8. 现在回头看三种架构：三句话</h2>
+<div class="card">
+  <p class="lead">所有零件都齐了，现在把三种架构用"人话"说一遍。你可以拿这三句去对照原文。</p>
+
+  <table>
+    <thead><tr><th>架构</th><th>人话定义</th><th>它天生擅长</th><th>为什么（机制层）</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Encoder-only</b><br><span class="en">BERT、RoBERTa</span></td>
+        <td>只装编码器、不盖纸。<b>通读全文，给一个判断。</b></td>
+        <td>分类、情感分析、找实体、抽关键词</td>
+        <td>能看前后文 → 判断更准；不逐字生成 → 出结果快、成本低</td>
+      </tr>
+      <tr>
+        <td><b>Decoder-only</b><br><span class="en">GPT、Llama、Qwen、DeepSeek</span></td>
+        <td>只装解码器、盖纸。<b>顺着前文一个字一个字往下续。</b></td>
+        <td>对话、写作、代码、推理</td>
+        <td>只能看前文 → 天然匹配"猜下一个"；任何任务都能改写成"续写"</td>
+      </tr>
+      <tr>
+        <td><b>Encoder-Decoder</b><br><span class="en">T5、BART、原始 Transformer</span></td>
+        <td>两个都装。<b>先通读原文，再边看原文边逐字写出译文。</b></td>
+        <td>翻译、摘要、按材料生成回答</td>
+        <td>编码器读全（不盖纸）+ 解码器逐字写（盖纸）+ 中间用"交叉注意力"随时回查原文</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details>
+    <summary>那把"交叉注意力"到底是什么？（原文提到了，值得弄懂）</summary>
+    <p>前面讲的注意力，Q、K、V 都来自同一句话（自注意力）。<b>交叉注意力</b>是把 Q 换成"解码器当前写到的地方"，K 和 V 换成"编码器读完的原文"。</p>
+    <p>效果：解码器在写第 3 个词时，可以<b>回头看原文的哪一部分最相关</b>，从那里取信息。这就是翻译能做到"词对词对齐"的原因。</p>
+    <p><b>类比：</b>同声传译。他一边听（编码器已经把整段听进去了），一边说（解码器逐词输出），说的过程中不断回看原话的对应位置。</p>
+  </details>
+
+  <div class="ok">
+    <b>为什么最后只剩 Decoder-only 一家独大？（原文的三条，翻译成人话）</b><br>
+    ① 它盖着纸训练，正好和"猜下一个字"的目标完全一致，不用改造；<br>
+    ② 你想要它做的任何事——翻译、摘要、答题、写代码——都能改写成"给你一段前文，接着写"；<br>
+    ③ 所以只需要一种架构就能通吃，工程上最省事，也最容易堆大规模。<br>
+    <span style="color:#166534">说白了：不是它每一项都最强，而是<b>它最"通用"，而通用在工程上比单项最优更值钱</b>。</span>
+  </div>
+</div>
+
+<h2 id="s9">9. 原文逐句翻译器（读原文时对着看）</h2>
+<div class="card">
+  <p class="lead">把三篇里最容易卡住的句子挑出来，逐句给人话。建议：<b>先读原文，卡住就回来查这一节。</b></p>
+
+  <table>
+    <thead><tr><th style="width:44%">原文怎么说</th><th>人话</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>"这种架构更擅长'理解输入'，所以其主要应用场景为文本分类、情感分析、信息抽取、命名实体识别等。注意力矩阵采用<b>双向注意力</b>计算，即每个字都能看到上下文得所有信息。"</td>
+        <td>它不盖纸。理解"苹"这个字时，允许参考左边和右边的所有字。因为看得全，所以<b>判断</b>得准。适合"这段话是褒是贬""这句话里人名是哪几个"。</td>
+      </tr>
+      <tr>
+        <td>"擅长按顺序生成，适合生成类任务……"</td>
+        <td>会一个一个往后写。凡是"要产出一段文字"的活，都是它的地盘。</td>
+      </tr>
+      <tr>
+        <td>"通过 <b>causal mask</b> 把'未来位置'遮住，这样便可以使大模型在生成前文时'看不到'后文。"</td>
+        <td>盖纸。算第 5 个字的表示时，第 6 字及之后的信息被强制设成 0% 权重，等于看不见。<b>目的是防止训练时偷看答案。</b></td>
+      </tr>
+      <tr>
+        <td>"掩码自注意力（Masked Self-Attention）：用于处理已经生成的译文。交叉注意力（Cross-Attention）：用于从编码器输出的'原文'中提取关键信息。"</td>
+        <td>解码器有<b>两套</b>注意力：一套管自己（只能看已写出的译文，也盖纸），一套管原文（随时回查，不盖纸）。前者保证不偷看未来，后者保证不跑题。</td>
+      </tr>
+      <tr>
+        <td>"适合序列到序列，文本到文本的转换任务，比如翻译、摘要、问答生成。"</td>
+        <td>输入一段、输出另一段，而且输出和输入要"对得上"。翻译最典型：每个译词都得在原句里有出处。<b>"序列"就是"一串 token"的意思</b>，念的时候直接换成"一段文字"。</td>
+      </tr>
+      <tr>
+        <td>"三者都属于 Seq2Seq。"（知乎那篇）</td>
+        <td>宽泛地说：三种都是"输入一串 → 输出一串"。<span style="color:#b45309">但严格术语里 Seq2Seq 特指编码器-解码器那种结构</span>，所以这句别原样抄进笔记，容易被挑。</td>
+      </tr>
+      <tr>
+        <td>"encoder-only 集中于理解输入的内容，并做针对特定任务的输出。"</td>
+        <td>它产出的是<b>判断</b>（一个标签、一个分数），不是<b>文章</b>。这是它和另外两种最本质的差别。</td>
+      </tr>
+      <tr>
+        <td>"若任务以生成为主（如对话、写作），优先选择纯解码器架构；若需处理双向上下文（如问答、摘要），可考虑混合结构。"（百度那篇）</td>
+        <td>如果你要的是"写东西"，用不盖纸……不对，用<b>盖纸的那种</b>（只能看前文的）；如果任务必须前后文一起看才能答对，就别用只能往前看的架构，改用"先读全再产出"的结构。</td>
+      </tr>
+      <tr>
+        <td>"Decoder-only 几乎'统治'了 LLM 领域，是因为它在处理超大规模数据时表现出的<b>涌现能力</b>和推理效率更具优势。"</td>
+        <td><b>涌现</b>：模型大到某个规模，突然会做一些小模型完全不会的事（比如会算数学题了）。<span style="color:#b45309">注意：这个说法在学界有争议</span>，有人认为是测量方式造成的错觉。你只需要"知道有这么个词"。</td>
+      </tr>
+      <tr>
+        <td>"DeepSeek 通过<b>局部敏感哈希（LSH）</b>将注意力限制在相似 token 之间。"</td>
+        <td>一种"省算力"的技巧：不算所有词两两之间的关系（太贵），只用一种哈希把"长得像的词"分到同一批，只在这批里算。<span style="color:#b91c1c">但这句本身是错的</span>——LSH 是 Reformer 的方案，DeepSeek 用的是 MLA + MoE。你不需要懂这两个，只需要知道<b>这篇不能全信</b>。</td>
+      </tr>
+      <tr>
+        <td>"MoE（混合专家）架构，每个 token 仅激活部分专家模块。"</td>
+        <td>模型里养了很多个"专科医生"，每个 token 进来只叫相关的几位会诊，不是全员出动。省算力。<b>知道这个名字就够了。</b></td>
+      </tr>
+      <tr>
+        <td>"量化（FP8 / INT8）"、"张量并行 / 流水线并行"</td>
+        <td>都是<b>部署和训练工程</b>的活：前者是把数字精度降下来省显存，后者是把一个大模型拆到多张卡上跑。<b>和"架构选型""提示词怎么写"完全无关，放心跳过。</b></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 id="s10">10. 术语速查表</h2>
+<div class="card">
+  <p class="lead">按"要不要懂"分成三档。<b>绿=必懂，蓝=知道名字就行，灰=现在可以完全跳过。</b></p>
+
+  <h3>绿档：必须懂（8 个）</h3>
+  <table>
+    <thead><tr><th>术语</th><th>一句话人话</th><th>在哪一节</th></tr></thead>
+    <tbody>
+      <tr><td><b>token</b> <span class="en">词元</span></td><td>文字被切成的小块，模型的最小处理单位</td><td>§2</td></tr>
+      <tr><td><b>向量 / 嵌入</b> <span class="en">embedding</span></td><td>用一串数字代表一个词的意思，意思近的数也近</td><td>§2</td></tr>
+      <tr><td><b>注意力</b> <span class="en">attention</span></td><td>每个字回头看一圈上下文，按相关度取信息</td><td>§3</td></tr>
+      <tr><td><b>Q / K / V</b></td><td>我想找什么 / 我凭什么被找到 / 我携带什么内容</td><td>§3</td></tr>
+      <tr><td><b>掩码</b> <span class="en">mask</span></td><td>把不该看的位置权重设成 0</td><td>§4</td></tr>
+      <tr><td><b>编码器 / 解码器</b></td><td>不盖纸的（读全，出判断）/ 盖纸的（只看前文，逐字写）</td><td>§5</td></tr>
+      <tr><td><b>自回归</b> <span class="en">autoregressive</span></td><td>把自己刚写出的字接回输入，继续猜下一个</td><td>§6</td></tr>
+      <tr><td><b>预训练 / 微调</b></td><td>先海量猜字学会说话，再用示范教它听话</td><td>§7</td></tr>
+    </tbody>
+  </table>
+
+  <h3>蓝档：见到不慌（知道一句话即可）</h3>
+  <table>
+    <thead><tr><th>术语</th><th>一句话</th></tr></thead>
+    <tbody>
+      <tr><td><b>Transformer</b></td><td>2017 年提出的那套"注意力 + 编码器/解码器"的模型骨架，今天几乎所有大模型都是它的变体。</td></tr>
+      <tr><td><b>自注意力 / 交叉注意力</b></td><td>自己人互看 / 解码器回头看编码器读完的原文。</td></tr>
+      <tr><td><b>softmax</b></td><td>把一堆分数变成百分比、加起来等于 100% 的函数。</td></tr>
+      <tr><td><b>多头</b></td><td>同时开多场小组会，各关注不同的语言关系。</td></tr>
+      <tr><td><b>位置编码 / RoPE</b></td><td>注意力本身不知道词的先后，需要额外告诉它"谁在前"。RoPE 是一种把位置"旋转"进 Q、K 里的做法，Llama 等在用。</td></tr>
+      <tr><td><b>Seq2Seq</b></td><td>"序列到序列"，指输入一段输出一段。严格用法专指编码器-解码器结构。</td></tr>
+      <tr><td><b>参数量（7B / 70B）</b></td><td>模型内部可调整数字的总量，B = 十亿。约等于"脑容量"，不直接等于好用。</td></tr>
+      <tr><td><b>语料</b> <span class="en">corpus</span></td><td>训练用的原料文本，量极大。</td></tr>
+      <tr><td><b>损失 loss</b></td><td>模型猜得有多离谱的一个数字。训练就是把这个数字压小。</td></tr>
+      <tr><td><b>对齐 / RLHF</b></td><td>用人类"哪个回答更好"的偏好继续调，教它说人话、别乱说。</td></tr>
+      <tr><td><b>上下文窗口</b></td><td>它一次最多能"看见"多少 token。超了就得截断或压缩。</td></tr>
+      <tr><td><b>幻觉</b> <span class="en">hallucination</span></td><td>编得很像真的、但其实是错的。原因是它只优化"接得像"，不优化"接得对"。</td></tr>
+      <tr><td><b>MLM / NSP</b></td><td>BERT 的两个训练任务：完形填空 / 判断两句是否相连。</td></tr>
+      <tr><td><b>[CLS] / [SEP] / [MASK]</b></td><td>BERT 的三个特殊符号：句首占位（用来出分类结果）/ 分句 / 被挖掉的位置。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>灰档：现在完全不用管（读原文直接跳过）</h3>
+  <table>
+    <thead><tr><th>术语</th><th>为什么可以跳过</th></tr></thead>
+    <tbody>
+      <tr><td>稀疏注意力 / 滑动窗口注意力 / LSH</td><td>都是"怎么少算点"的省算力技巧，不影响你判断"该用哪种架构"。</td></tr>
+      <tr><td>张量并行 / 流水线并行 / 序列并行 / 专家并行</td><td>训练工程：怎么把模型拆到很多张显卡上。和你的使用场景无关。</td></tr>
+      <tr><td>量化（FP8 / INT8 / PTQ）</td><td>部署工程：怎么把模型压小塞进设备。知道是"压缩"就行。</td></tr>
+      <tr><td>MoE 混合专家 / MLA</td><td>具体型号的内部设计，属于"研究这家人怎么做模型"的话题。</td></tr>
+      <tr><td>残差连接 / LayerNorm / FFN / SwiGLU</td><td>模型内部的"稳定器"和"加工层"，不影响你理解三种架构的分野。</td></tr>
+      <tr><td>FlashAttention / 长上下文扩展</td><td>工程优化。看到当作"性能优化"四个字即可。</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 id="s11">11. 三个容易跑偏的理解</h2>
+<div class="card">
+  <div class="warn">
+    <b>① 别把"注意力"当成"它真的懂"。</b>"注意力"只是"按权重取信息的加权求和"这一数学操作。说它"理解"了上下文，是人为了方便讲的比喻。原文里的"深刻理解""擅长推理"都是这种拟人化说法——<b>读的时候自动换成"在这类任务上表现好"，你会清醒很多。</b>
+  </div>
+  <div class="warn">
+    <b>② 别以为"名字里有 Decoder 就一定能写文章"。</b>名字只是结构代号，能力来自"训练方式 + 数据 + 规模"。BERT 虽然叫"只有编码器"，它内部也有一套把向量变回可解释输出的机制，只是它的训练目标决定了它不擅长逐字写。
+  </div>
+  <div class="warn">
+    <b>③ 别以为"三种架构是三个档次"。</b>它们不是"初级/中级/高级"的关系，而是<b>三种不同的工具</b>：剪刀、螺丝刀、瑞士军刀。最后瑞士军刀赢了市场，不是因为剪东西比剪刀好，而是因为"一把顶三把"。
+  </div>
+</div>
+
+<h2 id="s12">12. 四道题，检验你真的通了</h2>
+<div class="card">
+  <p class="q"><b>1.</b> 为什么"猜下一个字"这个训练方式，必须配"盖纸"（mask）？</p>
+  <p class="ans">不盖的话模型能看见答案，直接抄，学不到东西。盖纸逼它只能靠前文推断。</p>
+
+  <p class="q"><b>2.</b> 编码器和解码器，结构上最大的差别是什么？</p>
+  <p class="ans">加不加 causal mask（盖不盖纸）。加了就只能看前文，这样才能一个一个往后生成。</p>
+
+  <p class="q"><b>3.</b> 为什么 BERT 适合做情感分析，不适合写文章？</p>
+  <p class="ans">它不盖纸、通读全文，擅长给出判断；但它没有"自回归"这个逐字往外吐的动作，产出的是标签而非文章。</p>
+
+  <p class="q"><b>4.</b> 翻译为什么要用 Encoder-Decoder，而不是只用 Decoder-only？</p>
+  <p class="ans">因为译文每个词都得在原句里有出处，需要"先读全原文 + 边写边回查原文"（交叉注意力）。只用解码器也能翻，但要靠它自己"记住"原文，对齐性差、长句更容易漏。<span class="ans">（这也是"为什么现在大家还是用 Decoder-only 做翻译"的争议点：规模够大时，它能靠上下文硬吃下来。）</span></p>
+</div>
+
+<div class="card" style="background:linear-gradient(135deg,#f0fdfa,#eef2ff);border-color:#c7d2fe">
+  <p class="lead" style="margin:0"><b>最后一句话：</b>你不需要懂 Q、K、V 怎么乘，也能读懂那三篇文章。你真正需要的只有一个画面——<b>模型是顺着前文一个字一个字往下猜的；"盖不盖纸"决定了它能不能看见后文；能看见后文的擅长判断，看不见的擅长写。</b>这句话立住了，剩下所有术语都只是它的注脚。</p>
+</div>
+
+<div class="foot">
+  零基础术语课 · 2026-10-20 ｜ 配套《大模型三种架构-导读》使用<br>
+  讲法说明：本文用类比建立直觉，个别类比为便于理解做了简化（如把注意力比作"开会"）。术语的严格定义在原文与论文中。
+</div>
+
+</div>
+</body>
+</html>

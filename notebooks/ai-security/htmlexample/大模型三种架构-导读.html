@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM 三种架构 · 导读</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --brand2:#f97316; --ok:#16a34a; --warn:#d97706; --risk:#dc2626;
+    --soft:#eef2ff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.78;font-size:16px;}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;border-radius:18px;padding:30px 30px 26px;box-shadow:0 10px 30px rgba(37,99,235,.18);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:21px;margin:42px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:17px;margin:26px 0 10px;color:var(--brand);}
+  h4{font-size:15px;margin:18px 0 6px;color:#334155;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:#fff7ed;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .risk{background:#fef2f2;border-left:4px solid var(--risk);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  blockquote{margin:14px 0;padding:12px 16px;background:#f8fafc;border-left:3px solid #cbd5e1;
+    border-radius:0 8px 8px 0;color:#334155;font-size:15px;}
+  blockquote .src{display:block;margin-top:6px;color:#94a3b8;font-size:12.5px;border:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  td.c{text-align:center;}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600;}
+  .b-read{background:#dbeafe;color:#1e40af;}
+  .b-skim{background:#fef3c7;color:#92400e;}
+  .b-skip{background:#f1f5f9;color:#64748b;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:13px;background:#eef2ff;color:#3730a3;margin:3px 4px 3px 0;}
+  .toc{columns:2;column-gap:26px;font-size:14.5px;list-style:none;padding-left:0;margin:0;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .toc li{margin:5px 0;break-inside:avoid;}
+  .q{font-weight:600;}
+  .ans{color:var(--sub);font-size:14.5px;}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:52px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;} .toc{columns:1;}}
+  .step{display:flex;gap:12px;margin:10px 0;align-items:flex-start;}
+  .num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;
+    font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:3px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>大模型三种架构 · 导读</h1>
+  <p>精读《LLM 的 3 种架构》（知乎）＋ llm-master 架构文档 ｜ 扫读《六大主流大模型架构》（百度开发者）</p>
+  <p>
+    <span class="tag">2 篇精读 + 1 篇扫读</span>
+    <span class="tag">净阅读 ≈ 30 分钟</span>
+    <span class="tag">目标：能判断"这个任务该用哪类架构"</span>
+  </p>
+</header>
+
+<div class="card" style="background:linear-gradient(135deg,#f0fdfa,#eef2ff);border-color:#99f6e4">
+  <p style="margin:0 0 6px;font-size:16px"><b>看不懂术语？先读配套的《零基础术语课》。</b></p>
+  <p style="margin:0;font-size:15px;color:#5b6472">
+    → <a href="大模型架构-零基础术语课.html" style="color:#0f766e;font-weight:700;text-decoration:none">大模型架构-零基础术语课.html</a>（同一目录，点开即可）<br>
+    里面把 token、向量、注意力、Q/K/V、掩码、编码器/解码器、自回归、预训练 这 8 个词用生活类比讲了一遍，并标明了哪些词你现在可以完全不看。<b>先花 20 分钟读完它，再回来读这一页，会顺很多。</b>
+  </p>
+</div>
+
+<div class="card">
+  <p class="lead"><b>读完这三篇，你只需要拿走一件事：</b>架构差别不在"谁更高级"，而在<b>注意力能看见什么</b>——看见全部（双向）→ 擅长判断；只看见前文（单向掩码）→ 擅长续写；先看全再边看边写（交叉注意力）→ 擅长转换。</p>
+  <p class="lead">任务选型的口诀就一句：<b>判断用 Encoder-only，续写用 Decoder-only，转换用 Encoder-Decoder。</b>剩下的内容都是这句话的展开和证据。</p>
+</div>
+
+<h2 id="toc">阅读路线（先看这张）</h2>
+<div class="card">
+<ul class="toc">
+  <li><a href="#core">0. 三分钟建立骨架（先读，别跳过）</a></li>
+  <li><a href="#fix">1. 三处口径校正（你手上那份导读的坑）</a></li>
+  <li><a href="#zhi">2. 精读①：知乎《LLM 的 3 种架构》</a></li>
+  <li><a href="#git">3. 精读②：llm-master 架构文档</a></li>
+  <li><a href="#bd">4. 扫读③：百度《六大主流架构》</a></li>
+  <li><a href="#conflict">5. 交叉核对：三篇打架的地方</a></li>
+  <li><a href="#table">6. 自己的一张判定表（交付物）</a></li>
+  <li><a href="#apply">7. 落到你的提示词项目上</a></li>
+  <li><a href="#quiz">8. 读后自测 6 题</a></li>
+</ul>
+</div>
+
+<h2 id="core">0. 三分钟建立骨架</h2>
+<div class="card">
+  <p>三篇都在讲同一件事的三种切面。先用一张图把"注意力看得见什么"钉死，后面读原文就不会被术语带着跑。</p>
+
+  <svg viewBox="0 0 900 232" width="100%" role="img" aria-label="三种架构的注意力可见范围对比">
+    <rect x="0" y="0" width="900" height="232" fill="#ffffff"/>
+    <!-- 标题 -->
+    <text x="60" y="34" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">Encoder-only</text>
+    <text x="60" y="52" font-size="12" fill="#5b6472" font-family="sans-serif">BERT / RoBERTa</text>
+    <text x="340" y="34" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">Decoder-only</text>
+    <text x="340" y="52" font-size="12" fill="#5b6472" font-family="sans-serif">GPT / Llama / Qwen / DeepSeek</text>
+    <text x="600" y="34" font-size="14" font-weight="700" fill="#1f2430" font-family="sans-serif">Encoder-Decoder</text>
+    <text x="600" y="52" font-size="12" fill="#5b6472" font-family="sans-serif">T5 / BART / 原始 Transformer</text>
+
+    <!-- A: 全可见 4x4 -->
+    <g>
+      <rect x="60" y="72" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="80" y="72" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="100" y="72" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="120" y="72" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="60" y="92" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="80" y="92" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="100" y="92" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="120" y="92" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="60" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="80" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="100" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="120" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="60" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="80" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="100" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="120" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+    </g>
+    <text x="60" y="176" font-size="12" fill="#1e40af" font-family="sans-serif">① 全格可见 = 双向</text>
+    <text x="60" y="194" font-size="12" fill="#5b6472" font-family="sans-serif">每个字同时看左右文</text>
+    <text x="60" y="212" font-size="12" font-weight="700" fill="#1e40af" font-family="sans-serif">→ 判断（分类/抽取）</text>
+
+    <!-- B: 下三角可见 -->
+    <g>
+      <rect x="340" y="72" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="360" y="72" width="18" height="18" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".8"/>
+      <rect x="380" y="72" width="18" height="18" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".8"/>
+      <rect x="400" y="72" width="18" height="18" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".8"/>
+      <rect x="340" y="92" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="360" y="92" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="380" y="92" width="18" height="18" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".8"/>
+      <rect x="400" y="92" width="18" height="18" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".8"/>
+      <rect x="340" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="360" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="380" y="112" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="400" y="112" width="18" height="18" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".8"/>
+      <rect x="340" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="360" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="380" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+      <rect x="400" y="132" width="18" height="18" fill="#c7d2fe" stroke="#818cf8" stroke-width=".8"/>
+    </g>
+    <text x="340" y="176" font-size="12" fill="#1e40af" font-family="sans-serif">② 灰格被 causal mask 遮住</text>
+    <text x="340" y="194" font-size="12" fill="#5b6472" font-family="sans-serif">生成第 n 字时看不见第 n+1 字</text>
+    <text x="340" y="212" font-size="12" font-weight="700" fill="#1e40af" font-family="sans-serif">→ 续写（生成/对话）</text>
+
+    <!-- C: 双栅格 -->
+    <g>
+      <rect x="600" y="72" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="616" y="72" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="632" y="72" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="648" y="72" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="600" y="88" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="616" y="88" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="632" y="88" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="648" y="88" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="600" y="104" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="616" y="104" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="632" y="104" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="648" y="104" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="600" y="120" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="616" y="120" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="632" y="120" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+      <rect x="648" y="120" width="14" height="14" fill="#c7d2fe" stroke="#818cf8" stroke-width=".7"/>
+
+      <rect x="712" y="72" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="728" y="72" width="14" height="14" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".7"/>
+      <rect x="744" y="72" width="14" height="14" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".7"/>
+      <rect x="760" y="72" width="14" height="14" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".7"/>
+      <rect x="712" y="88" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="728" y="88" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="744" y="88" width="14" height="14" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".7"/>
+      <rect x="760" y="88" width="14" height="14" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".7"/>
+      <rect x="712" y="104" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="728" y="104" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="744" y="104" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="760" y="104" width="14" height="14" fill="#f1f5f9" stroke="#e2e8f0" stroke-width=".7"/>
+      <rect x="712" y="120" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="728" y="120" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="744" y="120" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+      <rect x="760" y="120" width="14" height="14" fill="#fed7aa" stroke="#fb923c" stroke-width=".7"/>
+    </g>
+    <defs>
+      <marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+        <path d="M0,0 L7,3.5 L0,7 z" fill="#fb923c"/>
+      </marker>
+    </defs>
+    <line x1="668" y1="92" x2="706" y2="92" stroke="#fb923c" stroke-width="1.6" marker-end="url(#ar)"/>
+    <line x1="668" y1="112" x2="706" y2="112" stroke="#fb923c" stroke-width="1.6" marker-end="url(#ar)"/>
+    <text x="600" y="150" font-size="11" fill="#9a3412" font-family="sans-serif">左：Encoder 全可见</text>
+    <text x="712" y="150" font-size="11" fill="#9a3412" font-family="sans-serif">右：Decoder 掩码</text>
+    <text x="668" y="164" font-size="11" fill="#9a3412" font-family="sans-serif">交叉注意力</text>
+    <text x="600" y="194" font-size="12" fill="#5b6472" font-family="sans-serif">先读全原文，再边读原文边逐字译出</text>
+    <text x="600" y="212" font-size="12" font-weight="700" fill="#9a3412" font-family="sans-serif">→ 转换（翻译/摘要）</text>
+  </svg>
+
+  <div class="tip">
+    <b>看懂这张图，三篇原文的 60% 你已经拿到了。</b>剩下 40% 是"为什么 Decoder-only 成了主流"——这是唯一值得多花五分钟的地方。
+  </div>
+</div>
+
+<h2 id="fix">1. 三处口径校正（读之前先校准）</h2>
+<div class="card">
+  <p>你手上那份导读整体判断是对的（精读哪篇、扫读哪段都对），但有三处需要修正，否则会带进笔记里：</p>
+
+  <div class="risk">
+    <b>① 知乎那篇"原文受限"——不成立。</b>我完整读到了正文（约 1600 字，2023-07-11 发布）。它读起来"碎"，是因为几乎每个术语都插了知乎站内搜索链接，不是权限问题。所以这篇应当<b>正常精读</b>，不必找替代品。
+  </div>
+
+  <div class="warn">
+    <b>② "Nature 的对比表格"——来源不明，别引用。</b>两篇里都没有这张表，导读也没给链接。写作业/笔记时若要一张对比表，<b>用 llm-master 文档里那张现成的</b>（本文第 3 节已摘录），标注来源清楚，别署名给一篇没读过的期刊文章。
+  </div>
+
+  <div class="warn">
+    <b>③ 百度那篇的"只读一小段"——策略对，但要带怀疑读。</b>标题写"六大主流大模型架构"，讲的是 Llama/Qwen/DeepSeek/GPT/PaLM/Falcon 六个<b>型号</b>，不是三种<b>架构范式</b>。它第二节里那句选型建议可用，但同段有三处硬伤（见第 4 节），别顺手抄走。
+  </div>
+</div>
+
+<h2 id="zhi">2. 精读①：知乎《LLM 的 3 种架构：Encoder-only、Decoder-only、encode-decode》</h2>
+<div class="card">
+  <p><span class="badge b-read">精读约 15 分钟</span> &nbsp; 2023-07-11 ｜ 约 1600 字 ｜ 作者未署名（个人专栏）</p>
+  <p class="lead"><b>它解决什么问题：</b>告诉你"三种架构在训练方式上到底差在哪"——尤其是 encoder-only 为什么<b>没有自回归</b>。这是另外两篇都没讲透的点。</p>
+
+  <h3>读法：四段式，每段只抓一句</h3>
+
+  <div class="step"><div class="num">1</div><div>
+    <h4>第 1–3 段（开头讲原始 Transformer 做德英翻译）</h4>
+    <p>别当背景故事读，这两段是在给你<b>三层定义</b>：编码器"负责理解和提取输入文本中的相关信息"，输出是对输入的<b>连续表示/嵌入</b>；解码器"根据从编码器接收到的嵌入来生成翻译后的文本"。<b>抓这句就够</b>——记住 encoder 的产物是"向量"，不是"文字"，这是它天生不适合直接输出的原因。</p>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div>
+    <h4>中段"三者都属于 Seq2Seq"那一段 —— 全篇最值钱，也最容易抄错</h4>
+    <blockquote>
+      "encoder-only 类型的 LLM 不像 decoder-only 和 encoder-decoder 那些有自回归，encoder-only 集中于理解输入的内容，并做针对特定任务的输出"
+      <span class="src">—— 这段是三种架构的<b>分水岭</b>：有无自回归</span>
+    </blockquote>
+    <p>紧接着那句是全文最凝练的任务定位，建议原样记进笔记：</p>
+    <blockquote>
+      "encoder-only 类型的更擅长做分类；encoder-decoder 类型的擅长输出强烈依赖输入的，比如翻译和文本总结，而其他类型的就用 decoder-only，如各种 Q&amp;A。"
+      <span class="src">—— 注意这里的 Q&amp;A 归到了 decoder-only，与百度那篇冲突，第 5 节专门处理</span>
+    </blockquote>
+    <div class="warn">
+      <b>但"三者都属于 Seq2Seq"这句别照抄。</b>严格讲，"Seq2Seq"在教材里特指<b>编码器-解码器</b>那种"输入序列→输出序列"的结构。作者这里是把 Seq2Seq 当"输入到输出"的宽泛说法用了。你笔记里写"三种都做序列到序列的映射"没问题，写"三种都属于 Seq2Seq 架构"会被懂行的人挑。
+    </div>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div>
+    <h4>Encoder-only 小节（BERT 的 NSP + MLM）—— 挑着读</h4>
+    <p>这段作者讲了 BERT 的两个预训练任务：NSP 和 MLM（15% 随机遮挡，其中 80% 换成 <code>[MASK]</code>、10% 换随机词、10% 不动）。<b>这组 80/10/10 的数字值得记</b>，是 BERT 最常被考的点。</p>
+    <p>顺带讲了 RoBERTa 的三处升级：更大 batch、更多数据、<b>去掉 NSP</b>。</p>
+    <div class="warn">
+      <b>一处表述不严谨：</b>原文说 NSP 是"将原句子打乱成不同顺序的句子，让 BERT 找出正确语序的原句"——这描述的是<b>句子排序任务（SOP，ALBERT 用的）</b>，不是 NSP。NSP 是给两个句子 A、B，判断 B 是不是真的接在 A 后面（二分类 True/False）。作者自己后面举的例子（<code>[CLS] Toast... [SEP] It's often served...</code> 判断顺序对错）其实是对的，只是前面那句归纳说岔了。<b>结论按例子记，别按那句话记。</b>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="num">4</div><div>
+    <h4>Decoder 小节（mask 那段）—— 只读"为什么"</h4>
+    <p>这段在解释：生成第 <i>i</i> 个位置时，只能依赖 <i>i</i> 之前的已知输出。作者的落点是"用掩码技术，阻止模型关注位置 <i>i</i> 之后的位置"。</p>
+    <p><b>这段和 llm-master 那篇的 causal mask 讲的是同一件事</b>，两篇对照读，你会立刻明白"下三角矩阵"是什么——就是本文开头那张图的第②格。</p>
+    <blockquote>"decoder-only 模型在分析分类上也和 encoder-only 的 LLM 一样有效。"<span class="src">—— 这句别漏，它是理解"为什么最后大家只用一种架构"的伏笔</span></blockquote>
+  </div></div>
+
+  <div class="step"><div class="num">5</div><div>
+    <h4>Encoder-Decoder 小节（BART / T5）—— 30 秒扫过</h4>
+    <p>只留一句判断标准：这类架构擅长"输入和输出序列之间<b>存在复杂映射关系</b>的任务"。作者给了两篇论文：BART（1910.13461）、T5（1910.10683）。<b>论文不用去下</b>，记住 T5 的核心口号"Text-to-Text"就行——把所有任务都改写成"文本进、文本出"。</p>
+  </div></div>
+
+  <div class="ok">
+    <b>这一篇的净收获（3 条，抄进笔记）：</b><br>
+    ① 三者的根本分野是<b>有没有自回归</b>；<br>
+    ② encoder-only 擅长分类、encoder-decoder 擅长"输出强依赖输入"的转换、其余交 decoder-only；<br>
+    ③ encoder-only 虽不流行，但<b>仍大量用于预训练</b>（这句反直觉，值得标黄）。
+  </div>
+</div>
+
+<h2 id="git">3. 精读②：llm-master《Encoder-only、Decoder-only、Encoder-Decoder 三种架构详解与对比》</h2>
+<div class="card">
+  <p><span class="badge b-read">精读约 12 分钟</span> &nbsp; 代码随想录 youngyangyang04 的 LLM 教程 ｜ 约 1200 字 + 1 张表 + 3 张图 ｜ 三篇里最"干净"的一篇</p>
+  <p class="lead"><b>它解决什么问题：</b>把三篇里散落的信息收成一张可直接用的对比表，并正面回答"<b>为什么偏偏是 Decoder-only 成了主流</b>"——这是面试高频题，也是三篇里唯一给出完整答案的。</p>
+
+  <h3>读法：按它的三个小节顺序读，每节只需 2 分钟</h3>
+
+  <h4>1. Encoder-only（BERT）</h4>
+  <blockquote>"这种架构更擅长'理解输入'，所以其主要应用场景为文本分类、情感分析、信息抽取、命名实体识别等。注意力矩阵采用双向注意力计算，即每个字都能看到上下文得所有信息。"</blockquote>
+  <p><b>抓"双向 = 每个字都能看到上下文所有信息"</b>。知乎那篇没解释"双向"是什么样，这篇一句话说清了，还配了注意力矩阵图（上三角也亮着）。</p>
+
+  <h4>2. Decoder-only（GPT / Llama / Qwen / DeepSeek）—— 本篇核心</h4>
+  <p>作者先用一个生活化比喻切入："就像我们人说话，也是一个字一个字从前往后说的，这种设计模拟了人类思维的<b>因果性</b>"。然后给关键机制：</p>
+  <blockquote>"当生成到'苹果'这个词时，'树'这个词是不应该被'看见'的……在 Decoder-only 架构中，会通过 <b>causal mask</b> 把'未来位置'遮住，这样便可以使大模型在生成前文时'看不到'后文。"</blockquote>
+  <p class="lead">这句是全文的"钉子"。它同时解释了两件你可能没连起来的事：① 为什么大模型是"一个字一个字吐"（token by token）；② 为什么"下三角/上三角"这个图会反复出现。</p>
+
+  <div class="tip">
+    <b>作者自问自答的那道面试题，答案就三条，背下来：</b><br>
+    ① 用了 masked self-attention，当前位置只能看到前文；<br>
+    ② 天然符合"根据前文预测下一个 token"的训练目标（预训练目标和架构一致，不用额外改造）；<br>
+    ③ 大多数通用 AI 场景都能转成"给定上下文继续生成"，<b>容易扩展</b>。
+  </div>
+
+  <h4>3. Encoder-Decoder（T5 / BART / 原始 Transformer）</h4>
+  <blockquote>"适合序列到序列，文本到文本的转换任务，比如翻译、摘要、问答生成。"</blockquote>
+  <p>注意它对 Decoder 阶段<b>两种注意力</b>的拆分，这是本段唯一的技术点：</p>
+  <ul>
+    <li><b>掩码自注意力（Masked Self-Attention）</b>：处理"已经生成的译文"（管自己）；</li>
+    <li><b>交叉注意力（Cross-Attention）</b>：从编码器输出的"原文"里提取信息（管别人）。</li>
+  </ul>
+  <p>对应开头那张图的第③格：左栅格全亮（原文全可见），右栅格下三角（译文只看已生成部分），中间两支橙色箭头就是交叉注意力。</p>
+
+  <h4>4. 结尾那张对比表 —— 直接抄，标注来源</h4>
+  <p>原文表格（已校对，可直接用于作业）：</p>
+  <table>
+    <thead><tr><th>架构类型</th><th>注意力特征</th><th>核心"超能力"</th><th>代表模型</th><th>适用场景</th></tr></thead>
+    <tbody>
+      <tr><td><b>Encoder-only</b></td><td>双向注意力，无遮挡</td><td>深刻理解输入</td><td>BERT、RoBERTa</td><td>情感分析、文本分类、命名实体识别、关键词提取</td></tr>
+      <tr><td><b>Decoder-only</b></td><td>单向掩码注意力</td><td>生成与推理</td><td>GPT 系列、Llama、DeepSeek、Claude</td><td>聊天机器人、创意写作、逻辑推理、代码生成</td></tr>
+      <tr><td><b>Encoder-Decoder</b></td><td>混合（编码双向 + 解码掩码 + 交叉）</td><td>翻译与转换</td><td>T5、BART、原始 Transformer</td><td>机器翻译、长文本摘要、纠错改写</td></tr>
+    </tbody>
+  </table>
+  <p class="ans">来源：llm-master / docs/llm/transformer/transformer_base_encoder_decoder.md（表格文字与原表一致，仅把"超能力"列做了省略）</p>
+
+  <div class="ok">
+    <b>这一篇的净收获（2 条）：</b><br>
+    ① causal mask = Decoder-only 的定义性特征，它决定了"看不见未来"；<br>
+    ② 为什么它赢：训练目标与架构自洽 + 任何任务都能改写成"续写" + 工程上易扩展。
+  </div>
+</div>
+
+<h2 id="bd">4. 扫读③：百度开发者《六大主流大模型架构》</h2>
+<div class="card">
+  <p><span class="badge b-skim">扫读约 4 分钟</span> &nbsp; 作者"半吊子全栈工匠"，2025-10-30 ｜ 全文较长，但只有一小段对你有用</p>
+  <p class="lead"><b>先明确它的真实身份：</b>这不是"三种架构"的讲解，而是六个<b>具体型号</b>（Llama / Qwen / DeepSeek / GPT / PaLM / Falcon）的工程对比。全文六节，你只需要第二节第 1 小节的最后三行。</p>
+
+  <h3>只读这一处</h3>
+  <p>位置：<b>二、Transformer 核心架构的改进方向 → 1. 基础结构对比</b>，末尾的"实用建议"：</p>
+  <blockquote>
+    "若任务以生成为主（如对话、写作），优先选择纯解码器架构；若需处理双向上下文（如问答、摘要），可考虑混合结构。"
+    <span class="src">—— 和你的任务正好对上：写作/对话 → 纯解码器</span>
+  </blockquote>
+  <p>这段的价值不在信息量（两篇精读已经讲了），而在于它把结论<b>翻译成了选型动作</b>：不问"哪种先进"，只问"你的任务是生成还是双向理解"。读完这篇，你要带走的就是这个提问方式。</p>
+
+  <h3>其余部分：全部略过（附理由）</h3>
+  <table>
+    <thead><tr><th>章节</th><th>处理</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>二.2 注意力机制优化（稀疏/滑动窗口）</td><td><span class="badge b-skip">跳过</span></td><td>讲的是"同一架构内怎么省算力"，不涉及架构选型。含伪代码，对带读笔记无增量。</td></tr>
+      <tr><td>三 并行计算策略与硬件适配</td><td><span class="badge b-skip">跳过</span></td><td>训练工程问题（张量/流水线/专家并行），与"提示词怎么写"零关系。</td></tr>
+      <tr><td>三.2 量化与压缩技术</td><td><span class="badge b-skip">跳过</span></td><td>部署侧话题。两张对比表的数字无出处，不可引用。</td></tr>
+      <tr><td>四 场景分类与选型因素</td><td><span class="badge b-skim">扫标题</span></td><td>与第二节"实用建议"重复，只多一句"生成任务优先纯解码器，理解任务考虑混合结构"。</td></tr>
+      <tr><td>五、六 趋势与结论</td><td><span class="badge b-skip">跳过</span></td><td>泛泛的趋势判断，无可验证信息。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="risk">
+    <b>三处硬伤——就算扫读也要知道，别抄走：</b>
+    <p style="margin:8px 0 0"><b>① "PaLM 架构：结合编码器-解码器的混合结构，在需要双向上下文的任务（如翻译）中表现突出。"</b><br>
+    <span class="ans">错。PaLM 是<b>纯解码器</b>（decoder-only）模型，540B 稠密参数，2022 年 Google 发布的标准自回归架构。这条错误很关键——它正好把本文"混合结构适合翻译"的论据撑在了假例子上。</span></p>
+    <p style="margin:8px 0 0"><b>② "DeepSeek 通过局部敏感哈希（LSH）将注意力限制在相似 token 之间。"</b><br>
+    <span class="ans">错。LSH 稀疏注意力是 <b>Reformer</b> 的方案。DeepSeek 系列用的是 <b>MLA（多头潜在注意力）+ MoE</b>。这条属于把不同论文的机制张冠李戴。</span></p>
+    <p style="margin:8px 0 0"><b>③ "GPT 架构……其位置编码采用旋转位置嵌入（RoPE）。"</b><br>
+    <span class="ans">存疑。GPT-3 用的是可学习位置编码；RoPE 是 RoFormer 提出、由 Llama 等开源模型带火的；GPT-4 及之后的结构 OpenAI 未公开。这句不能当事实。</span></p>
+  </div>
+
+  <div class="warn">
+    <b>那这篇还值不值得读？</b>值得，但只值 4 分钟。<b>它的用途是"给你一个选型句式的模板"，不是"给你架构知识"。</b>凡涉及具体型号的结构、数字、性能倍数，一律以官方论文/模型卡为准。这篇的行文特征（三段式小标题 + 无出处的对比表 + "实测显示"）是典型 AI 辅助生成的科普稿，读的时候默认"结论可能对、论据需复核"。
+  </div>
+</div>
+
+<h2 id="conflict">5. 交叉核对：三篇打架的地方，怎么理解</h2>
+<div class="card">
+  <p class="lead">三篇对"<b>问答</b>"和"<b>摘要</b>"的归属不一致。这不是谁写错了，而是"问答"是个<b>歧义词</b>。把下面这张表读明白，你的笔记就比三篇原文都清楚。</p>
+
+  <table>
+    <thead><tr><th>任务</th><th>知乎</th><th>llm-master</th><th>百度</th><th>为什么不一样</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>问答</b></td>
+        <td>归 <b>Decoder-only</b><br><span class="ans">"各种 Q&amp;A"</span></td>
+        <td>归 <b>Encoder-Decoder</b><br><span class="ans">"问答生成"</span></td>
+        <td>归 <b>混合结构</b><br><span class="ans">"需双向上下文（如问答）"</span></td>
+        <td><b>"问答"至少三种含义：</b>① 开放域聊天式问答（ChatGPT 那种）→ 本质是续写 → Decoder-only；② 阅读理解/抽取式问答（给一段材料，问答案在第几句）→ 要双向读全文 → Encoder-only/Encoder-Decoder；③ 问答<b>生成</b>（给定材料生成一段回答）→ Encoder-Decoder。</td>
+      </tr>
+      <tr>
+        <td><b>摘要</b></td>
+        <td>归 <b>Encoder-Decoder</b><br><span class="ans">"文本总结"</span></td>
+        <td>归 <b>Encoder-Decoder</b><br><span class="ans">"摘要"</span></td>
+        <td>归 <b>混合结构</b><br><span class="ans">"需双向上下文（如摘要）"</span></td>
+        <td>三篇其实<b>一致</b>（都指向"先读全、再产出"）。百度的"混合结构"和另两篇的"Encoder-Decoder"是同一个意思的不同叫法。这里没有冲突。</td>
+      </tr>
+      <tr>
+        <td><b>分类 / 情感分析</b></td>
+        <td>归 <b>Encoder-only</b></td>
+        <td>归 <b>Encoder-only</b></td>
+        <td>未提（该篇不讨论）</td>
+        <td>无冲突。这一类是三篇里唯一口径完全统一的。</td>
+      </tr>
+      <tr>
+        <td><b>翻译</b></td>
+        <td>归 <b>Encoder-Decoder</b></td>
+        <td>归 <b>Encoder-Decoder</b></td>
+        <td>举例时挂在 PaLM（混合）名下</td>
+        <td>前两篇一致；百度的例子错了（PaLM 实为 Decoder-only），但<b>结论</b>"翻译适合编码-解码"本身仍成立。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    <b>更省事的记法：别看任务名，看两个问题。</b><br>
+    <b>Q1：输出是一段"自由文字"，还是一个"标签/结构"？</b>标签 → Encoder-only。<br>
+    <b>Q2：输出的每个字，是不是高度依赖输入原文的对应位置？</b>是，且要"对齐"着产出 → Encoder-Decoder；否，只要有前文就能往下写 → Decoder-only。<br>
+    <span class="ans">用这两问，"问答"的歧义自动消解：聊天式问答 → Q1 是自由文字、Q2 否 → Decoder-only；读材料答题 → Q1 是短答案、Q2 是 → Encoder-Decoder。</span>
+  </div>
+</div>
+
+<h2 id="table">6. 自己的一张判定表（这份导读的交付物）</h2>
+<div class="card">
+  <p>把三篇的信息压成一张你能直接用的表。左边是你要做的判断，右边是依据——<b>依据栏才是这张表的价值</b>，因为它让你不靠记忆、靠推理就能得出答案。</p>
+  <table>
+    <thead><tr><th>你的任务长什么样</th><th>选哪类</th><th>依据（机制层）</th><th>典型代表</th></tr></thead>
+    <tbody>
+      <tr><td>给一批文案打标签：过/不过、主题分类、情感正负</td><td><b>Encoder-only</b></td><td>需要同时看前后文才能判断（"不错"是褒是贬，看后一句）；输出是短标签，不需要逐字生成</td><td>BERT、RoBERTa</td></tr>
+      <tr><td>从文本里抽实体、找关键信息、做关键词</td><td><b>Encoder-only</b></td><td>同上：判断型任务，双向上下文是刚需</td><td>BERT 系</td></tr>
+      <tr><td>写稿、改写、对话、代码、推理</td><td><b>Decoder-only</b></td><td>输出是"往前续"的，天然匹配"预测下一个 token"；且所有通用任务都能改写成续写</td><td>GPT、Llama、Qwen、DeepSeek</td></tr>
+      <tr><td>翻译、长文摘要、按材料生成回答</td><td><b>Encoder-Decoder</b></td><td>输出与原文有强对齐关系，需要"编码器读全 + 解码器边看边写（交叉注意力）"</td><td>T5、BART、原始 Transformer</td></tr>
+      <tr><td>要"读得准"又要"写得顺"，且预算充足</td><td><b>混合/组合</b></td><td>用 Encoder 做理解、Decoder 做产出；代价是结构复杂、训练成本高</td><td>BART 类、检索+生成组合</td></tr>
+    </tbody>
+  </table>
+  <p class="ans">注：现实中"用哪类架构"多半由你能否训得动决定——你调 API 时，99% 用的是 Decoder-only。所以这张表的真实用途是<b>判断"这个任务该不该交给大模型"</b>，而不是"我该自研哪种架构"。</p>
+</div>
+
+<h2 id="apply">7. 落到你的提示词项目上</h2>
+<div class="card">
+  <p class="lead">你最近在做《团宣图文收集》的系统提示词，用的是<code>五段式 + 关键指令放头尾 + 评分五维度 + XML 隔离</code>。这些技巧不是"经验玄学"，在 Decoder-only 的机制上都有对应解释——下面这几条连接，能让你的项目文档从"照做"升级到"知道为什么"。</p>
+
+  <table>
+    <thead><tr><th>架构事实（三篇原文）</th><th>对应的提示词技巧</th><th>为什么成立</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>单向前文 + causal mask，<b>不能回看后文</b></td>
+        <td>身份、红线、输出格式<b>放开头</b>；关键禁令<b>末尾再压一遍</b></td>
+        <td>生成是单向推进的：开头定下的"轨道"会约束后面每一个 token；末尾重申利用的是"最近的内容权重更高"。<b>它没法像人那样"读完全文再回头改开头"</b>。</td>
+      </tr>
+      <tr>
+        <td>逐 token 生成，<b>没有全局重写</b></td>
+        <td>输出格式钉死（评分表、四区块、固定字段）</td>
+        <td>每一步只在上一步基础上往前挪一格。给出表格骨架，等于把"每一步该填什么"提前限定，模型只需局部填空，不需要一次生成整篇结构。<b>结构越具体，逐 token 走偏的概率越低。</b></td>
+      </tr>
+      <tr>
+        <td>训练目标就是"给定上下文预测下一个 token"</td>
+        <td>少样本示例（3 个入选/淘汰样本）特别有效</td>
+        <td>示例本质上是在给"上下文"，让模型接着这个模式往下续。这正好落在它被训练了几万亿次的那个动作上，所以比抽象描述更管用。</td>
+      </tr>
+      <tr>
+        <td>"大多数通用场景都能转成给定上下文继续生成"（易扩展）</td>
+        <td>把"请评估质量"改写成"按这五个维度逐项打分，最后给总分"</td>
+        <td>"评估"是抽象指令，"逐项打分"是可续写的具体序列。<b>能被改写成续写任务的指令，模型执行得最稳。</b>这也是你 V2 那轮把"相似度 10 分"改成五维度加权，效果突然变好的机制层原因。</td>
+      </tr>
+      <tr>
+        <td>上下文窗口有限，且内容越长、注意力越被摊薄</td>
+        <td>另做一版<b>精简版 System Prompt</b></td>
+        <td>不是"省 token 省钱"这么简单：长上下文里，中段指令容易被稀释。<b>精简版的意义是把"关键约束"从长文里救出来。</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="ok">
+    <b>可以直接写进项目文档的一句话：</b>选 Decoder-only 意味着"模型只能单向往前写、不能回头改"，因此提示词设计的第一原则不是"说得更详细"，而是<b>"在它开始写之前，把轨道铺好"</b>——身份、任务、格式、边界都前置，末尾再收一次口。
+  </div>
+  <p class="ans">诚实标注：上面"为什么成立"一栏是基于 causal mask / 自回归这两个机制做的合理推断，属于工程经验层面的因果解释，不是论文里的实验结论。写进文档时建议用"机制上可以这样理解"，不要写成"研究证明"。</p>
+</div>
+
+<h2 id="quiz">8. 读后自测 6 题</h2>
+<div class="card">
+  <p class="q">1. 三种架构最根本的分野是什么？（一句话）</p>
+  <p class="ans">有没有自回归 + 注意力能看见多远：双向看全部 → 判断；单向看前文 → 续写；先看全再边看边写 → 转换。</p>
+
+  <p class="q">2. causal mask 遮住的是哪一半？为什么必须遮？</p>
+  <p class="ans">遮住"未来位置"（常见画法是上三角被涂灰）。因为训练目标是"用前文预测下一个词"，如果允许看到答案，模型会直接抄，学不到任何东西。</p>
+
+  <p class="q">3. Encoder-Decoder 的解码器有<b>两种</b>注意力，分别管什么？</p>
+  <p class="ans">掩码自注意力 → 管"已经生成的译文"（自己）；交叉注意力 → 管"编码器输出的原文"（别人）。这是它区别于另外两种的关键结构。</p>
+
+  <p class="q">4. 为什么 Decoder-only 成了主流？三条理由。</p>
+  <p class="ans">① masked self-attention 保证只看前文，符合因果；② 架构与"预测下一个 token"的训练目标天然一致，无需改造；③ 任何任务都能改写成"给上下文继续生成"，扩展性最好。</p>
+
+  <p class="q">5. 有人问"问答该用哪种架构"，你怎么答才不算错？</p>
+  <p class="ans">先反问是哪种问答：聊天式问答 → Decoder-only；读材料抽答案（阅读理解）→ 需要双向，Encoder-only 或 Encoder-Decoder；按材料生成回答 → Encoder-Decoder。直接给一个答案都会被抓漏洞。</p>
+
+  <p class="q">6. BERT 预训练里 15% 被遮挡的 token，80/10/10 分别是什么？</p>
+  <p class="ans">80% 换成 <code>[MASK]</code>、10% 换成随机词、10% 保持不变。后两者是为了缓解"预训练时有 [MASK]、微调时没有"的不一致。</p>
+</div>
+
+<h2>9. 一句话总结</h2>
+<div class="card">
+  <p class="lead"><b>三篇读下来，真正需要记住的只有一格：</b>attention 能看见谁，决定了它擅长什么。看见全部 → 判断；只看见前文 → 续写；先看全再对着写 → 转换。<br>
+  至于"为什么只剩 Decoder-only"——因为<b>把一切任务都包装成"续写"最省事</b>，而它恰好又能干得不错。</p>
+</div>
+
+<div class="foot">
+  导读整理 · 2026-10-20 ｜ 三篇原文均已通读，引文为原文摘录<br>
+  可信度：llm-master ★★★★（结构清晰、可引用） ｜ 知乎 ★★★（有干货、表述松散） ｜ 百度 ★★（只取选型句式，具体论据需复核）
+</div>
+
+</div>
+</body>
+</html>
