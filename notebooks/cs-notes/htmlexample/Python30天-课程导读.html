@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 30天 · 课程导读</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e7eaf0; --brand:#2563eb; --brand2:#f97316; --ok:#16a34a; --warn:#d97706; --risk:#dc2626;
+    --soft:#eef2ff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.78;font-size:16px;}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;border-radius:18px;padding:30px 30px 26px;box-shadow:0 10px 30px rgba(37,99,235,.18);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 10px;border-radius:999px;font-size:12.5px;margin-right:8px;}
+  h2{font-size:21px;margin:42px 0 14px;padding-left:12px;border-left:5px solid var(--brand);}
+  h3{font-size:17px;margin:26px 0 10px;color:var(--brand);}
+  h4{font-size:15px;margin:18px 0 6px;color:#334155;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;margin:16px 0;box-shadow:0 2px 10px rgba(20,30,60,.04);}
+  .lead{font-size:16.5px;color:var(--sub);}
+  .tip{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:8px;margin:14px 0;font-size:15px;}
+  .warn{background:#fff7ed;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .ok{background:#f0fdf4;border-left:4px solid var(--ok);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  .risk{background:#fef2f2;border-left:4px solid var(--risk);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:15px;}
+  code{background:#eef1f6;color:#b91c1c;padding:2px 6px;border-radius:5px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  blockquote{margin:14px 0;padding:12px 16px;background:#f8fafc;border-left:3px solid #cbd5e1;
+    border-radius:0 8px 8px 0;color:#334155;font-size:15px;}
+  blockquote .src{display:block;margin-top:6px;color:#94a3b8;font-size:12.5px;border:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);color:#334155;font-weight:600;}
+  td.c{text-align:center;}
+  .badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:600;}
+  .b-read{background:#dbeafe;color:#1e40af;}
+  .b-skim{background:#fef3c7;color:#92400e;}
+  .b-skip{background:#fee2e2;color:#991b1b;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:8px;font-size:13px;background:#eef2ff;color:#3730a3;margin:3px 4px 3px 0;}
+  .toc{columns:2;column-gap:26px;font-size:14.5px;list-style:none;padding-left:0;margin:0;}
+  .toc a{color:var(--brand);text-decoration:none;}
+  .toc li{margin:5px 0;break-inside:avoid;}
+  .q{font-weight:600;cursor:pointer;}
+  .ans{color:var(--sub);font-size:14.5px;margin:8px 0 0;}
+  details{margin:12px 0;}
+  details summary{font-weight:600;cursor:pointer;color:var(--ink);}
+  .foot{color:var(--sub);font-size:13px;text-align:center;margin-top:52px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;} .toc{columns:1;}}
+  .read-toc{background:linear-gradient(135deg,#f0fdfa,#eef2ff);border:1px solid #99f6e4;
+    border-radius:14px;padding:18px 22px;margin:16px 0;}
+  .read-toc .lab{font-weight:700;color:#0f766e;margin-bottom:8px;font-size:15px;}
+  .ep{border-left:4px solid var(--brand);}
+  .epmeta{margin-bottom:8px;font-size:14px;color:var(--sub);}
+  .epmeta b{font-size:16px;color:var(--ink);}
+  .metaphor{background:#fffbeb;border-left:4px solid var(--brand2);padding:10px 14px;
+    border-radius:8px;margin:10px 0;font-size:14.5px;color:#78350f;}
+  .modhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .modrange{font-size:13px;color:var(--sub);}
+</style></head><body><div class="wrap">
+<header class="hero"><h1>Python 30天 · 课程导读</h1><p>《AI 30天教小白学 Python》全 30 集 ｜ 逐集带读 + 宏观框架</p><p><span class="tag">30 集全量带读</span><span class="tag">筑基期·练内力</span><span class="tag">目标：能用代码替自己干活</span></p></header>
+<div class="card"><p class="lead">这门课真正要给你的不是语法清单，而是<b>一双能干活的手</b>。修仙文章里筑基期的三件事是「扎马步、练内力、学御剑」，Python 就是其中的<b>内力</b>——不要求你写出复杂工程，但要求你能<b>用代码去验证想法、跑通流程</b>。30 集的编排本身就是一条「先能跑、再写好、最后做成项目」的升级路线。</p></div>
+<h2 id="toc">本篇阅读目录</h2>
+<div class="read-toc"><div class="lab">页内导航（点标题直达）</div><ul class="toc">
+<li><a href="#frame">1. 修仙定位与整体骨架</a></li>
+<li><a href="#modules">2. 模块划分与核心知识点</a></li>
+<li><a href="#eps">3. 逐集带读（全 30 集）</a></li>
+<li><a href="#cross">4. 交叉核对表</a></li>
+<li><a href="#link">5. 落到修仙路线（跨课连接）</a></li>
+<li><a href="#quiz">6. 读后自测 7 题</a></li>
+</ul></div>
+<h2 id="frame">1. 修仙定位与整体骨架</h2>
+<div class="card"><h4>修仙阶段定位</h4><div class="tip"><b>筑基期 · 练内力（Python 编程）</b></div><p>修仙路线中，筑基期强调「Python 是与模型对话的通用语言」。本课的定位正是这条：从 Day1 的 AI 助学与环境搭建，到 Day28 的记账本项目，全程围绕「让代码替自己干活」展开，是后面机器学习、深度学习两门课（结丹期）唯一的工具底座。</p></div>
+<div class="card"><svg viewBox="0 0 918 494" width="100%" role="img" aria-label="课程模块划分图">
+<rect x="0" y="0" width="918" height="494" fill="#ffffff" rx="10"/>
+<text x="24" y="30" font-size="13" font-weight="700" fill="#1f2430" font-family="sans-serif">模块划分（按集数顺序，箭头为主线依赖）</text>
+<rect x="24" y="46" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">起手式·AI 助学与环境</text>
+<text x="36" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">D1</text>
+<rect x="322" y="46" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">语法根基</text>
+<text x="334" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">D2-D5</text>
+<rect x="620" y="46" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="70" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">内建容器与阶段总结</text>
+<text x="632" y="91" font-size="11.5" fill="#5b6472" font-family="sans-serif">D6-D10</text>
+<rect x="24" y="152" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">字符串与函数</text>
+<text x="36" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">D11-D13</text>
+<rect x="322" y="152" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">模块·文件·异常</text>
+<text x="334" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">D14-D16</text>
+<rect x="620" y="152" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="176" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">Pythonic 进阶</text>
+<text x="632" y="197" font-size="11.5" fill="#5b6472" font-family="sans-serif">D17-D20</text>
+<rect x="24" y="258" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">面向对象</text>
+<text x="36" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">D21-D23</text>
+<rect x="322" y="258" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="334" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">工程化</text>
+<text x="334" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">D24-D25</text>
+<rect x="620" y="258" width="272" height="62" rx="9" fill="#eef2ff" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="632" y="282" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">应用实战</text>
+<text x="632" y="303" font-size="11.5" fill="#5b6472" font-family="sans-serif">D26-D29</text>
+<rect x="24" y="364" width="272" height="62" rx="9" fill="#f0fdfa" stroke="#93c5fd" stroke-width="1.2"/>
+<text x="36" y="388" font-size="13.5" font-weight="700" fill="#1e3a8a" font-family="sans-serif">结课·进阶路线</text>
+<text x="36" y="409" font-size="11.5" fill="#5b6472" font-family="sans-serif">D30</text>
+<path d="M 296 77 L 318 77" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 77 L 616 77" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 108 C 756 134 160 122 160 148" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 296 183 L 318 183" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 183 L 616 183" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 214 C 756 240 160 228 160 254" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 296 289 L 318 289" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 594 289 L 616 289" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<path d="M 756 320 C 756 346 160 334 160 360" stroke="#2563eb" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/></marker></defs>
+</svg></div>
+<h2 id="modules">2. 模块划分与核心知识点</h2>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 1 · 起手式·AI 助学与环境</h3><span class="modrange">D1</span></div>
+<div class="metaphor"><b>修仙比喻：</b>开光：先选对引路人（AI），再点亮第一盏灯。</div>
+<h4>核心知识点</h4><ul>
+<li>用 ChatGPT/通义/Gemini 等 AI 做互动式学习伙伴，让 AI 设计学习路线并随时答疑</li>
+<li>工具链认知：Anaconda（环境）、PyCharm / VS Code（编辑器）、Jupyter Notebook（探索式调试）</li>
+<li>Jupyter 的分步执行特性，是后续调试 AI 脚本的最佳环境</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 2 · 语法根基</h3><span class="modrange">D2-D5</span></div>
+<div class="metaphor"><b>修仙比喻：</b>扎马步：变量是气血，分支循环是筋骨。</div>
+<h4>核心知识点</h4><ul>
+<li>变量与数据类型（int/float/str/bool）及其互相转换</li>
+<li>基本运算、用户输入 input() 与格式化输出</li>
+<li>if / elif / else 分支判断</li>
+<li>for 与 while 循环、break / continue 控制</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 3 · 内建容器与阶段总结</h3><span class="modrange">D6-D10</span></div>
+<div class="metaphor"><b>修仙比喻：</b>储物袋：list 是囊，tuple 是封印，dict 是索引，set 是去重。</div>
+<h4>核心知识点</h4><ul>
+<li>list：可变有序序列，增删改查与切片，被称为「最重要的数据结构」</li>
+<li>tuple：不可变序列，适合做固定结构与多返回值</li>
+<li>dict：键值对映射，查找效率的核心，后续 JSON/JSON 配置的基础</li>
+<li>set：无序去重集合，交并差运算</li>
+<li>Day10 阶段总结：把前九天的容器知识串成一张选型表</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 4 · 字符串与函数</h3><span class="modrange">D11-D13</span></div>
+<div class="metaphor"><b>修仙比喻：</b>符咒：字符串是咒文，函数是封印术式。</div>
+<h4>核心知识点</h4><ul>
+<li>字符串切片、拼接、查找、替换与常用方法</li>
+<li>函数定义与调用、参数与返回值、作用域</li>
+<li>函数进阶：默认参数、可变参数 *args / **kwargs、递归初步</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 5 · 模块·文件·异常</h3><span class="modrange">D14-D16</span></div>
+<div class="metaphor"><b>修仙比喻：</b>外门功法：借他人之力（模块），留痕（文件），防走火（异常）。</div>
+<h4>核心知识点</h4><ul>
+<li>module 与 package 的概念、import 的几种写法</li>
+<li>文件读写：open / 读写模式 / with 上下文管理</li>
+<li>异常处理：try / except / finally，让程序遇到错误不至于崩溃</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 6 · Pythonic 进阶</h3><span class="modrange">D17-D20</span></div>
+<div class="metaphor"><b>修仙比喻：</b>内功心法：写得短、写得快、写得像 Python。</div>
+<h4>核心知识点</h4><ul>
+<li>列表推导式：一行替代循环，可读性与性能的平衡</li>
+<li>迭代器与生成器：惰性求值，处理大数据的关键（yield）</li>
+<li>匿名函数 lambda 与高阶函数（map/filter/sorted 的 key）</li>
+<li>Day20 综合小练习：单词统计，把前面所有语法串起来</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 7 · 面向对象</h3><span class="modrange">D21-D23</span></div>
+<div class="metaphor"><b>修仙比喻：</b>开宗立派：class 是门派，实例是弟子，继承是传承。</div>
+<h4>核心知识点</h4><ul>
+<li>类与实例、__init__ 构造方法、self 的含义</li>
+<li>类属性 vs 实例属性、实例方法 / 类方法 / 静态方法</li>
+<li>继承与多态、方法重写，用「动物叫」等例子理解多态的价值</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 8 · 工程化</h3><span class="modrange">D24-D25</span></div>
+<div class="metaphor"><b>修仙比喻：</b>建宗门：把散落的术法分门别类（模块化），各立山头互不干扰（虚拟环境）。</div>
+<h4>核心知识点</h4><ul>
+<li>模块化编程：把项目拆成 utils / 业务模块，降低耦合</li>
+<li>虚拟环境 venv：隔离依赖，避免「一台机器两个项目打架」</li>
+<li>pip 与 requirements.txt：依赖的冻结与复现</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 9 · 应用实战</h3><span class="modrange">D26-D29</span></div>
+<div class="metaphor"><b>修仙比喻：</b>下山历练：爬虫取物，数据炼丹，二分寻踪。</div>
+<h4>核心知识点</h4><ul>
+<li>爬虫入门：requests 请求 + 解析，把数据拿回来</li>
+<li>Pandas 数据分析 + Matplotlib 可视化，形成「读数据-清洗-看图」闭环</li>
+<li>综合项目：记账本（csv 持久化 + 面向对象 + 文件操作）</li>
+<li>猜数字与二分法：第一次把算法思维落到代码上</li>
+</ul></div>
+<div class="card"><div class="modhead"><h3 style="margin:0">模块 10 · 结课·进阶路线</h3><span class="modrange">D30</span></div>
+<div class="metaphor"><b>修仙比喻：</b>出师：一炉功成，择道而行。</div>
+<h4>核心知识点</h4><ul>
+<li>30 天能力盘点：从语法到项目完整闭环</li>
+<li>深入领域的方向建议：数据分析 / Web / 爬虫 / 机器学习 / 自动化</li>
+<li>继续修炼的接口：本门课是机器学习、深度学习两门课的先修</li>
+</ul></div>
+<h2 id="eps">3. 逐集带读（全 30 集）</h2>
+<div class="tip">以下每集卡片均来自该集转写校正版：<b>核心知识点</b>为该集可考核要点，<b>引文</b>摘自校正后的口播原句，<b>红框</b>为口径校正与技术备注。集数顺序即修炼顺序。</div>
+<h3 id="m1">模块 1 · 起手式·AI 助学与环境 <span class="modrange">（D1）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>开光：先选对引路人（AI），再点亮第一盏灯。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第1集</span> <b>Day1 第一行 Python 代码</b> <span class="pill">BV1k3YyzbEGg</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>学习路径：用 AI（ChatGPT）生成「零基础一个月学会 Python」的每日计划与练习，每天 1–2 小时；AI 工具对比：豆包、通义、Gemini、ChatGPT（本系列用 ChatGPT 演示）。</li>
+<li>安装 Python：官网下载 Python3，或装 Anaconda（更省事）；Mac 自带 Python，可不单独安装。</li>
+<li>IDE 选择：VS Code（轻量、免费开源、需装 Python 插件、启动快、灵活但需配置）vs PyCharm（专业 Python IDE、社区版免费、开箱即用、启动慢占内存）；课程两者都演示。</li>
+<li>第一个程序：新建 `hello.py`，写 `print("Hello Python")`；字符串必须用英文（半角）双引号，中文引号会报 `SyntaxError: Invalid character`（非法字符）。</li>
+<li>`print` 可打印字符串/数字/计算结果；乘号用 `*`、除号用 `/`；注释用 `#`（不执行，IDE 显示灰色）；换行符用 `\n`（反斜杠 n）。</li>
+</ol>
+<blockquote>“Python是一种高级的编程语言，语法非常简单，特别适合初学者。”<span class="src">—— 第1集《Day1 第一行 Python 代码》· 转写校正版</span></blockquote>
+<blockquote>“IDE的全称呢是集成开发环境，也就是说它除了代码的编辑器，它还有调试器，还有各种各样的运行环境、项目管理等。”<span class="src">—— 第1集《Day1 第一行 Python 代码》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>双引号必须半角（英文），这是初学者最常犯的错误；课程统一用双引号（单引号也合法）。</li>
+<li>`print 20 * 10` 输出 200；乘号不是 X 而是 `*`。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。少量 ASR 错字（通义/Gemini/ChatGPT/PyCharm/Anaconda/Microsoft 等术语已校正），整体清晰。</p>
+</div>
+<h3 id="m2">模块 2 · 语法根基 <span class="modrange">（D2-D5）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>扎马步：变量是气血，分支循环是筋骨。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第2集</span> <b>Day2 变量和数据类型</b> <span class="pill">BV1aYYyz5EeP</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>变量：用「赋值」理解，`name = 小明` 是把字符串放进变量；等号 `=` 是赋值符号（不是数学等号）。</li>
+<li>变量命名规则：只能由字母、数字、下划线组成，且不能以数字开头（数字可放后面）。</li>
+<li>四种基本数据类型：`int`（整数，integer 缩写）、`float`（带小数的浮点数）、`str`（字符串，引号括起）、`bool`（布尔值 `True` / `False`）。</li>
+<li>`print` 可一次打印多个内容，用逗号分隔（如 `print("姓名", name, "年龄", age)`）；变量可随时重新赋值（如 `age = 19`）。</li>
+<li>Python 执行机制：解释型语言，边读边执行；下载的 Python 是「解释器」，逐行把源代码翻译给电脑（二进制 0/1）执行，像按操作清单一步步做。</li>
+</ol>
+<blockquote>“变量就像是一个标签盒子，可以存储数据，可以随时取出或者修改盒子的内容。”<span class="src">—— 第2集《Day2 变量和数据类型》· 转写校正版</span></blockquote>
+<blockquote>“Python和其他的语言不同，它不是先编译成机器码再运行，而是边读边执行……Python会把它先进行 X 加 Y，就是把 5 和 3 的值代入，然后得出 8 来。”<span class="src">—— 第2集《Day2 变量和数据类型》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>变量名不能用中文；`True/False` 首字母必须大写（布尔值）。</li>
+<li>课程用 `print(..., ..., ...)` 逗号拼接输出，逗号既是语法分隔也是显示分隔，初学者易混。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。ASR 有变量名同音错字（age→AH、name→内幕、小明→小名等），已校正；人名校正为「千行/小明」待确认。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第3集</span> <b>Day3 基本运算和用户输入</b> <span class="pill">BV1DdYCzzEVm</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>算术运算符：`+ - * /`；`//` 是整除（只取商、不要余数）；`%` 是取模/求余（只要余数）；`` 是幂（如 `103 = 1000`）。</li>
+<li>浮点数精度问题：`/` 返回浮点数；`10/3` 得到 `3.333...` 但因二进制无法精确表示无限循环小数，会有微小误差（非 Python 错误，所有计算机都有）。可用 `round()` 或格式化 `:.4f` 控制显示位数。</li>
+<li>`input()`：让程序暂停等待用户输入，返回类型永远是字符串；要做数字运算需先类型转换。</li>
+<li>类型转换：`str(x)` 把数字转字符串；`int(x)` 把字符串转整数。字符串不能与 int 直接拼接，否则报 `TypeError: can only concatenate str not int to str`。</li>
+<li>导入标准库：`import math` 后用 `math.pi` 获得精确 π；结合 `input`+`int` 可实现「输入半径算圆面积 = π·r²」。</li>
+</ol>
+<blockquote>“`input` 呢可以让程序暂停执行，等待用户的输入，获取的内容是字符串的类型。”<span class="src">—— 第3集《Day3 基本运算和用户输入》· 转写校正版</span></blockquote>
+<blockquote>“计算机的浮点数不能精准地表示无限循环小数，所以会有微小的误差，Python 就显示最接近的值，如果想要精准的显示时，可以用 round 或者格式化的输出。”<span class="src">—— 第3集《Day3 基本运算和用户输入》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`:.4f` 是格式说明符（格式化输出），不是 float 缩写（UP 口误）。</li>
+<li>报错 `Traceback` 即「回溯」，从报错里可定位到具体文件和行号（如 L3.py 第 17 行）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。ASR 对运算符、变量名、错误信息同音错字较多（已校正），但内容讲解清晰、例子完整。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第4集</span> <b>Day4 if 语句</b> <span class="pill">BV1ZBeLz3EYf</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>条件判断：`if 条件:`（冒号）+ 4 个空格缩进 的执行体；`else:` 处理条件不满足；`elif` 是 `else if` 缩写，用于多分支（如分数 ≥90 优秀、≥60 及格、否则不及格）。</li>
+<li>比较运算符：`&gt;` `&gt;=` `&lt;` `&lt;=`；`==` 表示等于（因 `=` 已被赋值占用，故相等用两个等号）；`!=` 表示不等于。</li>
+<li>逻辑运算符：`and`（并且，两条件同时成立）、`or`（或者，任一成立）、`not`（取反）。</li>
+<li>典型应用：用 `input()`+`int()` 读年龄判断成年；用 `num % 2 == 0` 判断奇偶数（`%` 取模）；用 `username == "admin" and password == "123456"` 模拟登录校验。</li>
+<li>注意中英文标点：字符串、冒号等要用半角（英文），否则报错。</li>
+</ol>
+<blockquote>“在 Python 中就用 if 来实现这种逻辑……写上一个 if（我们管这个东西叫关键字），然后写上条件，要执行的语句是有 4 个空格的缩进。”<span class="src">—— 第4集《Day4 if 语句》· 转写校正版</span></blockquote>
+<blockquote>“为什么要用两个等号？因为我们一个等号用作赋值语句了，把右边的值赋值给左边的变量，所以我们只好用两个等号来表示等于。”<span class="src">—— 第4集《Day4 if 语句》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>缩进必须用 4 个空格（或一致缩进），这是 Python 语法强制，结构靠缩进来区分。</li>
+<li>`if/elif/else` 互斥执行，只会进入第一个满足条件的分支。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。ASR 对 elif/and/变量名/PyCharm 等同音错字较多（已校正），逻辑讲解清楚、练习完整。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第5集</span> <b>Day 5：for 和 while 循环</b> <span class="pill">BV14aeHz6EVG</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>`for` 循环：`for 变量 in 序列:` 逐个取元素执行；常用 `range()` 生成序列。`range(n)` 是 0~n-1；`range(a, b)` 是 a~b-1（左闭右开）；`range(a, b, step)` 带步长（如 `range(0,10,2)` → 0,2,4,6,8）。</li>
+<li>`while` 循环：`while 条件:` 当条件成立就反复执行，适合次数不固定的场景；循环体内必须更新条件变量，否则死循环。</li>
+<li>调试技巧（PyCharm）：点红点设断点，用 Debug（小虫子） + Step Over/Step Into 逐句执行，观察变量当前值，定位与预期不符的步骤。</li>
+<li>循环控制：`break` 提前结束整个循环；`continue` 跳过本次剩余语句、回到循环开头继续下一次。</li>
+<li>`f 字符串`：`f"..."` 中用 `{变量}` 直接嵌入变量值（format 缩写），比用逗号拼接更简洁；`random` 标准库：`random.randint(a, b)` 生成随机整数（如猜数字游戏）。</li>
+</ol>
+<blockquote>“range(5) 就是 0、1、2、3、4……这是半闭半开的区间，写的 1~6 是包含一但不包含六，这个要稍微记一下。”<span class="src">—— 第5集《Day 5：for 和 while 循环》· 转写校正版</span></blockquote>
+<blockquote>“for 循环遍历固定次数（知道多少次就用 for）；while 我不知道它有多少次，就一用 while 直到条件满足为止；break 把整个循环中断掉，continue 跳过这一次。”<span class="src">—— 第5集《Day 5：for 和 while 循环》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>猜数字进阶题里「猜大了/猜小了」提示要与逻辑一致：用户猜的比答案大→提示“小一点”，比答案小→提示“大一点”（原稿有一处提示方向写反，已备注）。</li>
+<li>`input()` 得到的永远是字符串，与 `int` 比较前必须转换类型（第4题密码校验的坑）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。内容非常丰富，但 ASR 把大量数字、变量名、range/while/PyCharm 误识严重（已校正约 45 处数字+25 处变量名），需对照代码理解；讲解本身清晰。</p>
+</div>
+<h3 id="m3">模块 3 · 内建容器与阶段总结 <span class="modrange">（D6-D10）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>储物袋：list 是囊，tuple 是封印，dict 是索引，set 是去重。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第6集</span> <b>Day6：最重要的数据结构 list</b> <span class="pill">BV1E1ekzHETp</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>列表 `list`：用中括号 `[ ]`、逗号分隔，可放任意类型（如 `[1, "hello", True]`）；是有序且可变的容器。</li>
+<li>索引访问：`names[0]` 取第一个，索引从 0 开始；越界访问会报 `IndexError: list index out of range`。</li>
+<li>增删元素：`append(值)` 追加到末尾；`remove(值)` 按值删除；`del 列表[i]` 按下标删除；`pop()` 删除并返回最后一项。</li>
+<li>列表操作：`len(列表)` 取长度（length 缩写）；`值 in 列表` 判断是否存在（返回 `True/False`）；`sort()` 升序排序；`reverse()` 反转（降序可先 sort 再 reverse）；可用 `for 元素 in 列表:` 遍历。</li>
+<li>练习应用：用 `for`+`sum=0` 累加求总和；成绩表排序后取 `scores[0]`（最低分）和 `scores[-1]`/`scores[len-1]`（最高分）。</li>
+</ol>
+<blockquote>“列表又是一个可变的盒子，盒子里面可以放非常多的数据，整数字符串布尔值，而且都能修改。”<span class="src">—— 第6集《Day6：最重要的数据结构 list》· 转写校正版</span></blockquote>
+<blockquote>“索引从 0 开始计数，这也是和人类的习惯稍微不一样的……如果索引超出范围就会报 IndexError: list index out of range。”<span class="src">—— 第6集《Day6：最重要的数据结构 list》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>删除首/尾元素有快捷方式（del 首、pop 尾）；`reverse()` 是反转顺序，不是降序，降序需 `sort()` 后 `reverse()`。</li>
+<li>单引号与双引号在 Python 中等价。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 list/sort/reverse/索引/len 等术语及数字同音错字较多（已校正），但例子完整、练习覆盖好。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第7集</span> <b>Day 7：元组 Tuple（顺便讲了 Jupyter Notebook）</b> <span class="pill">BV1QAHczdE4x</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>元组 `tuple`：用圆括号 `( )` 创建，不可变（immutable）——创建后不能增删改，否则报 `TypeError: tuple object does not support item assignment`；适合存一组相关但不可改的数据（如坐标 `(x, y)`）。</li>
+<li>与列表对比：列表用中括号、可变；元组用小括号、不可变；两者都支持索引（从 0 开始）、负数索引 `[-1]`（最后一个）、切片（左闭右开，如 `fruits[0:2]` 取前两个）。</li>
+<li>元组相关：`len()` 取长度；单元素元组要加逗号 `(1,)`；`tuple(列表)` 内置函数把 list 转成 tuple。</li>
+<li>切片回顾：`[0:3]` 取前三个（0、1、2）。</li>
+<li>引入 Jupyter Notebook：代码（code 单元格）+ 文档（markdown 单元格）混合，可一键运行看结果；markdown 常用语法：`#` 标题、`-` 无序列表、`加粗`；PyCharm 已集成 Jupyter，后续课程直接用。</li>
+</ol>
+<blockquote>“元组呢是一种不可变的数据结构……就是内容不能改了，你只能用它访问它，但是不能修改它，修改之后就报错。”<span class="src">—— 第7集《Day 7：元组 Tuple（顺便讲了 Jupyter Notebook）》· 转写校正版</span></blockquote>
+<blockquote>“列表是可修改的，元组呢是不可修改的；list 用的是中括号，而元组实际上用的小括号来创建的。”<span class="src">—— 第7集《Day 7：元组 Tuple（顺便讲了 Jupyter Notebook）》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>负数索引 `[-1]` 即最后一个元素，等价于 `len(x)-1`。</li>
+<li>后续课程将统一用 Jupyter Notebook 学习（边看文档边跑代码）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 tuple/元组/Jupyter/PyCharm/切片术语及数字误识较多（已校正），并混有较多 Jupyter 操作演示内容。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第8集</span> <b>Day8：字典 dict</b> <span class="pill">BV1ypnkzFEz6</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>字典 `dict`：用花括号 `{键: 值, ...}` 存储键值对；`key` 必须唯一且为不可变类型（常用字符串）；值可以是任意类型。区别于 list/tuple 用索引，字典用「名字（key）」取值。</li>
+<li>访问与取值：`person["name"]` 或 `person.get("city")`；`get` 在 key 不存在时返回 `None`（或指定默认值，如 `get("gender", "male")`），不报错。</li>
+<li>增删改：`字典[key] = 值`（有则改、无则增）；`del 字典[key]` 删除（删不存在的 key 会报错）；`pop(key)` 删除并返回其 value，key 不存在返回 `None` 也不报错；`clear()` 清空。</li>
+<li>遍历：`for key in 字典.keys()`、`for value in 字典.values()`、`for key, value in 字典.items()`（items 取出一对对键值）。</li>
+<li>实战：用空字典 `counts = {}` + `for char in 字符串` 统计字母出现次数；用 `char.isalpha()` 判断是否为字母、`if not char.isalpha(): continue` 跳过非字母；更简写法 `counts[char] = counts.get(char, 0) + 1`。</li>
+</ol>
+<blockquote>“dictionary 呢是一种键值对的存储方式……相当于给它们起一个名字，我不再基于位置来获取了，我是用名字来获取。”<span class="src">—— 第8集《Day8：字典 dict》· 转写校正版</span></blockquote>
+<blockquote>“用 get 的时候还可以返回一个默认值……如果不存在就返回一个 None……或者用 pop 删除的时候如果不存在就返回一个 None，他也不报错（比 del 更安全）。”<span class="src">—— 第8集《Day8：字典 dict》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`del` 删除不存在的 key 会报错；`pop` 更安全（可返回默认值）。</li>
+<li>统计字母次数时，注意空格也会被统计，需用 `isalpha()` 过滤（只统计字母）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 dict/keys/values/items/char/isalpha/None 等术语及变量名误识较多（已校正），示例完整（学生信息字典 + 字母统计）。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第9集</span> <b>Day 9：集合 Set</b> <span class="pill">BV1QuxuztEvb</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>集合 `set`：无序、不可重复的数据结构（与 list 有序可重复相对）；常用于去重。用大括号 `{1,2,3}` 或 `set(可迭代对象)` 创建（注意 `set('hello')` 会拆成字符且自动去重、乱序）。</li>
+<li>集合运算：交集 `a &amp; b`（两集合共有）、并集 `a | b`（全部）、差集 `a - b`（在 a 不在 b）。</li>
+<li>常用方法：`add(元素)`（重复加不进去）；`remove(元素)`（元素不存在会报错）；`discard(元素)`（不存在也不报错，更安全）；`clear()` 清空。</li>
+<li>去重实战：`unique = set(列表)` 即可去掉列表中重复项。</li>
+<li>进阶实战：统计一句话中出现过的不同字母——`for char in sentence` + `char.lower()` 转小写 + `if char.isalpha(): letters.add(char)`，最后用 `len(letters)` 输出字母个数与集合内容（注意集合无序，不要依赖顺序）。</li>
+</ol>
+<blockquote>“集合呢第一是不能重复的，如果有重复的我就给你删了……第二呢元素是无序的，打印的结果和我们输入时候的顺序不一定一样，取决于背后的哈希算法。”<span class="src">—— 第9集《Day 9：集合 Set》· 转写校正版</span></blockquote>
+<blockquote>“remove 就是把它直接删掉，但是呢如果说你删的元素不存在，它是要报错的；相反我们可以用安全的删除就是 discard，如果不存在的话那他也不会进行报错。”<span class="src">—— 第9集《Day 9：集合 Set》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`remove` 与 `discard` 区别在是否报错；集合元素顺序不保证，写代码时不要假设有序。</li>
+<li>大小写会算作不同字母，统一 `lower()` 后再统计。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 set/交集/差集/add/discard/len 等术语及数字误识较多（已校正），但集合特性与运算讲得清楚，练习（班级交集/并集/差集、字母去重）完整。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第10集</span> <b>Day 10：阶段总结</b> <span class="pill">BV1ghxQz5EHe</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>综合串联前 9 天：用 `input()` 获取用户输入（默认字符串，需 `int()` 转换）→ `if/else` 判断是否及格 → 用 `list` 保存结果统一输出。</li>
+<li>`while True` + `break` 模式：未知输入次数时用 `while True` 循环，约定输入 `"Q"` 退出，避免死循环（需设终止条件）。</li>
+<li>复杂元素存储：把「分数 + 是否及格」用元组 `(score, result)` 打包，`append` 进列表；进阶中用字典（按学生名存储姓名/分数/结果）。</li>
+<li>三元表达式：`result = '及格' if score &gt;= 60 else '不及格'`（一行替代 if/else 赋值，更简洁）。</li>
+<li>统计计算：用 `for` 循环累加 `total_score`、`pass_number`、`fail_number`，平均分 = 总分 / 人数。</li>
+</ol>
+<blockquote>“当我们知道要遍历多少遍的时候用 for，当我们不知道要执行多少遍的时候就用 while……我们也不知道用户要输入多少个学生的成绩，所以就是 while True，但要给他设一个终止条件，不然就是死循环。”<span class="src">—— 第10集《Day 10：阶段总结》· 转写校正版</span></blockquote>
+<blockquote>“result = '及格' if score &gt;= 60 else '不及格'，这样可以把它整个放到一句话中来，简单非常多。”<span class="src">—— 第10集《Day 10：阶段总结》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>进阶版用字典保存每个学生信息（比元组更直观，可按键名访问）。</li>
+<li>这种逐变量累加的写法较繁琐，后面「列表推导式」会更简单（埋下伏笔）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 while/score/pass_number/fail_number 等变量名及数字误识较多（已校正），是综合练习集，巩固前面知识点。</p>
+</div>
+<h3 id="m4">模块 4 · 字符串与函数 <span class="modrange">（D11-D13）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>符咒：字符串是咒文，函数是封印术式。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第11集</span> <b>Day 11：字符串操作</b> <span class="pill">BV1HqxozyExf</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>字符串定义：用单引号/双引号（等价），三引号 `'''...'''` 适合多行文本，也常用于写文档注释；字符串必须用引号括起。</li>
+<li>不可变性：字符串创建后不能改内容（`text[0]='H'` 报 `TypeError: ...item assignment`）；所谓"修改"其实是把变量重新赋值给一个新字符串。但支持索引/切片访问（`s[0]`、`s[-1]`、`s[0:3]` 左闭右开）。</li>
+<li>大小写与拆分：`upper()` 全大写、`lower()` 全小写；`split()` 按分隔符切成列表（默认空格），如 `sentence.split()`、`split(',')` 处理 CSV。</li>
+<li>合并：`join` 是 split 的反操作，`' '.join(words)` 用空格把单词列表拼成字符串（只在中途拼接，头尾不加）。</li>
+<li>`f-string`（Python 3.6+ 推荐）：普通字符串前加 `f`，用 `{变量}` 或 `{表达式}`（如 `{2+3}`）直接嵌入，免拼接；`s.title()` 每个单词首字母大写，`w.capitalize()` 单词首字母大写；`len()` 取长度。</li>
+</ol>
+<blockquote>“（字符串）一旦创建就不能直接修改了……（下面的写法）是把 text 的变量赋值给一个新的字符串了，而没有去修改原来字符串的内容……大家要注意一下两者的区分。”<span class="src">—— 第11集《Day 11：字符串操作》· 转写校正版</span></blockquote>
+<blockquote>“f-string 就是在普通的字符串前面加个 f，然后中间遇到变量的时候就不用拼接了，用花括号把它给括起来就可以了……不但可以把变量插入，还可以写表达式、算计算结果。”<span class="src">—— 第11集《Day 11：字符串操作》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>字符串不可变，要"改"只能生成新字符串（如 `new_words.append(w.capitalize())`）。</li>
+<li>`split` 默认按空格切，标点会算进单词；按 CSV 处理要用 `split(',')`。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 split/join/f-string/words/capitalize 等术语及变量名误识较多（已校正），字符串常用方法覆盖全面，例子（大小写、分词、拼接、f-string、首字母大写）完整。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第12集</span> <b>Day 12: 函数</b> <span class="pill">BV1cB4MzCEBn</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>为什么用函数：解决重复代码与逻辑混乱，把可复用逻辑抽象成一个名字（如 `average`）随时调用，提升可维护性；这是面向对象「封装」的前奏。</li>
+<li>定义与调用：用 `def 函数名():` 定义，缩进写函数体；调用写 `函数名()`。`def greet(): print("hello")`；传参 `def greet(name):` 用形参，调用时 `greet("Tom")`。</li>
+<li>返回值：`return` 把结果返回给调用者（调用方可决定怎么用）；不写 return 默认返回 `None`。</li>
+<li>局部 vs 全局变量：函数内定义的变量是局部的（仅函数内可用，外部不认识，越界会报 `UnboundLocalError`/`unresolved reference`）；函数外定义的是全局的。函数内修改全局变量需先用 `global` 声明，否则报错（`local variable ... not associated with a value`）。内外同名时内部优先（局部遮蔽全局）。</li>
+<li>实战：内置 `sum(列表)` 求和、`len()` 取长度；写 `average(scores)` 用 `total=sum(scores); return total/len(scores)`；进阶写成绩管理函数库（`add_score` 往全局字典 append、`get_average(name)` 返回平均、`show_all()` 遍历 `scores.items()` 打印），演示函数库 + 全局字典组织。</li>
+</ol>
+<blockquote>“函数的核心目标呢是抽象出可重复的逻辑来，我们把求平均数这个逻辑给抽象出来，用一个名字来代表它……对于可重复的逻辑，我抽象出来只写一次，可维护性也提升了。”<span class="src">—— 第12集《Day 12: 函数》· 转写校正版</span></blockquote>
+<blockquote>“在函数内修改全局变量的话……Python 中我们是不允许在函数内修改全局变量的，除非你声明一下，用 global 来声明一下，我就是要改你了。”<span class="src">—— 第12集《Day 12: 函数》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>函数没写 `return` 默认返回 `None`（不要误以为"没东西返回"是错误）。</li>
+<li>局部变量作用域：内部优先于外部；PyCharm 会用黄波浪线提醒内外变量重名，建议改名（如 `inner_x`）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 def/greet/None/global/函数名/变量名及数字误识较多（已校正），函数概念讲得透彻，三组练习递进（简单函数→带参带返回值→函数库+全局字典）。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第13集</span> <b>Day 13：函数进阶</b> <span class="pill">BV124WYzjERN</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>默认参数：`def greet(name='Python 学习者')` 给参数设默认值，用户不传则用默认；默认参数必须写在非默认参数之后，否则报错。</li>
+<li>关键字参数：调用时可用 `函数名(name='alex', age=20, city='北京')` 的「键=值」形式，顺序随意、可读性更好（不用记形参位置）。</li>
+<li>可变位置参数 `*args`：`def add_all(*numbers)` 接收任意个位置参数，内部是一个元组；适合参数个数不定的场景。</li>
+<li>可变关键字参数 `kwargs`：`def f(kwargs)` 收集任意个「键=值」参数，内部是一个字典，可用 `.items()` 遍历。</li>
+<li>参数顺序规则：普通参数 → 默认参数 → `*args` → `kwargs`（从左到右）。实战：写日志函数 `log_message(level, source='系统', *messages, extra)`；进阶 `smart_sum(*args)` 用 `isinstance(item, (list, tuple))` 判断并用 `sum()` 展开列表求和、`else: continue` 跳过非数字。</li>
+</ol>
+<blockquote>“默认的参数需要写在非默认参数的后面，否则就会出错……有默认值的要写到后面。”<span class="src">—— 第13集《Day 13：函数进阶》· 转写校正版</span></blockquote>
+<blockquote>“关键字参数就是调用函数的时候可以用键值对的形式……顺序就随意了，不但调用更灵活，别人读起来也更方便。”<span class="src">—— 第13集《Day 13：函数进阶》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`*args` 收集为元组、`kwargs` 收集为字典；`*args` 必须在 `kwargs` 之前。</li>
+<li>原文有一处口误把"默认参数必须写在后面"说成"写在前面"，已按正确规则订正（默认参数位于非默认参数之后）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 args/kwargs/星号/isinstance/join 等术语及参数名误识较多（已校正），函数进阶（默认/关键字/可变参数）讲得系统，实战（日志函数、smart_sum）贴合真实用途。</p>
+</div>
+<h3 id="m5">模块 5 · 模块·文件·异常 <span class="modrange">（D14-D16）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>外门功法：借他人之力（模块），留痕（文件），防走火（异常）。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第14集</span> <b>Day 14：module &amp; package</b> <span class="pill">BV1WoWsz9EoY</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>模块 `module`：一个 `.py` 文件即一个模块，可含变量/函数/类；导入后即可使用。导入方式：`import math`（整体）、`from random import randint`（部分导入，直接用）、`import math as m`（起别名）。</li>
+<li>常用标准库：`math`（数学）、`random`（随机）、`datetime`（日期时间）、`os`（文件/目录）、`sys`（解释器交互）、`json`（JSON 解析）。</li>
+<li>第三方库：用 `pip install requests` 安装，再 `import requests`；`requests.get(url)` 发请求，`response.status_code`（200 表示成功），`response.json()` 取数据。</li>
+<li>自定义模块/包：自定义 `my_math.py`（`add`/`square`），同路径下 `import my_math` 即可用。包 `package` = 多个模块的集合，需在目录下加空文件 `__init__.py` 让 Python 识别；`from my_utils import 模块` 引用；在 `__init__.py` 里预先 `from .xxx import ...` 可让主程序直接 `import 方法` 而不必 `模块.方法`（前提：模块间方法不重名）。</li>
+<li>概念层次（由小到大）：函数（最小功能单元）→ module（单文件，如 math）→ package（多模块目录，含 `__init__.py`）→ library（泛化逻辑概念，如标准库、numpy 库）。</li>
+</ol>
+<blockquote>“module 呢，就是一个 .py 文件……导入了这个 module 之后，我们就可以直接使用里面的内容了。”<span class="src">—— 第14集《Day 14：module &amp; package》· 转写校正版</span></blockquote>
+<blockquote>“package 是什么？是多个模块的集合……要让 Python 识别一个文件夹下的文件都是 module，就要给它增加一个空文件 `__init__.py`，这样就会告诉 Python 这是一个 package。”<span class="src">—— 第14集《Day 14：module &amp; package》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`pip install` 安装第三方库；`__init__.py` 既可为空，也可写包加载时的初始化代码。</li>
+<li>库（library）是逻辑概念，物理组织仍靠 module/package 三层。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 module/package/__init__/json/max(math)/my_utils 等术语及文件名误识严重（已校正），是较关键的"代码复用"一课，层级概念（函数→模块→包→库）讲得清楚。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第15集</span> <b>Day 15：文件操作</b> <span class="pill">BV1fUWZzMEu7</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>打开文件：`open(路径, 模式, encoding='utf-8')`；模式：`r`（只读）、`w`（只写，会清空原内容）、`a`（append 追加，不清空）、`r+`（读写）。含中文时建议指定 `encoding='utf-8'`。</li>
+<li>安全写法：推荐 `with open(路径, 模式, encoding='utf-8') as f:` —— 退出时自动关闭文件，即使出错也会关，比手动 `f.close()` 更安全（等价于 try...finally）。`f.read()` 读全部，`for line in f:` 逐行遍历，`line.strip()` 去首尾空白。</li>
+<li>写入：`f.write(内容)`；写多行需手动加 `\n`。`w` 模式会清空、`a` 模式在末尾追加。</li>
+<li>JSON 读写（内置 `json` 模块）：`json.dump(数据, f, ensure_ascii=False, indent=4)` 写文件（`ensure_ascii=False` 防止中文被转义，`indent` 控制缩进如 4/2 空格，不指定则挤成一行）；`json.load(f)` 读文件并自动转成对应 Python 类型（dict/list）。字符串互转：`json.dumps(数据)`（对象→字符串）、`json.loads(字符串)`（字符串→对象），用 `type()` 可验证。</li>
+<li>实战：用 `while True` + 输入 `"q"` 退出，把多行笔记 `append` 进 `notes.txt` 并同步存 `notes.json`；进阶：改 `w`→`a` 追加不覆盖，并用 `datetime.now().strftime(格式)` 加时间戳前缀。</li>
+</ol>
+<blockquote>“我们平常更推荐使用 `with open ... as f` 这个语法……他自己会在结束的时候自动把文件给关了，而且出错了之后即使出了错它也会自动的关，使用起来就比较的安全。”<span class="src">—— 第15集《Day 15：文件操作》· 转写校正版</span></blockquote>
+<blockquote>“（json）dump 时候加 `ensure_ascii=False` 来确保中文不会被转义掉，然后 `indent=4` 就是 4 个空格缩进……读取的时候用 `json.load` 就可以把它读到了 data 变量里，会自动给你转成 Python 对应的格式（字典）。”<span class="src">—— 第15集《Day 15：文件操作》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`w` 模式会清空原文件、`a` 模式只追加；想保留旧内容要改用 `a`。</li>
+<li>`json.dump`（写文件）与 `json.dumps`（转字符串）只差一个 s；`load`/`loads` 同理。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 对 json/utf-8/ensure_ascii/indent/datetime/strftime/文件名 误识较多（已校正），是实用性很强的一课，覆盖文本文件与 JSON 读写及 `with...as` 安全写法。 --- # Python 30天小白入门 · 课程带读摘要（第16–30集） &gt; 来源课程：B站《合集·AI 30天教小白学 Python_6346789》 &gt; 本文件基于各集 `transcript_校.txt`（已校正版）整理，用于后续导读。 &gt; 覆盖：第16–30集（Day16 – Day30）。第16–24集沿用既有校正稿，第25–30集为本次新校正。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第16集</span> <b>Day16 异常处理</b> <span class="pill">BV1gnWdzSEAs</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>异常概念：程序运行中的意外错误（拼写、用户输入、逻辑问题），会中断执行；用 `try/except` 优雅兜底，让程序不崩溃并给出友好提示。</li>
+<li>多异常捕获：可分别捕获 `ValueError`（类型转换失败）、`ZeroDivisionError`（除零）等；也可用 `Exception as e` 捕获所有异常（父类，做兜底）。</li>
+<li>`finally` 善后：无论是否出错都执行，常用于资源清理、日志、用户提醒（如文件关闭）。</li>
+<li>常见异常类型：`ValueError`、`ZeroDivisionError`、`TypeError`、`IndexError`、`KeyError`、`FileNotFoundError`、`NameError`。</li>
+<li>`with` 语句自动关闭资源（比手工 `finally` 简洁）；实践：写计算器（加减乘除 + `try/except` 捕获输入/计算错误）；进阶：`safe_divide` 函数返回错误提示。</li>
+</ol>
+<blockquote>“用 try/except finally 来优雅地处理这些错误，让程序在出错的时候呢不崩溃，而是给出用户比较友好的提示。”<span class="src">—— 第16集《Day16 异常处理》· 转写校正版</span></blockquote>
+<blockquote>“Exception 呢是所有异常的父类，这种方法呢能捕获所有类型的错误，但是我们尽可能不要这么干，还是要捕获精准的异常。”<span class="src">—— 第16集《Day16 异常处理》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>不推荐裸 `except Exception` 兜底，应捕获精准异常；`with` 处理文件更简单。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。少量 ASR 错字（jupiter→Jupyter、异常名大小写、A→a 等）已校正，整体清晰。</p>
+</div>
+<h3 id="m6">模块 6 · Pythonic 进阶 <span class="modrange">（D17-D20）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>内功心法：写得短、写得快、写得像 Python。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第17集</span> <b>Day17 列表推导式</b> <span class="pill">BV1Z4sbz9EPb</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>列表推导式语法：`[表达式 for x in 可迭代对象 if 条件]`，一行完成创建/转换/筛选，提升可读与效率。</li>
+<li>条件筛选：末尾加 `if`（如 `if x % 2 == 0`）只处理部分元素。</li>
+<li>嵌套推导：二维展平用两层 `for`，口诀「外层 for 在前、内层 for 在后」。</li>
+<li>字典推导式 `{k: v for ...}`（花括号 + 键值对）、集合推导式（花括号，自动去重且不保证顺序）。</li>
+<li>实践：生成 0~20 偶数平方、过滤长度 &gt; 3 的单词、二维列表展平；进阶：生成 `(n, l)` 元组组成的列表。</li>
+</ol>
+<blockquote>“列表推导式呢是Python中一种非常优雅且高效的生成list的方法，我们可以用仅仅一行代码就可以创建转换、筛选list。”<span class="src">—— 第17集《Day17 列表推导式》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>字典推导式用 `k: v` 格式；集合 `set` 去重、无序；嵌套时外层循环写前面。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。ASR 术语错字较多（matrix→mattress、set→site、append→ADD、for...in→fall in 等）已校正；个别计算口误（3² 误说为 6）存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第18集</span> <b>Day18 迭代器&amp;生成器</b> <span class="pill">BV1QJsEzUEbv</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>可迭代对象：list、tuple、str、dict 等可被 `for...in` 遍历的对象。</li>
+<li>迭代器：`iter()` 把可迭代对象转为迭代器，`next()` 逐个取值并记住位置，越界抛出异常（StopIteration）。</li>
+<li>生成器：`yield` 返回数据并暂停，下次调用从暂停处继续；特性是「惰性求值」，按需计算、省内存。</li>
+<li>生成器表达式：把列表推导式的 `[]` 换成 `()` 即返回生成器。</li>
+<li>实践：`even_number` 生成器输出 0~n 偶数；进阶：斐波那契（yield）、读超大文件逐行返回（避免一次读入撑爆内存）。</li>
+</ol>
+<blockquote>“它们呢可以一边计算一边返回结果，而不用像普通的list一样一次性的生成整个列表，从而呢节省内存，这种特性呢也被我们称为惰性求值。”<span class="src">—— 第18集《Day18 迭代器&amp;生成器》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>生成器/迭代器适合大数据与大文件；`next()` 越界会抛异常。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`YELD→yield`、`topo→tuple`、`ITITERATOR→iterator` 等多处错字已校正；斐波那契输出口误存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第19集</span> <b>Day19 匿名函数&amp;高阶函数</b> <span class="pill">BV1m7sWzxEWZ</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>`lambda` 表达式：`lambda 参数: 表达式`，无名字、无 `return`、只适合简短函数（复杂仍用 `def`）。</li>
+<li>高阶函数 `map`：映射，把可迭代对象按函数转换。</li>
+<li>高阶函数 `filter`：过滤，只保留函数为真的元素。</li>
+<li>`reduce`（需 `from functools import reduce`）：累积计算（如累加、累乘）。</li>
+<li>`zip`：把多个可迭代对象按位置打包成元组；实践：用 `zip`+`map`+`filter` 处理学生成绩（算平均分、筛 ≥85）；进阶：`split` 分词 + `map` 生成 (word, len) + `filter` 长度 ≥5。</li>
+</ol>
+<blockquote>“匿名函数就是没有名字的函数……lambda 表达式是一种非常简短的来定义函数的方式。”<span class="src">—— 第19集《Day19 匿名函数&amp;高阶函数》· 转写校正版</span></blockquote>
+<blockquote>“高阶函数呢，就是这些函数啊，它的参数也是得是个函数，就是函数的函数，所以称为高阶函数。”<span class="src">—— 第19集《Day19 匿名函数&amp;高阶函数》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`reduce` 在 `functools` 中；`lambda` 表达式只允许一句。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`LINDA→lambda`、`function tools→functools`、`Scout list→score` 等已校正；「打印LR」含义不明存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第20集</span> <b>Day20 综合小练习</b> <span class="pill">BV14asXzBEFG</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>综合文件操作 + 字符串处理 + 字典 + 循环：写 `count_words(file_path)` 统计词频。</li>
+<li>实现细节：`with open` 读、`strip()` 去空白、`lower()` 统一小写、`split()` 按空格分词；用字典 `get(word, 0)` 实现计数累加。</li>
+<li>排序：`sorted(列表, key=lambda x: x[1], reverse=True)` 按出现次数降序。</li>
+<li>实践：把统计结果写入 `result.txt`。</li>
+<li>进阶 `count_words_advanced`：排除停用词（the/is/a）、支持输入/输出路径参数、支持 `top N` 显示前 N 个（默认 20）。</li>
+</ol>
+<blockquote>“统计单词的出现次数，然后我们编写一个程序来读取文本的内容，统计它里面出现的每个单词的次数，并且把它输出。”<span class="src">—— 第20集《Day20 综合小练习》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`dict.get(key, 0)` 是计数累加的惯用法；`sorted` 的 `key` 取元组的第 2 个元素排序。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。少量口误（牌字典、套盆→top、result点test→result.txt）已校正。</p>
+</div>
+<h3 id="m7">模块 7 · 面向对象 <span class="modrange">（D21-D23）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>开宗立派：class 是门派，实例是弟子，继承是传承。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第21集</span> <b>Day21 面向对象 Part1</b> <span class="pill">BV1qsxczLESt</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>封装思想：把数据（属性）和操作数据的方法（行为）绑在一起，对内隐藏细节、对外暴露接口。</li>
+<li>类与对象：类是模板/图纸（概念），对象是按类创建的实例（实体），每个对象有独立数据空间。</li>
+<li>`class` 定义类；`__init__`（前后双下划线）是构造函数，首参 `self` 代表当前对象，用于初始化属性。</li>
+<li>类内方法首参都传 `self`；创建对象时 `self` 不手动传。</li>
+<li>实践：`car` 类（brand/color，__init__ 自动打印、make_sound）；进阶：`book` 类（title/author/price，show_info）。</li>
+</ol>
+<blockquote>“所谓对象呢就是把数据（我们也称之为属性）和操作数据的方法（我们称行为）绑定在一块儿，对内隐藏实现细节，对外暴露必要接口。”<span class="src">—— 第21集《Day21 面向对象 Part1》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`__init__` 前后双下划线；`self` 不手动传；每个对象数据互不干扰。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。术语错字（cad类→car、show_info 误识、self点name/age 等）已校正；「Fox」含义不明存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第22集</span> <b>Day22 面向对象 Part2</b> <span class="pill">BV1Z4yCBfE8m</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>实例属性：在 `__init__` 中用 `self.x` 定义，每个对象独立私有。</li>
+<li>类属性：定义在方法之外，所有对象共享，改一处全部受影响，建议用 `类名.属性` 访问修改。</li>
+<li>实例方法（首参 `self`，操作实例）、类方法（`@classmethod`，首参 `cls`，操作类属性）、静态方法（`@staticmethod`，无 `cls`，与类/实例属性无关但归入命名空间）。</li>
+<li>实践：`student` 类（school 类属性、name/score 实例、show_info 实例、change_school 类方法、is_pass 静态方法判断 ≥60）。</li>
+<li>进阶：`BankAccount`（PythonBank 类属性、存钱/取钱实例方法、change_bank_name 类方法、check_amount 静态方法验证 &gt;0 与余额不足）。</li>
+</ol>
+<blockquote>“类属性……所有的对象呢共享这一份数据，你改了的话，就是别的对象也受影响。”<span class="src">—— 第22集《Day22 面向对象 Part2》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>类属性用 `类名.属性` 访问更明确；静态方法适合与类无关的功能（如 `is_pass` 判断及格线）。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`实力→实例`、`speeches→species`、`MathTool`、`cls`、`@classmethod/@staticmethod`、`pi` 等大量术语错字已校正。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第23集</span> <b>Day23 面向对象 Part3</b> <span class="pill">BV1iW1VBVEJ4</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>继承：子类在类名后括号写父类名，自动获得父类的属性和方法（代码复用）。</li>
+<li>方法重写（override）：子类定义同名方法覆盖父类实现；`super()` 可在子类方法内先调用父类方法再扩展。</li>
+<li>多态：同一接口（如 `speak`）在不同对象上表现不同行为；`make_sound(animal)` 接收父类/子类，遍历调用各自实现。</li>
+<li>面向对象三大特征：封装、继承、多态。</li>
+<li>实践：`Shape` 父类（area 返回 0）→ `Circle`（π×r²，import math.pi）、`Rectangle`（宽×高）；进阶：`Vehicle` 父类（start）→ `Car`/`Bicycle` 重写 start，`start_all` 遍历展示多态。</li>
+</ol>
+<blockquote>“继承就是子类从父类获取属性和方法的机制……多态是什么，就是同样一种方法，但是根据对象的不同呢，他却产生了自己不同的行为。”<span class="src">—— 第23集《Day23 面向对象 Part3》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>不重写 `__init__` 则自动继承父类；`super()` 用于扩展而非完全重写父类方法。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`多胎→多态`、`buck→bark`、`shape→sheep`、`π 乘 r 平方→import pi` 等错字已校正。</p>
+</div>
+<h3 id="m8">模块 8 · 工程化 <span class="modrange">（D24-D25）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>建宗门：把散落的术法分门别类（模块化），各立山头互不干扰（虚拟环境）。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第24集</span> <b>Day24 模块化编程</b> <span class="pill">BV1UPyRB5Ekw</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>模块即 `.py` 文件，可定义函数、类、变量，当作可复用「工具箱」。</li>
+<li>导入方式：`import 模块`、`from 模块 import 部分`、`as` 起别名（长库名常用，如深度学习库）。</li>
+<li>模块搜索路径顺序：当前目录 → 环境变量路径 → Python 安装路径（标准库所在）；`import sys; sys.path` 可查看。</li>
+<li>实践：`mathtool.py`（square/cube）被 `main.py` 导入调用。</li>
+<li>进阶：学生管理系统拆分 `students.py`（add_student/show_students）、`scores.py`（add_score/show_scores，全局字典）、`main.py` 引用两模块并遍历打印。</li>
+</ol>
+<blockquote>“在 Python 中一个模块（module）就是一个 .py 的文件，里面可以定义函数、定义类或者定义变量等，我们可以把模块看作一个工具箱。”<span class="src">—— 第24集《Day24 模块化编程》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>大型项目分模块分包；`from 模块 import *` 不推荐，显式导入更清晰。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。`utils/youtus→utils`、`.py` 文件名、sys 误识等已校正。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第25集</span> <b>Day25 虚拟环境</b> <span class="pill">BV1ws1hBqEr6</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>虚拟环境目的：隔离不同项目的依赖版本，避免全局包互相覆盖、方便他人复现环境。</li>
+<li>创建与激活：用内置 `venv` 模块——`python -m venv venv`；激活 Windows 用 `Scripts\activate`，Mac/Linux 用 `source venv/bin/activate`；`deactivate` 退出。</li>
+<li>包管理：`pip install` / `pip uninstall` / `pip list`；`pip freeze &gt; requirements.txt` 导出依赖清单，`pip install -r requirements.txt` 复现。</li>
+<li>实践：在虚拟环境中安装 `requests`、再装 `beautifulsoup4` 并导出。</li>
+<li>进阶：安装 `flask`（Web 库）演示其依赖自动带入，并在新虚拟环境用 `requirements.txt` 复现 `flask 3.1.2`。</li>
+</ol>
+<blockquote>“用了虚拟环境，我们就可以让每个项目都使用独立的Python的解释器和依赖的包，而且互相之间不干扰。”<span class="src">—— 第25集《Day25 虚拟环境》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>`requirements.txt` 是依赖清单；venv 是 Python 原生方案，后面有更高级管理工具可自动同步。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`V1人V→venv`、`request→requests`、`requirements点test→.txt`、`p IP phrase→pip freeze`、lib/site-packages 等大量错字已校正；「拍在」「cd点」等存疑。</p>
+</div>
+<h3 id="m9">模块 9 · 应用实战 <span class="modrange">（D26-D29）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>下山历练：爬虫取物，数据炼丹，二分寻踪。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第26集</span> <b>Day26 爬虫入门</b> <span class="pill">BV14L2NB6ET9</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>爬虫两步：请求网页拿内容 + 解析内容提取所需信息。</li>
+<li>`requests` 库：`requests.get(url)`，`response.status_code`（200 成功、404 未找到）、`.text` 文本、`.content` 二进制（图片）。</li>
+<li>`beautifulsoup4` 解析 HTML：`soup.title.text`、`find`（找第一个）、`find_all`（找全部）、`select`（CSS 选择器，如 `span.titleline &gt; a`）。</li>
+<li>实践：爬 Python 官网标题与首段（注意爬虫默认不执行 JavaScript）。</li>
+<li>进阶：爬 Hacker News 新闻标题（class=titleline 下直接子元素 a），用 `enumerate` 加序号打印前 10 条。</li>
+</ol>
+<blockquote>“我们主要是用requests这个库来发送请求，然后用beautiful soup这个库来解析HTML，学完之后我们就能写一些简单的网页爬虫了。”<span class="src">—— 第26集《Day26 爬虫入门》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>爬虫默认不启用 JavaScript，需高级库；解析依赖前端 HTML/CSS 知识，选择器可让 AI 写。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`request→requests`、`test→text`、`TML→HTML`、`defend→find`、`从而且→enumerate` 等错字已校正；HTML 中 class 名「DEIC」存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第27集</span> <b>Day27 使用Pandas、Matplotlib数据分析</b> <span class="pill">BV11g1SBZEV5</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>`pandas` 数据处理：`Series`（一维）、`DataFrame`（二维，像 Excel）；`pd.read_csv` 读取；`df.describe()`（count/mean/std/min/25%/50%/75%/max）；`df.head()`/`df.info()`。</li>
+<li>清洗：`fillna` 用中位数/众数等填充缺失值（注意 median 是中位数、不是 mean）；`pd.concat` 按列(axis=1)/按行(axis=0) 合并。</li>
+<li>`matplotlib` 绘图：`plt.plot` 折线图；中文乱码需指定中文字体；`xticks` 旋转角度避免重叠；`figsize` 控制大小。</li>
+<li>`seaborn` 统计图：`histplot` 直方图（bins 区间、kde 密度曲线）、`boxplot` 箱线图（看四分位与须线）、分布图。</li>
+<li>实践：销售数据折线图 + 分布图；用泰坦尼克数据集演示年龄分布（箱线图看各舱位分位与须线）。</li>
+</ol>
+<blockquote>“pandas是Python中最常用的数据分析的库了……用matplotlib来绘制基础的图表，用seaborn快速生成比较精美的统计图。”<span class="src">—— 第27集《Day27 使用Pandas、Matplotlib数据分析》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>pandas 底层用 numpy；`groupby`+`unstack` 做报表（行转列）；中位数≠平均值。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`matt plot lib→matplotlib`、`CBA/SBAND→seaborn`、`镶嵌图→箱线图`、`histplot/KDE`、`NaN/median/fillna` 等大量术语错字已校正；「panel data 缩写」表述不严谨存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第28集</span> <b>Day28 综合练习-记账本</b> <span class="pill">BV1rcCPBnEWC</span> <span class="badge b-skip">转写 差</span></div>
+<h4>核心知识点</h4><ol>
+<li>综合函数 + 文件 + 数据结构 + 输入输出 + pandas；基础版：菜单循环（`while True`）、`add_record`（append 模式写逗号分隔文本）、`show_records`（`try/except` 处理文件不存在、遍历每行逗号 split、分别累加收入/支出、算结余）。</li>
+<li>用 `csv` 模块替代手工读写：`csv.reader`/`csv.writer`、`DictReader`（每行是字典，按 key 取值）、`writerow`/`writerows`/`writeheader`，自动处理分隔更省心。</li>
+<li>增强功能：按日期/关键字搜索（类 SQL `like` 的 `in` 子串匹配）、删除记录（写新文件覆盖旧行）。</li>
+<li>pandas 月度统计：`pd.to_datetime` 提取月份、`groupby(月份, 类型)` 汇总、`unstack` 转列、加结余列。</li>
+<li>可视化：`DataFrame.plot.bar` 画柱状图（蓝=支出、橙=收入、绿=结余），`figsize` 控大小、`xticks` 旋转。</li>
+</ol>
+<blockquote>“一个记账本来综合运用前面学习的函数、文件操作、数据结构、输入输出，还有一些pandas的新的知识。”<span class="src">—— 第28集《Day28 综合练习-记账本》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>CSV 用 `csv` 模块比手工拼字符串更稳；删除文件行需重写覆盖；pandas 可视化中文需设字体。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>差。整集对 csv 模块方法名严重误识（`DK reader`/`DEWRITER`/`DEGREER`/`DISS`/`roots` 等），且 `count→账本`、`帐篷→账本`、`FS→字段(fields)`；已尽力校正，多处置信度低并标存疑。</p>
+</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第29集</span> <b>Day29 猜数字-二分法的魅力</b> <span class="pill">BV1AdC5BWEfg</span> <span class="badge b-skim">转写 中</span></div>
+<h4>核心知识点</h4><ol>
+<li>综合循环 + 条件 + 文件 + `random`；基础：`random.randint(1, 100)`（闭区间含 1 和 100）、`input` 转 `int`、`while True` 猜数字、`count` 计数。</li>
+<li>最佳成绩：`load_best_score`/`save_best_score`（`try/except` 读文件，字符串写入、读取转 `int`）记录最少次数。</li>
+<li>进阶：多轮游戏、多玩家成绩存 JSON（`json.dump`/`json.load`）、美化输出（emoji、分割线）。</li>
+<li>二分法策略：维护 `low` 和 `high`，每次取中点推荐，根据「太大/太小」收缩区间；1~128 最多 7 次必中（`2^7=128`）。</li>
+<li>带提示的 `play_game`：猜后更新 `low`/`high`，支持多用户名分别保存成绩。</li>
+</ol>
+<blockquote>“如果我们学过数据结构和算法，就知道猜七次肯定是能猜出答案的，而我们使用的策略就是二分法不断的猜。”<span class="src">—— 第29集《Day29 猜数字-二分法的魅力》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>二分法最坏 `log2(n)` 次；JSON 用字典存多玩家成绩。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>中。`JASON→JSON`、`Scout→scores`、`best死杠→best_score`、`low hat→low/high` 等已校正；演示口播「十八十五十六」残缺存疑。</p>
+</div>
+<h3 id="m10">模块 10 · 结课·进阶路线 <span class="modrange">（D30）</span></h3>
+<div class="metaphor"><b>修仙比喻：</b>出师：一炉功成，择道而行。</div>
+<div class="card ep">
+<div class="epmeta"><span class="badge b-read">第30集</span> <b>Day30 结课 &amp; 深入领域学习建议</b> <span class="pill">BV1yqCSBpEqm</span> <span class="badge b-read">转写 好</span></div>
+<h4>核心知识点</h4><ol>
+<li>30 天总结：基础语法、控制语句（if/for/while/break/continue）、数据结构（list/tuple/set/dict）、函数与高阶函数（*args/**kwargs/lambda）、面向对象（封装/继承/多态）、模块与虚拟环境、文件与异常、数据可视化（pandas/matplotlib/seaborn）、爬虫（requests/beautifulsoup4）。</li>
+<li>Web 方向：Flask/Django/FastAPI；需前端 HTML/CSS/JavaScript；ORM 操作数据库；RESTful API、JWT 登录、项目部署。</li>
+<li>数据分析方向：numpy、Kaggle 数据集与竞赛。</li>
+<li>机器学习：特征工程、模型评估、回归/分类/聚类（房价预测、情感分析、信用评分）。</li>
+<li>深度学习：现代主流 PyTorch（而非 TensorFlow）、HuggingFace transformers；CNN/RNN、CV（计算机视觉）与 NLP（自然语言处理）；以及大模型调用与微调。学习建议：多做项目、看优秀开源、每日复盘、查文档、善用 AI 不依赖、参与社区。</li>
+</ol>
+<blockquote>“过去30天，我们从零开始，系统地掌握了Python的核心的语法及常用的工具。”<span class="src">—— 第30集《Day30 结课 &amp; 深入领域学习建议》· 转写校正版</span></blockquote>
+<blockquote>“还是要坚持做项目，小的项目比刷语法更能提升实力……有了AI之后，还是要善用AI，不要把它当成给你写答案的东西。”<span class="src">—— 第30集《Day30 结课 &amp; 深入领域学习建议》· 转写校正版</span></blockquote>
+<div class="risk"><b>口径校正 / 技术备注：</b><ul>
+<li>pandas 底层是 numpy；现代深度学习主流为 PyTorch；Django（非 jungle）、seaborn（非 c born）等术语已校正。</li>
+</ul></div>
+<p style="margin:8px 0 0;font-size:13.5px;color:#5b6472"><b>转写质量：</b>好。`TP→Tuple`、`site→Set`、`ax→*args`、`KVKWX→**kwargs`、`c born→seaborn`、`jungle→Django`、`number派→numpy`、`cargo→Kaggle`、`pt值→PyTorch`、`CNRN→CNN/RNN`、`LLP→NLP` 等已校正。</p>
+</div>
+<h2 id="cross">4. 交叉核对表</h2>
+<div class="card"><table><tr><th>模块</th><th>关键概念</th><th>常见误解 / 口径校正</th><th>与修仙路线的接口</th></tr>
+<tr><td>语法根基</td><td>变量/类型/分支/循环</td><td>把「能看懂」当成「会写」——必须自己敲一遍才算过关</td><td>筑基期内力的最低门槛</td></tr>
+<tr><td>内建容器</td><td>list/tuple/dict/set</td><td>dict 与 set 的查找是 O(1)，list 的 in 是 O(n)，选型决定性能</td><td>与《数据结构》的哈希表、数组章节直接对照</td></tr>
+<tr><td>函数与模块</td><td>参数、作用域、import</td><td>*args/**kwargs 是后续读机器学习库源码的拦路虎</td><td>决定能否读懂 sklearn / PyTorch 的接口签名</td></tr>
+<tr><td>Pythonic 三件套</td><td>推导式/生成器/高阶函数</td><td>生成器不是「省内存的 list」，而是惰性计算流水线</td><td>处理大规模语料时的必备内力</td></tr>
+<tr><td>面向对象</td><td>类/继承/多态</td><td>self 不是关键字，只是约定名；cls 同理</td><td>理解 PyTorch 的 nn.Module 继承体系的 prerequisite</td></tr>
+<tr><td>工程化</td><td>venv / requirements</td><td>不建虚拟环境 = 给自己埋依赖冲突的雷</td><td>后续跑深度学习环境（CUDA 版本）的救命习惯</td></tr>
+<tr><td>应用实战</td><td>爬虫/Pandas/二分法</td><td>Pandas 的 DataFrame 本质是「带标签的二维表」，不是 Excel</td><td>机器学习的数据预处理直接建立在这上面</td></tr>
+</table></div>
+<h2 id="link">5. 落到修仙路线（跨课连接）</h2>
+<div class="card">
+<div class="tip"><b>→《数据结构与算法》</b><br>本课的 list/dict/set 只是「会用」；那门课告诉你它们底层是数组、哈希表，以及为什么快。两门课是同一件事的「用法」与「原理」两面。</div>
+<div class="tip"><b>→《机器学习》</b><br>sklearn 的 fit/predict 接口、Pandas 的 DataFrame 都是 Python 对象；没有本课的函数与类基础，连示例代码都读不懂。</div>
+<div class="tip"><b>→《深度学习》</b><br>PyTorch 的 nn.Module 继承、Dataset/DataLoader 迭代器协议，全部依赖本课的面向对象与生成器。</div>
+<div class="tip"><b>→ 修仙路线（元婴期）</b><br>筑基期的 Vibe Coding 要求「规划就是一切」，本课 Day1 用 AI 设计路线就是这条心法的首次实践。</div>
+</div>
+<h2 id="quiz">6. 读后自测 7 题</h2>
+<div class="card">
+<details><summary>Q1. list、tuple、dict、set 分别在什么场景下选？</summary><div class="ans">答：list 用于有序可变的序列（需要增删改、要保序）；tuple 用于不希望被改动的固定结构（配置、多返回值、可做 dict 的键）；dict 用于「键→值」映射查找（O(1)）；set 用于去重与集合运算（交集并集、快速判存在）。</div></details>
+<details><summary>Q2. 为什么说生成器比「一次性生成 list」更适合处理大数据？</summary><div class="ans">答：生成器是惰性求值：yield 一次产出一个值，不把所有结果同时放在内存里。处理大文件/大语料时内存占用是常数级，而 list 会随数据量线性膨胀，甚至直接 OOM。</div></details>
+<details><summary>Q3. *args 和 **kwargs 分别接收什么？</summary><div class="ans">答：*args 接收多余的位置参数，打包成 tuple；**kwargs 接收多余的关键字参数，打包成 dict。它们让函数能透传任意参数，是装饰器与框架源码（如 PyTorch）的常见写法。</div></details>
+<details><summary>Q4. self 参数到底是什么，能不能改名？</summary><div class="ans">答：self 是实例方法第一个参数，指向「调用这个方法的那个实例对象」。它只是约定俗成的名字，改成 anything 也能跑，但强烈不建议——可读性会崩。类方法对应的第一个参数是 cls，指向类本身。</div></details>
+<details><summary>Q5. 虚拟环境 venv 解决了什么问题？</summary><div class="ans">答：隔离不同项目的依赖版本。A 项目要 numpy 1.x、B 项目要 numpy 2.x，装在同一环境会互相踩踏；venv 给每个项目独立的 site-packages，再用 requirements.txt 冻结版本以便复现。</div></details>
+<details><summary>Q6. 「猜数字用二分法」体现了什么算法思想？它的复杂度优势是什么？</summary><div class="ans">答：体现「每次排除一半候选」的减治思想。从 1~100 猜，线性枚举最坏 100 次，二分最坏 log₂100≈7 次；复杂度从 O(n) 降到 O(log n)，这是《数据结构与算法》里最核心的效率直觉之一。</div></details>
+<details><summary>Q7. 这门课与你修仙路线中的哪一阶段对应？为什么它是后面两门课的先修？</summary><div class="ans">答：对应筑基期的「练内力」。因为机器学习要用 sklearn 操作 DataFrame、深度学习要继承 nn.Module 写模型，这些全是 Python 语法与面向对象；内力不够深，连最简单的自动化实验都跑不通。</div></details>
+</div>
+<p class="foot">Python 30天 · 课程导读 ｜ 基于 30 集转写校正版生成 ｜ 修仙学 AI 路线</p>
+</div></body></html>

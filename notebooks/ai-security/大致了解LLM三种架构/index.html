@@ -33,12 +33,12 @@
     })();
   </script>
 
-  <meta name="description" content="依旧，原笔迹丢给ai整理，下方是ai生成的导读              大模型架构-零基础术语课     展开     源码                                   大模型三种架构-导读     展开     源码                       来源：https://zhuanlan.zhihu.com/p/642923989 https://githu" data-stellar-page-meta="">
+  <meta name="description" content="📕 配套速览手册：下面这份 5 页 PDF 是从本篇笔记提炼的速览版，点「展开」即可直接翻页阅读（支持缩放、缩略图跳页、全屏、键盘 ← →、手机左右滑动）。想看细节再往下读正文。               LLM三种架构·速览手册（5页）     PDF     展开     下载                                    点击「展开」后加载文档" data-stellar-page-meta="">
 <meta property="og:type" content="website" data-stellar-page-meta="">
 <meta property="og:title" content="大致了解LLM三种架构" data-stellar-page-meta="">
 <meta property="og:url" content="https://stdhall.cn/notebooks/ai-security/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3LLM%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84/" data-stellar-page-meta="">
 <meta property="og:site_name" content="P1neConeeのblog" data-stellar-page-meta="">
-<meta property="og:description" content="依旧，原笔迹丢给ai整理，下方是ai生成的导读              大模型架构-零基础术语课     展开     源码                                   大模型三种架构-导读     展开     源码                       来源：https://zhuanlan.zhihu.com/p/642923989 https://githu" data-stellar-page-meta="">
+<meta property="og:description" content="📕 配套速览手册：下面这份 5 页 PDF 是从本篇笔记提炼的速览版，点「展开」即可直接翻页阅读（支持缩放、缩略图跳页、全屏、键盘 ← →、手机左右滑动）。想看细节再往下读正文。               LLM三种架构·速览手册（5页）     PDF     展开     下载                                    点击「展开」后加载文档" data-stellar-page-meta="">
 <meta property="og:locale" content="zh_CN" data-stellar-page-meta="">
 <meta property="article:author" content="思远" data-stellar-page-meta="">
 <meta property="article:published_time" content="2026-10-21T14:29:00.000Z" data-stellar-page-meta="">
@@ -62,12 +62,18 @@
 
   
 
-  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"WebPage","@id":"https://stdhall.cn/notebooks/ai-security/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3LLM%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84/","name":"大致了解LLM三种架构","description":"依旧，原笔迹丢给ai整理，下方是ai生成的导读\n\n  \n    \n    大模型架构-零基础术语课\n    展开\n    源码\n  \n  \n    \n    \n  \n\n\n\n  \n    \n    大模型三种架构-导读\n    展开\n    源码\n  \n  \n    \n    \n  \n\n\n\n来源...","url":"https://stdhall.cn/notebooks/ai-security/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3LLM%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84/","isPartOf":{"@type":"WebSite","name":"P1neConeeのblog","url":"https://stdhall.cn"}}</script>
+  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"WebPage","@id":"https://stdhall.cn/notebooks/ai-security/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3LLM%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84/","name":"大致了解LLM三种架构","description":"\n📕 配套速览手册：下面这份 5 页 PDF 是从本篇笔记提炼的速览版，点「展开」即可直接翻页阅读（支持缩放、缩略图跳页、全屏、键盘 ← →、手机左右滑动）。想看细节再往下读正文。\n\n\n  \n    \n    LLM三种架构·速览手册（5页）\n    PDF\n    展开\n    下载\n  ...","url":"https://stdhall.cn/notebooks/ai-security/%E5%A4%A7%E8%87%B4%E4%BA%86%E8%A7%A3LLM%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84/","isPartOf":{"@type":"WebSite","name":"P1neConeeのblog","url":"https://stdhall.cn"}}</script>
   <link rel="stylesheet" href="/css/no-image-compact.css">
 <link rel="stylesheet" href="/css/tags-all.css">
 <link rel="stylesheet" href="/css/site-stats.css">
 <link rel="stylesheet" href="/css/run-html.css">
+<link rel="stylesheet" href="/css/ppt-viewer.css">
+<link rel="stylesheet" href="/css/pdf-viewer.css">
+<link rel="stylesheet" href="/css/tts.css">
 <script src="/js/run-html-toggle.js" defer></script>
+<script src="/js/ppt-viewer.js" defer></script>
+<script src="/js/pdf-viewer.js" defer></script>
+<script src="/js/tts.js" defer></script>
 
 
   <link rel="stylesheet" href="/css/stellar-icons.css?v=7c185ad1a9a79674">
@@ -686,7 +692,39 @@
     
   </div>
   </div></div>
-<article class="md-text content slide-up"><p>依旧，原笔迹丢给ai整理，下方是ai生成的导读</p>
+<article class="md-text content slide-up"><blockquote>
+<p>📕 <strong>配套速览手册</strong>：下面这份 5 页 PDF 是从本篇笔记提炼的速览版，点「展开」即可直接翻页阅读（支持缩放、缩略图跳页、全屏、键盘 ← →、手机左右滑动）。想看细节再往下读正文。</p>
+</blockquote>
+<div class="pdf-view" id="pdf-1" data-src="/pdfs/LLM三种架构-速览手册.pdf" data-ratio-note="596x843pt(读自文件)" data-collapsed="true" style="--pdf-ratio:0.70700;--pdf-height:640px">
+  <div class="pdf-view__header">
+    <span class="pdf-view__dot"></span>
+    <span class="pdf-view__title">LLM三种架构·速览手册（5页）</span>
+    <span class="pdf-view__meta">PDF</span>
+    <button class="pdf-view__collapse" type="button" aria-expanded="false">展开</button>
+    <a class="pdf-view__dl" href="/pdfs/LLM三种架构-速览手册.pdf" download="" title="下载原文件">下载</a>
+  </div>
+  <div class="pdf-view__body" hidden="">
+    <div class="pdf-view__player">
+      <div class="pdf-view__stage">
+        <canvas class="pdf-view__canvas"></canvas>
+        <div class="pdf-view__state">点击「展开」后加载文档</div>
+      </div>
+      <div class="pdf-view__bar">
+        <button class="pdf-view__nav" type="button" data-dir="-1" title="上一页">‹</button>
+        <span class="pdf-view__num">– / –</span>
+        <button class="pdf-view__nav" type="button" data-dir="1" title="下一页">›</button>
+        <button class="pdf-view__zoom" type="button" data-act="out" title="缩小">－</button>
+        <span class="pdf-view__scale">适应</span>
+        <button class="pdf-view__zoom" type="button" data-act="in" title="放大">＋</button>
+        <button class="pdf-view__thumbs-btn" type="button">缩略图</button>
+        <button class="pdf-view__fs" type="button" title="全屏">全屏</button>
+      </div>
+    </div>
+    <div class="pdf-view__thumbs" hidden=""></div>
+  </div>
+</div>
+
+<p>依旧，原笔迹丢给ai整理，下方是ai生成的导读</p>
 <div class="html-demo" data-collapsed="true">
   <div class="html-demo__header">
     <span class="html-demo__dot"></span>

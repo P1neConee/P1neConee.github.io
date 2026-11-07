@@ -1,0 +1,296 @@
+/* source/css/pdf-viewer.css
+ * 页面内嵌 PDF 阅读器样式 —— 视觉语言与 run_html / ppt 保持一致：
+ * 同一套主题变量（--card / --theme / --block / --block-border / --text-p2 / --block-radius），
+ * 不写死颜色，深浅色切换与主题配色变更自动生效。
+ */
+
+.pdf-view {
+  margin: 1.25rem 0;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: var(--block-radius, 12px);
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* ---------- 标题栏（与 html-demo / ppt 完全一致） ---------- */
+.pdf-view__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-p2, #888);
+  background: var(--block, rgba(127, 127, 127, 0.06));
+  border-bottom: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.pdf-view__header:hover {
+  background: var(--block-hover, rgba(127, 127, 127, 0.12));
+}
+.pdf-view[data-collapsed="true"] .pdf-view__header {
+  border-bottom: 0;
+}
+.pdf-view__body[hidden] {
+  display: none;
+}
+
+.pdf-view__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--theme, #1BCDFC);
+  flex: 0 0 auto;
+}
+.pdf-view__title {
+  font-weight: 600;
+  color: var(--text, #333);
+}
+.pdf-view__meta {
+  font-size: 0.72rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--block, rgba(127, 127, 127, 0.1));
+  color: var(--text-p2, #888);
+}
+
+.pdf-view__collapse,
+.pdf-view__dl {
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.3));
+  background: transparent;
+  color: var(--text-p1, #555);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+.pdf-view__collapse {
+  margin-left: auto;
+}
+.pdf-view__collapse::before {
+  content: "▸ ";
+  color: var(--theme, #1BCDFC);
+}
+.pdf-view[data-collapsed="false"] .pdf-view__collapse::before {
+  content: "▾ ";
+}
+.pdf-view__collapse:hover,
+.pdf-view__dl:hover {
+  color: var(--theme, #1BCDFC);
+  border-color: var(--theme, #1BCDFC);
+}
+
+/* ---------- 阅读区 ---------- */
+.pdf-view__player {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 固定高度 + 居中：PDF 各页比例可能不同，单一比例会拉伸，
+   所以这里只定高度，画布按当前页自身比例缩放后居中；放大时可上下左右滚动。 */
+.pdf-view__stage {
+  position: relative;
+  width: 100%;
+  height: var(--pdf-height, 640px);
+  background: #f2f3f5;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 放大到比容器更大时，居中会导致左侧/上侧溢出部分滚不到（flex 居中的固有行为），
+   所以由 JS 检测溢出后加上这个类，改为左上角对齐。 */
+.pdf-view__stage.is-overflow {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.pdf-view__canvas {
+  display: block;
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  /* 画布尺寸由 JS 按页比例与缩放系数显式设定，这里不写 width/height */
+}
+
+/* 加载 / 错误提示浮层 */
+.pdf-view__state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #666;
+  background: #f6f7f8;
+}
+.pdf-view__state[hidden] {
+  display: none;
+}
+.pdf-view__state.is-error {
+  color: #c0392b;
+  background: #fdf3f2;
+}
+:root[data-theme="dark"] .pdf-view__state {
+  background: #2a2a2a;
+  color: #bbb;
+}
+:root[data-theme="dark"] .pdf-view__state.is-error {
+  background: #3a2626;
+  color: #ff8f85;
+}
+
+/* ---------- 控制条 ---------- */
+.pdf-view__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--block, rgba(127, 127, 127, 0.06));
+  border-top: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+}
+.pdf-view__bar button {
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.3));
+  background: transparent;
+  color: var(--text-p1, #555);
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.pdf-view__bar button:hover:not(:disabled) {
+  color: var(--theme, #1BCDFC);
+  border-color: var(--theme, #1BCDFC);
+}
+.pdf-view__bar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pdf-view__nav {
+  min-width: 2rem;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.2rem 0.5rem;
+}
+.pdf-view__num {
+  font-size: 0.78rem;
+  color: var(--text-p2, #888);
+  font-variant-numeric: tabular-nums;
+  min-width: 4.2rem;
+  text-align: center;
+}
+.pdf-view__zoom {
+  min-width: 1.8rem;
+  padding: 0.15rem 0.4rem;
+}
+.pdf-view__scale {
+  font-size: 0.72rem;
+  color: var(--text-p2, #888);
+  min-width: 3rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.pdf-view__fs {
+  margin-left: auto;
+}
+
+/* ---------- 缩略图网格 ---------- */
+.pdf-view__thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.5rem;
+  padding: 0.6rem;
+  max-height: 320px;
+  overflow: auto;
+  background: var(--block, rgba(127, 127, 127, 0.04));
+  border-top: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+}
+.pdf-view__thumbs[hidden] {
+  display: none;
+}
+.pdf-view__thumb {
+  position: relative;
+  padding: 0;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.25));
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  line-height: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pdf-view__thumb:hover {
+  border-color: var(--theme, #1BCDFC);
+}
+.pdf-view__thumb.is-active {
+  border-color: var(--theme, #1BCDFC);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme, #1BCDFC) 35%, transparent);
+}
+.pdf-view__thumb canvas {
+  width: 100%;
+  height: auto;
+  /* canvas 固有默认比例是 2:1，不显式指定会被压扁 */
+  aspect-ratio: var(--pdf-ratio, 1 / 1.414);
+  display: block;
+}
+.pdf-view__thumb span {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  border-top-right-radius: 6px;
+}
+
+/* ---------- 全屏 ---------- */
+.pdf-view__player:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+}
+.pdf-view__player:fullscreen .pdf-view__stage {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  background: #333;
+}
+.pdf-view__player:fullscreen .pdf-view__bar {
+  background: #111;
+  border-top: 1px solid #333;
+}
+.pdf-view__player:fullscreen .pdf-view__bar button {
+  color: #ddd;
+  border-color: #555;
+}
+.pdf-view__player:fullscreen .pdf-view__num,
+.pdf-view__player:fullscreen .pdf-view__scale {
+  color: #ddd;
+}
+.pdf-view__player:-webkit-full-screen {
+  background: #000;
+}
+
+/* ---------- 移动端 ---------- */
+@media (max-width: 600px) {
+  .pdf-view__thumbs {
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  }
+  .pdf-view__meta,
+  .pdf-view__scale {
+    display: none;
+  }
+  .pdf-view__stage {
+    --pdf-height: 460px;
+  }
+}

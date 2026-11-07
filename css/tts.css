@@ -1,0 +1,508 @@
+/* source/css/tts.css
+ * 文章朗读（Web Speech API）—— 视觉语言与 run_html / ppt / pdf 保持一致：
+ * 同一套主题变量（--card / --theme / --theme-a10 / --block / --block-border / --text-p1~p3 / --block-radius），
+ * 不写死颜色，深浅色切换与主题配色变更自动生效。
+ *
+ * 字体：面板里的原生 <select> 下拉由系统控件绘制（Windows 上中文发虚、行高与面板
+ * 对不齐），所以起点/音色都换成自绘下拉（.tts-dd），整块 UI 显式指定与主题正文
+ * 一致的字体栈并开抗锯齿，避免继承到某些容器里的等宽/标题字体。
+ */
+
+/* ---------- 字体基线 ---------- */
+.tts-dock,
+.tts-sec {
+  font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei",
+               "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ---------- 入口：默认在文章顶部右上角（sticky 跟随） ---------- */
+.tts-dock {
+  z-index: 20;
+}
+/* 有正文时：作为正文第一个子节点定位到右上角，0 高度不占版面。
+   静止 = absolute（跟着文章走，滚过即消失，不挡正文）；
+   朗读中 = fixed（吸附在顶栏下方，方便随时暂停/停止）。 */
+.tts-dock--inline {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 0;
+}
+/* 朗读中：直接 fixed 到视口右上角（顶栏下方）。
+   不用 sticky —— sticky 在未滚动时仍停在自然流位置（正文顶部），会压住正文首行。 */
+.tts-dock--inline.is-pinned {
+  position: fixed;
+  top: 74px;                 /* JS 按实测顶栏高度覆盖 */
+  right: 0;                  /* JS 按正文右缘换算覆盖 */
+}
+/* 没有正文（只有内嵌 PDF/PPT）时：退回右下角悬浮 */
+.tts-dock--fixed {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  height: auto;
+}
+
+.tts-dock__btn {
+  position: absolute;
+  right: 0;
+  /* 位置锚点由 JS 给出（静止 = 正文上沿之外，朗读中 = 吸附在顶栏下方） */
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  height: 30px;
+  padding: 0 0.7rem;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: 999px;
+  background: var(--card, #fff);
+  color: var(--text-p1, #333);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.tts-dock--fixed .tts-dock__btn {
+  position: relative;
+  top: auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}
+.tts-dock__btn:hover {
+  background: var(--block, rgba(127, 127, 127, 0.08));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+.tts-dock__btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.tts-dock--fixed .tts-dock__btn svg { width: 20px; height: 20px; }
+.tts-dock__label { font-size: 13px; line-height: 1; }
+.tts-dock--fixed .tts-dock__label { display: none; }
+/* 朗读中：主题色 + 呼吸光晕 */
+.tts-dock[data-state="playing"] .tts-dock__btn {
+  color: var(--theme, #1bcdfc);
+  border-color: var(--theme, #1bcdfc);
+}
+.tts-dock[data-state="playing"] .tts-dock__btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 2px solid var(--theme, #1bcdfc);
+  animation: tts-pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+.tts-dock--fixed[data-state="playing"] .tts-dock__btn::after { border-radius: 50%; }
+@keyframes tts-pulse {
+  0% { opacity: 0.7; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+/* ---------- 控制面板 ---------- */
+.tts-panel {
+  position: absolute;
+  right: 0;
+  /* 入口在文章右上角 → 面板从按钮下方展开（容器 0 高，故用固定值） */
+  top: 2.35rem;
+  width: 292px;
+  max-width: calc(100vw - 2rem);
+  /* 起点多时面板会变高，封顶后内部滚动，别顶出视口 */
+  max-height: calc(100vh - 9rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.85rem 0.9rem 0.9rem;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: var(--block-radius, 12px);
+  background: var(--card, #fff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.13), 0 2px 6px rgba(0, 0, 0, 0.06);
+  color: var(--text-p1, #333);
+  font-size: 13px;
+}
+.tts-panel[hidden] { display: none; }
+/* 右下角悬浮模式下，面板改回从按钮上方展开 */
+.tts-dock--fixed .tts-panel {
+  top: auto;
+  bottom: calc(100% + 0.6rem);
+}
+
+.tts-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.tts-panel__head svg { width: 16px; height: 16px; fill: var(--theme, #1bcdfc); }
+.tts-panel__close {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-p3, #999);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tts-panel__close:hover { background: var(--block, rgba(127, 127, 127, 0.1)); color: var(--text-p1, #333); }
+
+/* ---------- 自绘下拉（起点 / 音色） ---------- */
+.tts-field { margin-bottom: 0.7rem; }
+.tts-field > label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-p2, #888);
+}
+.tts-dd { position: relative; }
+
+.tts-dd__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 36px;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: 10px;
+  background: var(--block, rgba(127, 127, 127, 0.06));
+  color: var(--text-p1, #333);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.tts-dd__trigger:hover { border-color: var(--theme, #1bcdfc); }
+.tts-dd.is-open .tts-dd__trigger { border-color: var(--theme, #1bcdfc); background: var(--theme-a10, rgba(127, 127, 127, 0.1)); }
+.tts-dd__txt {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tts-dd__sub {
+  flex: none;
+  font-size: 11px;
+  color: var(--text-p3, #aaa);
+  font-variant-numeric: tabular-nums;
+}
+.tts-dd__sub[hidden] { display: none; }
+.tts-dd__caret {
+  flex: none;
+  display: inline-flex;
+  color: var(--text-p3, #aaa);
+  transition: transform 0.18s;
+}
+.tts-dd__caret svg { width: 16px; height: 16px; fill: currentColor; }
+.tts-dd.is-open .tts-dd__caret { transform: rotate(180deg); }
+
+/* 浮层，不占布局流：展开/收起都不会改变面板高度。
+   （早先放在文档流里，一展开就把下方按钮推走，鼠标按下后元素移位 → click 丢失。）
+   空间不够时由 JS 加 .tts-dd--up 向上展开，并动态限高。 */
+.tts-dd__list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 5;
+  max-height: 240px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.25rem;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: 10px;
+  background: var(--card, #fff);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+}
+.tts-dd--up .tts-dd__list { top: auto; bottom: calc(100% + 4px); }
+.tts-dd__list[hidden] { display: none; }
+.tts-dd__group {
+  padding: 0.35rem 0.45rem 0.2rem;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--text-p3, #aaa);
+}
+.tts-dd__opt {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.34rem 0.45rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-p1, #333);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.tts-dd__opt:hover { background: var(--block, rgba(127, 127, 127, 0.1)); }
+.tts-dd__opt.is-on { background: var(--theme-a10, rgba(127, 127, 127, 0.12)); color: var(--theme, #1bcdfc); font-weight: 500; }
+.tts-dd__dot {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid var(--block-border, rgba(127, 127, 127, 0.35));
+  transition: border-color 0.12s, background 0.12s;
+}
+.tts-dd__opt.is-on .tts-dd__dot {
+  border-color: var(--theme, #1bcdfc);
+  background: var(--theme, #1bcdfc);
+  box-shadow: inset 0 0 0 2.5px var(--card, #fff);
+}
+.tts-dd__lab {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tts-dd__tag {
+  flex: none;
+  padding: 0 0.3rem;
+  border-radius: 5px;
+  background: var(--block, rgba(127, 127, 127, 0.12));
+  color: var(--text-p2, #888);
+  font-size: 10px;
+  line-height: 1.5;
+}
+.tts-dd__num {
+  flex: none;
+  font-size: 11px;
+  color: var(--text-p3, #aaa);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 播放控制行 ---------- */
+.tts-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0.6rem;
+}
+.tts-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  min-height: 34px;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--block-border, rgba(127, 127, 127, 0.2));
+  border-radius: 9px;
+  background: var(--block, rgba(127, 127, 127, 0.06));
+  color: var(--text-p1, #333);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.tts-btn:hover:not(:disabled) { background: var(--block-hover, rgba(127, 127, 127, 0.16)); }
+.tts-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.tts-btn--primary {
+  background: var(--theme, #1bcdfc);
+  border-color: var(--theme, #1bcdfc);
+  color: #fff;
+}
+.tts-btn--primary:hover:not(:disabled) { filter: brightness(1.06); background: var(--theme, #1bcdfc); }
+.tts-btn svg { width: 14px; height: 14px; fill: currentColor; }
+.tts-progress {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-p2, #888);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- 语速 ---------- */
+.tts-rate { display: flex; align-items: center; gap: 0.5rem; }
+.tts-rate input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.tts-rate input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--block-hover, rgba(127, 127, 127, 0.22));
+}
+.tts-rate input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--card, #fff);
+  border: 2px solid var(--theme, #1bcdfc);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.tts-rate input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--block-hover, rgba(127, 127, 127, 0.22));
+}
+.tts-rate input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--theme, #1bcdfc);
+  border-radius: 50%;
+  background: var(--card, #fff);
+}
+.tts-rate__val {
+  min-width: 2.8em;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-p2, #888);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 跟随滚动（开关） ---------- */
+.tts-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+  font-size: 12.5px;
+  color: var(--text-p2, #888);
+  cursor: pointer;
+  user-select: none;
+}
+.tts-switch input { position: absolute; width: 0; height: 0; opacity: 0; }
+.tts-switch__track {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 19px;
+  border-radius: 999px;
+  background: var(--block-hover, rgba(127, 127, 127, 0.25));
+  transition: background 0.18s;
+}
+.tts-switch__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--card, #fff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s;
+}
+.tts-switch input:checked + .tts-switch__track { background: var(--theme, #1bcdfc); }
+.tts-switch input:checked + .tts-switch__track .tts-switch__knob { transform: translateX(15px); }
+.tts-switch input:focus-visible + .tts-switch__track { outline: 2px solid var(--theme, #1bcdfc); outline-offset: 2px; }
+
+/* ---------- 当前朗读内容的预览 ---------- */
+.tts-now {
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--block-border, rgba(127, 127, 127, 0.25));
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-p2, #888);
+  max-height: 4.6em;
+  overflow: hidden;
+}
+.tts-now[hidden] { display: none; }
+.tts-now b { color: var(--text-p1, #333); font-weight: 600; }
+
+.tts-hint {
+  margin-top: 0.45rem;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-p3, #aaa);
+}
+.tts-hint[hidden] { display: none; }
+
+/* ---------- 二级标题旁的「从这里朗读」 ---------- */
+.tts-sec {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-left: 0.4rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-p3, #aaa);
+  vertical-align: middle;
+  cursor: pointer;
+  opacity: 0.42;
+  transition: opacity 0.15s, color 0.15s, background 0.15s, border-color 0.15s;
+}
+.tts-sec svg { width: 13px; height: 13px; fill: currentColor; }
+.tts-sec:hover,
+h2:hover .tts-sec,
+h3:hover .tts-sec {
+  opacity: 1;
+  color: var(--theme, #1bcdfc);
+  background: var(--theme-a10, rgba(127, 127, 127, 0.12));
+  border-color: var(--block-border, rgba(127, 127, 127, 0.2));
+}
+/* 正在读的那一节：图标常亮 */
+.tts-sec.is-active {
+  opacity: 1;
+  color: var(--theme, #1bcdfc);
+  background: var(--theme-a10, rgba(127, 127, 127, 0.12));
+  border-color: var(--theme, #1bcdfc);
+}
+
+/* ---------- 正文高亮（朗读到当前段时） ---------- */
+.tts-reading {
+  background: var(--theme-a10, rgba(127, 127, 127, 0.1));
+  box-shadow: -3px 0 0 var(--theme, #1bcdfc);
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+/* 打印 / 导出 PDF 时不带这些控件 */
+@media print {
+  .tts-dock, .tts-sec { display: none !important; }
+}
+
+@media (max-width: 768px) {
+  .tts-sec { width: 26px; height: 26px; opacity: 0.6; }
+  .tts-sec svg { width: 14px; height: 14px; }
+}
+@media (max-width: 500px) {
+  .tts-panel { width: calc(100vw - 2.5rem); }
+}
